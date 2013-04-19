@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>NuGet Server</title>
+    <link rel="alternate" type="application/json" href="/api" />
+    <link rel="alternate" type="application/xml" href="/api/odata/" />
+    <script data-main="js/main" src="js/vendor/require-2.1.5-jquery-1.9.1.js"></script>
+</head>
+    <body>
+        <script type="text/x-handlebars">
+            <header>
+                <nav>
+                    {{#linkTo 'index'}}Home{{/linkTo}}
+                    {{#linkTo 'admin'}}Admin{{/linkTo}}
+                </nav>
+                <div class="search-box">
+                    {{view Ember.TextField valueBinding="searchBox" action="search" placeholder="Search..."}}
+                </div>
+            </header>
+            
+            <div class="content">
+                {{outlet}}
+            </div>
+
+            {{view App.Footer}}
+        </script>
+
+        <script type="text/x-handlebars" data-template-name="search">
+        <h1>Search results for "{{query}}"</h1>
+        {{#if loaded}}
+            {{#if total}}
+                Showing {{first}} to {{last}} of {{total}}.
+
+                {{#if hasPrevious}}
+                    <a href="#" {{action previousPage}}>Previous Page</a>
+                {{/if}}
+                {{#if hasNext}}
+                    <a href="#" {{action nextPage}}>Next Page</a>
+                {{/if}}
+
+                <ol {{bindAttr start=first}}>
+                    {{#each hits}}
+                    <li>
+                        <div>
+                            {{view App.PackageIcon contentBinding="this"}}
+                            {{#linkTo viewPackage this}}
+                            {{#if title}}
+                                {{title}}
+                            {{else}}
+                                {{id}}
+                            {{/if}}
+                            {{/linkTo}}
+                        </div>
+                        <div>
+                            By:
+                            {{#each author in authors}}
+                                <a href="#" {{action goTo author}}>{{author}}</a>
+                            {{/each}}
+                        </div>
+                        <div>
+                            {{description}}
+                        </div>
+                        <div>
+                            Tags: 
+                            {{#each tag in tags}}
+                                <a href="#" {{action goTo tag}}>{{tag}}</a>
+                            {{/each}}
+                        </div>
+                    </li>
+                    {{/each}}
+                </ol>
+
+                {{#if hasPrevious}}
+                    <a href="#" {{action previousPage}}>Previous Page</a>
+                {{/if}}
+                {{#if hasNext}}
+                    <a href="#" {{action nextPage}}>Next Page</a>
+                {{/if}}
+            {{else}}
+                No results :(
+            {{/if}}
+        {{else}}
+            Loading spinner thingy goes here.
+        {{/if}}
+    </script>
+
+        <script type="text/x-handlebars" data-template-name="viewPackage">
+            <h1>Package info {{id}} {{version}}</h1>
+        </script>
+
+        <script type="text/x-handlebars" data-template-name="admin">
+            The admin page. running: {{isRunning}} connected: {{isConnected}}
+            <button {{action "synchronize"}} {{bindAttr disabled="isRunning"}}>Synchronize Packages</button>
+            <button {{action "cancel"}}>Cancel</button>
+        </script>
+
+        <script type="text/x-handlebars" data-template-name="footer">
+            {{#with view.content}}
+                <div>
+                    Total Packages: {{totalPackages}}
+                </div>
+                <div>
+                    Synchronizer State: {{synchronizationState}}
+                    {{#if packagesToIndex}}
+                        {{completedPackages}} / {{packagesToIndex}}
+                    {{/if}}
+                </div>
+            {{/with}}
+        </script>
+    </body>
+</html>

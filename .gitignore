@@ -1,0 +1,11 @@
+App_Data/
+bin/
+obj/
+/build/
+/Release/
+/source/packages/
+_NCrunch*
+*.ncrunch*
+*.user
+*.suo
+_ReSharper.*
