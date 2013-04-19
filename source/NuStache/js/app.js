@@ -4,6 +4,7 @@
         'restapi',
         'controllers/adminController',
         'controllers/applicationController',
+        'controllers/indexController',
         'controllers/searchController',
         'models/packageIndexer',
         'models/packageStore',
@@ -13,7 +14,7 @@
         'routes/viewPackageRoute',
         'views/footer',
         'views/packageIcon'
-], function (em, config, restapi, adminController, applicationController, searchController, packageIndexer, packageStore, restClient, adminRoute, searchRoute, viewPackageRoute, footer, packageIcon) {
+], function (em, config, restapi, adminController, applicationController, indexController, searchController, packageIndexer, packageStore, restClient, adminRoute, searchRoute, viewPackageRoute, footer, packageIcon) {
 
     var app = em.Application.create({name: "NuGet"});
     app.deferReadiness();
@@ -37,6 +38,7 @@
 
     app.AdminController = adminController;
     app.ApplicationController = applicationController;
+    app.IndexController = indexController;
     app.SearchController = searchController;
     
     app.AdminRoute = adminRoute;
