@@ -1,3 +1,5 @@
+using NuGet.Lucene.Web;
+
 [assembly: WebActivator.PreApplicationStartMethod(typeof(NuStache.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(NuStache.App_Start.NinjectWebCommon), "Stop")]
 
@@ -23,6 +25,8 @@ namespace NuStache.App_Start
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
+
+            Global.RouteMapper = bootstrapper.Kernel.Get<NuGetWebApiRouteMapper>();
         }
         
         /// <summary>
@@ -39,7 +43,7 @@ namespace NuStache.App_Start
         /// <returns>The created kernel.</returns>
         private static IKernel CreateKernel()
         {
-            var kernel = new StandardKernel();
+            var kernel = new StandardKernel(new NuGetWebApiModule(), new SignalRModule());
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
             
@@ -53,6 +57,6 @@ namespace NuStache.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-        }        
+        }
     }
 }

@@ -6,7 +6,8 @@
 */
 define([], function () {
     return {
-        baseDataUrl: 'http://nustache.com/api/',
-        apiKey: ''
+        apiKey: '',
+        // Note: must end with trailing slash:
+        baseDataUrl: '/api/'
     };
 });
