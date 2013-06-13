@@ -1,6 +1,27 @@
 ﻿define(['ember', 'models/searchResults'], function (em, searchResults) {
     return em.Object.extend({
         restClient: null,
+        find: function (packageId, packageVersion) {
+            var results = em.Object.extend(em.DeferredMixin, {
+                id: packageId,
+                version: packageVersion,
+                versionHistory: []
+            }).create();
+
+            this.get('restClient').ajax('packages.getPackageInfo', {
+                data: {
+                    id: packageId,
+                    version: packageVersion
+                },
+                success: function (json) {
+                    results.set('versionHistory', json.versionHistory);
+                    results.setProperties(json.package);
+                    results.resolve(results);
+                }
+            });
+
+            return results;
+        },
         search: function (query, page, pageSize) {
             console.log('load search results for query', query, 'page', page);
 

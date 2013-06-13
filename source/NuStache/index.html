@@ -126,6 +126,27 @@
 
         <script type="text/x-handlebars" data-template-name="viewPackage">
             <h1>Package info {{id}} {{version}}</h1>
+            <p>To install {{id}} run this command in the Package Manager Console</p>
+            <pre><code>PM&gt; Install-Package {{id}} -Version {{version}} -Source {{packageSourceUri}}</code></pre>
+            <p>{{summary}}</p>
+            <p>{{description}}</p>
+            <table>
+                <caption>Version History</caption>
+                <thead>
+                    <th>Version</th>
+                    <th>Downloads</th>
+                    <th>Published</th>
+                </thead>
+                <tbody>
+                    {{#each versionHistory}}
+                      <tr>
+                          <td>{{version}}</td>
+                          <td>{{versionDownloadCount}}</td>
+                          <td>{{lastUpdated}}</td>
+                      </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         </script>
 
         <script type="text/x-handlebars" data-template-name="admin">

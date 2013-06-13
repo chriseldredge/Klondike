@@ -26,8 +26,25 @@
                     }
                 };
             }
+
+            var href = this.replaceParameters(api, options);
             
-            $.ajax(api.href, options);
+            $.ajax(href, options);
+        },
+        replaceParameters: function (api, options) {
+            // replace {foo} with options.data.foo
+            return api.href.replace(/\{[^\}]+\}/g, function (param) {
+                // {foo} -> foo
+                param = param.substring(1, param.length - 1);
+                
+                if (!(param in options.data)) {
+                    throw 'must specify required parameter "' + param + '" for REST method "' + api.name + '"';
+                }
+                
+                var value = options.data[param];
+                delete options.data[param];
+                return value;
+            });
         }
     });
 });
