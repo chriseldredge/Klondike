@@ -4,10 +4,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NuStache")]
+[assembly: AssemblyTitle("Klondike")]
 [assembly: AssemblyDescription("NuGet Package Server powered by NuGet.Lucene")]
 [assembly: AssemblyCompany("The Motley Fool, LLC")]
-[assembly: AssemblyProduct("NuStache")]
+[assembly: AssemblyProduct("Klondike")]
 [assembly: AssemblyCopyright("Copyright © The Motley Fool, LLC 2013")]
 [assembly: AssemblyCulture("")]
 

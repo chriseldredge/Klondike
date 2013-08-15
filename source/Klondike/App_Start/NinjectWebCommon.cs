@@ -1,9 +1,9 @@
 using NuGet.Lucene.Web;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(NuStache.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(NuStache.App_Start.NinjectWebCommon), "Stop")]
+[assembly: WebActivator.PreApplicationStartMethod(typeof(Klondike.App_Start.NinjectWebCommon), "Start")]
+[assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(Klondike.App_Start.NinjectWebCommon), "Stop")]
 
-namespace NuStache.App_Start
+namespace Klondike.App_Start
 {
     using System;
     using System.Web;

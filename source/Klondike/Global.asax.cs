@@ -15,7 +15,7 @@ using NuGet.Lucene.Web.Formatters;
 using NuGet.Lucene.Web.MessageHandlers;
 using AspNet.WebApi.HtmlMicrodataFormatter;
 
-namespace NuStache
+namespace Klondike
 {
     public class Global : HttpApplication
     {
@@ -65,7 +65,7 @@ namespace NuStache
 
             formatter.Settings.Indent = true;
 
-            formatter.Title = "NuStache API";
+            formatter.Title = "Klondike API";
 
             formatter.AddHeadContent(
                 new XElement("link",
