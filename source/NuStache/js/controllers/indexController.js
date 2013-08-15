@@ -4,7 +4,7 @@
         init: function () {
             var self = this;
             restapi.then(function () {
-                var api = restapi.getApi('OData');
+                var api = restapi.getApi('Packages.OData');
                 if (!api) {
                     self.set('packageSourceUri', 'unknown');
                     return;
@@ -16,6 +16,9 @@
                     href += '/';
                 }
                 
+                if (href.indexOf('//') == -1) {
+                    href = window.location.protocol + '//' + window.location.host + href;
+                }
                 self.set('packageSourceUri', href);
             });
         }

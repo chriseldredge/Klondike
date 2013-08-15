@@ -2,7 +2,7 @@
     var module = em.Object.extend(em.DeferredMixin).create();
     
     restapi.then(function() {
-        var url = restapi.getApi('signalR').href;
+        var url = restapi.getApi('Indexing.Hub').href;
         var hubUrl = url + '/hubs?noext';
 
         require([hubUrl], function() {
