@@ -2,27 +2,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>NuStache - NuGet Package Repository</title>
-    <link rel="alternate" type="application/json" href="/api/" />
-    <link rel="alternate" type="application/xml" href="/api/odata/" />
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-combined-2.3.2.min.css" media="all" />
     <script data-main="js/main" src="js/vendor/require-2.1.5-jquery-1.9.1.js"></script>
 </head>
     <body>
         <script type="text/x-handlebars">
-            <header>
-                <nav>
-                    {{#linkTo 'index'}}Home{{/linkTo}}
-                    {{#linkTo 'admin'}}Admin{{/linkTo}}
-                </nav>
-                <div class="search-box">
-                    {{view Ember.TextField valueBinding="searchBox" action="search" placeholder="Search..."}}
-                </div>
-            </header>
+            <div class="container">
+                <header>
+                    <nav>
+                        {{#linkTo 'index'}}Home{{/linkTo}}
+                        {{#linkTo 'admin'}}Admin{{/linkTo}}
+                    </nav>
+                    <div class="search-box">
+                        {{view Ember.TextField valueBinding="searchBox" action="search" placeholder="Search..."}}
+                    </div>
+                </header>
             
-            <div class="content">
-                {{outlet}}
-            </div>
+                <div class="content">
+                    {{outlet}}
+                </div>
 
-            {{view App.Footer}}
+                {{view App.Footer}}
+            </div>
         </script>
         
         <script type="text/x-handlebars" data-template-name="index">

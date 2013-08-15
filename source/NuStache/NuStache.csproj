@@ -174,6 +174,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\app.css" />
+    <Content Include="css\bootstrap-combined-2.3.2.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="img\package-default-icon-50x50.png" />
