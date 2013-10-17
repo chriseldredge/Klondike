@@ -1,7 +1,7 @@
 ﻿require.config({
     paths: {
-        'handlebars': 'vendor/handlebars-1.0.0-rc.4',
-        'ember': 'vendor/ember-1.0.0-rc.5',
+        'handlebars': 'vendor/handlebars-1.0.0',
+        'ember': 'vendor/ember-1.0.0',
         'signalR': 'vendor/jquery.signalR-1.0.1'
     },
     shim: {

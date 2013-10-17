@@ -214,9 +214,9 @@
     <Content Include="js\controllers\indexController.js" />
     <Content Include="js\controllers\searchController.js" />
     <Content Include="js\hubs.js" />
-    <Content Include="js\vendor\ember-1.0.0-rc.5.js" />
-    <Content Include="js\vendor\ember-1.0.0-rc.5.min.js" />
-    <Content Include="js\vendor\handlebars-1.0.0-rc.4.js" />
+    <Content Include="js\vendor\ember-1.0.0.js" />
+    <Content Include="js\vendor\ember-1.0.0.min.js" />
+    <Content Include="js\vendor\handlebars-1.0.0.js" />
     <Content Include="js\vendor\jquery.signalR-1.0.1.js" />
     <Content Include="js\vendor\jquery.signalR-1.0.1.min.js" />
     <Content Include="js\vendor\require-2.1.5-jquery-1.9.1.js" />
