@@ -4,7 +4,7 @@
     restapi.then(function() {
         var url = restapi.getApi('Indexing.Hub').href;
         var hubUrl = url + '/hubs?noext';
-
+        console.log('loading', hubUrl);
         require([hubUrl], function() {
             for (var i in signalR) {
                 var prop = signalR[i];

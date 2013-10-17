@@ -206,6 +206,7 @@
     <Content Include="Global.asax" />
     <Content Include="img\package-default-icon-50x50.png" />
     <Content Include="index.html" />
+    <None Include="js\build.js" />
     <Content Include="js\formtemplate.min.js" />
     <Content Include="js\app.js" />
     <Content Include="js\config.js" />
@@ -217,9 +218,9 @@
     <Content Include="js\vendor\ember-1.0.0.js" />
     <Content Include="js\vendor\ember-1.0.0.min.js" />
     <Content Include="js\vendor\handlebars-1.0.0.js" />
+    <Content Include="js\vendor\jquery-2.0.3.min.js" />
     <Content Include="js\vendor\jquery.signalR-1.0.1.js" />
     <Content Include="js\vendor\jquery.signalR-1.0.1.min.js" />
-    <Content Include="js\vendor\require-2.1.5-jquery-1.9.1.js" />
     <Content Include="js\main.js" />
     <Content Include="js\models\packageIndexer.js" />
     <Content Include="js\models\packageStore.js" />
@@ -231,9 +232,11 @@
     <Content Include="js\routes\adminRoute.js" />
     <Content Include="js\routes\searchRoute.js" />
     <Content Include="js\routes\viewPackageRoute.js" />
+    <Content Include="js\vendor\require-2.1.9.js" />
     <Content Include="js\views\footer.js" />
     <Content Include="js\views\packageIcon.js" />
     <Content Include="Web.config" />
+    <None Include="Properties\PublishProfiles\Local.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
@@ -244,6 +247,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -272,4 +280,19 @@
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.8\tools\Microsoft.Bcl.Build.targets" />
+  <PropertyGroup>
+    <PipelineTransformPhaseDependsOn>
+      CompileJavascript;
+      IncludeCompiledJavascript
+      $(PipelineTransformPhaseDependsOn)
+    </PipelineTransformPhaseDependsOn>
+  </PropertyGroup>
+  <Target Name="CompileJavascript" Inputs="js\**\*;build.js" Outputs="js\klondike.min.js">
+    <Exec Command="r.js.cmd -o build.js out=js/klondike.min.js" />
+  </Target>
+  <Target Name="IncludeCompiledJavascript" Inputs="js\**\*;build.js" Outputs="js\klondike.min.js">
+    <ItemGroup>
+      <Content Include="js\klondike.min.js" />
+    </ItemGroup>
+  </Target>
 </Project>

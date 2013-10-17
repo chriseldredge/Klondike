@@ -1,4 +1,4 @@
-﻿require(["app"], function (app) {
+﻿define(["app"], function (app) {
     app.Router.map(function () {
         this.route('index', { path: '/' });
         this.route('admin');
@@ -7,4 +7,6 @@
             this.route('view', { path: '/:id/:version' });
         });
     });
+
+    return app.Router;
 });
