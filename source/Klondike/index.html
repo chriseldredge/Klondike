@@ -15,7 +15,7 @@
                         {{#linkTo 'admin'}}Admin{{/linkTo}}
                     </nav>
                     <div class="search-box">
-                        {{view Ember.TextField valueBinding="searchBox" action="search" placeholder="Search..."}}
+                        {{input type="text" value=searchBox action="search" placeholder="Search..."}}
                     </div>
                 </header>
             
@@ -70,67 +70,67 @@
             </p>
         </script>
 
-        <script type="text/x-handlebars" data-template-name="search">
-        <h1>Search results for "{{query}}"</h1>
-        {{#if loaded}}
-            {{#if total}}
-                Showing {{first}} to {{last}} of {{total}}.
+        <script type="text/x-handlebars" data-template-name="packages/search">
+            <h1>Search results for "{{query}}"</h1>
+            {{#if loaded}}
+                {{#if total}}
+                    Showing {{first}} to {{last}} of {{total}}.
 
-                {{#if hasPrevious}}
-                    <a href="#" {{action previousPage}}>Previous Page</a>
-                {{/if}}
-                {{#if hasNext}}
-                    <a href="#" {{action nextPage}}>Next Page</a>
-                {{/if}}
+                    {{#if hasPrevious}}
+                        <a href="#" {{action previousPage}}>Previous Page</a>
+                    {{/if}}
+                    {{#if hasNext}}
+                        <a href="#" {{action nextPage}}>Next Page</a>
+                    {{/if}}
 
-                <ol {{bindAttr start=first}}>
-                    {{#each hits}}
-                    <li>
-                        <div>
-                            {{view App.PackageIcon contentBinding="this"}}
-                            {{#linkTo viewPackage this}}
-                            {{#if title}}
-                                {{title}}
-                            {{else}}
-                                {{id}}
-                            {{/if}}
-                            {{/linkTo}}
-                        </div>
-                        <div>
-                            By:
-                            {{#each author in authors}}
-                                <a href="#" {{action goTo author}}>{{author}}</a>
-                            {{/each}}
-                        </div>
-                        <div>
-                            {{description}}
-                        </div>
-                        <div>
-                            Tags: 
-                            {{#each tag in tags}}
-                                <a href="#" {{action goTo tag}}>{{tag}}</a>
-                            {{/each}}
-                        </div>
-                    </li>
-                    {{/each}}
-                </ol>
+                    <ol {{bindAttr start=first}}>
+                        {{#each hits}}
+                        <li>
+                            <div>
+                                {{view App.PackageIcon contentBinding="this"}}
+                                {{#linkTo 'packages.view' this}}
+                                {{#if title}}
+                                    {{title}}
+                                {{else}}
+                                    {{id}}
+                                {{/if}}
+                                {{/linkTo}}
+                            </div>
+                            <div>
+                                By:
+                                {{#each author in authors}}
+                                    <a href="#" {{action goTo author}}>{{author}}</a>
+                                {{/each}}
+                            </div>
+                            <div>
+                                {{description}}
+                            </div>
+                            <div>
+                                Tags: 
+                                {{#each tag in tags}}
+                                    <a href="#" {{action goTo tag}}>{{tag}}</a>
+                                {{/each}}
+                            </div>
+                        </li>
+                        {{/each}}
+                    </ol>
 
-                {{#if hasPrevious}}
-                    <a href="#" {{action previousPage}}>Previous Page</a>
-                {{/if}}
-                {{#if hasNext}}
-                    <a href="#" {{action nextPage}}>Next Page</a>
+                    {{#if hasPrevious}}
+                        <a href="#" {{action previousPage}}>Previous Page</a>
+                    {{/if}}
+                    {{#if hasNext}}
+                        <a href="#" {{action nextPage}}>Next Page</a>
+                    {{/if}}
+                {{else}}
+                    No results :(
                 {{/if}}
             {{else}}
-                No results :(
+                Loading spinner thingy goes here.
             {{/if}}
-        {{else}}
-            Loading spinner thingy goes here.
-        {{/if}}
-    </script>
+        </script>
 
-        <script type="text/x-handlebars" data-template-name="viewPackage">
-            <h1>Package info {{id}} {{version}}</h1>
+        <script type="text/x-handlebars" data-template-name="packages/view">
+            <h1>{{id}} {{version}}</h1>
             <p>To install {{id}} run this command in the Package Manager Console</p>
             <pre><code>PM&gt; Install-Package {{id}} -Version {{version}} -Source {{packageSourceUri}}</code></pre>
             <p>{{summary}}</p>

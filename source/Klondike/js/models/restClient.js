@@ -2,6 +2,30 @@
     return em.Object.extend(em.DeferredMixin, {
         baseUrl: '',
         apiKey: '',
+        packageSourceUri: '',
+
+        init: function () {
+            var self = this;
+            restapi.then(function() {
+                var api = restapi.getApi('Packages.OData');
+                if (!api) {
+                    self.set('packageSourceUri', 'unknown');
+                    return;
+                }
+                
+                var href = api.href;
+
+                if (href[href.length - 1] !== '/') {
+                    href += '/';
+                }
+
+                if (href.indexOf('//') == -1) {
+                    href = window.location.protocol + '//' + window.location.host + href;
+                }
+                self.set('packageSourceUri', href);
+            });
+        },
+        
         ajax: function (apiName, options) {
             var method = 'GET';
             if ('type' in options) {
@@ -31,6 +55,7 @@
             
             $.ajax(href, options);
         },
+        
         replaceParameters: function (api, options) {
             // replace {foo} with options.data.foo
             return api.href.replace(/\{[^\}]+\}/g, function (param) {

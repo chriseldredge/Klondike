@@ -4,7 +4,7 @@
         'restapi',
         'controllers/adminController',
         'controllers/applicationController',
-        'controllers/indexController',
+        'controllers/baseControllerMixin',
         'controllers/searchController',
         'models/packageIndexer',
         'models/packageStore',
@@ -14,9 +14,14 @@
         'routes/viewPackageRoute',
         'views/footer',
         'views/packageIcon'
-], function (em, config, restapi, adminController, applicationController, indexController, searchController, packageIndexer, packageStore, restClient, adminRoute, searchRoute, viewPackageRoute, footer, packageIcon) {
-
-    var app = em.Application.create({name: "NuGet"});
+], function (em, config, restapi, adminController, applicationController, baseControllerMixin, searchController, packageIndexer, packageStore, restClient, adminRoute, searchRoute, viewPackageRoute, footer, packageIcon) {
+    var app = em.Application.create({
+        name: "NuGet",
+        //LOG_ACTIVE_GENERATION: true,
+        //LOG_TRANSITIONS: true,
+        //LOG_TRANSITIONS_INTERNAL: true
+    });
+    
     app.deferReadiness();
     
     restapi.then(function () {
@@ -38,12 +43,13 @@
 
     app.AdminController = adminController;
     app.ApplicationController = applicationController;
-    app.IndexController = indexController;
-    app.SearchController = searchController;
+    app.IndexController = em.Controller.extend(baseControllerMixin);
+    app.PackagesSearchController = searchController;
+    app.PackagesViewController = em.ObjectController.extend(baseControllerMixin);;
     
     app.AdminRoute = adminRoute;
-    app.SearchRoute = searchRoute;
-    app.ViewPackageRoute = viewPackageRoute;
+    app.PackagesSearchRoute = searchRoute;
+    app.PackagesViewRoute = viewPackageRoute;
 
     app.Footer = footer;
     app.PackageIcon = packageIcon;
