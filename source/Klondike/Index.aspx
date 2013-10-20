@@ -1,10 +1,12 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" Inherits="System.Web.UI.Page" %>
+<%@ Import Namespace="System.Web.Optimization" %>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Klondike - NuGet Package Repository</title>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-combined-2.3.2.min.css" media="all" />
-    <link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
-    <script data-main="js/main" src="js/vendor/require-2.1.9.js"></script>
+    <asp:PlaceHolder runat="server">      
+         <%: Styles.Render("~/css/bundle.css") %>
+    </asp:PlaceHolder>
 </head>
     <body>
         <script type="text/x-handlebars">
@@ -173,5 +175,8 @@
                 </div>
             {{/with}}
         </script>
+        <asp:PlaceHolder runat="server">      
+            <%: Scripts.Render("~/js/bundle.js") %>
+        </asp:PlaceHolder>
     </body>
 </html>

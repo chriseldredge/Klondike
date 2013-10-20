@@ -1,23 +1,23 @@
-﻿define(['ember', 'signalR', 'hubs'], function (em, signalR, hubs) {
-    return em.Object.extend({
+﻿(function (em, app, signalR) {
+    var packageIndexer = em.Object.extend({
         restClient: null,
         status: {},
         hub: undefined,
         init: function () {
-            hubs.then(this.get('connect').bind(this));
+            app.Hubs.then(this.get('connect').bind(this));
         },
-        connect: function() {
+        connect: function () {
             var self = this;
             var setStatusCallback = function (status) {
                 self.set('status', status);
             };
-            
-            var hub = hubs.get('status');
-            
+
+            var hub = app.Hubs.get('status');
+
             console.log('Connecting to SignalR indexing status hub', signalR.version, signalR.hub.url);
-            
+
             hub.client.updateStatus = setStatusCallback;
-            
+
             hub.connection.stateChanged(function (change) {
                 var isConnected = change.newState === signalR.connectionState.connected;
                 self.set('isConnected', isConnected);
@@ -28,11 +28,10 @@
                     setStatusCallback({});
                 }
             });
-            
+
             self.set('hub', hub);
-            
+
             signalR.hub.start({ waitForPageLoad: false });
-            
         },
         synchronize: function () {
             this.get('restClient').ajax('indexing.synchronize', {
@@ -48,4 +47,6 @@
             return this.status.synchronizationState != 'Idle';
         }.property('status'),
     });
-});
+
+    app.PackageIndexer = packageIndexer.create({ restClient: app.restClient });
+}(Ember, App, jQuery.signalR));

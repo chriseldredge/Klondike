@@ -201,44 +201,43 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\app.css" />
-    <Content Include="css\bootstrap-combined-2.3.2.min.css" />
+    <Content Include="css\bootstrap-2.3.2.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="img\package-default-icon-50x50.png" />
-    <Content Include="index.html" />
-    <None Include="js\build.js" />
+    <Content Include="Index.aspx" />
     <Content Include="js\formtemplate.min.js" />
     <Content Include="js\app.js" />
     <Content Include="js\config.js" />
     <Content Include="js\controllers\adminController.js" />
     <Content Include="js\controllers\applicationController.js" />
     <Content Include="js\controllers\baseControllerMixin.js" />
-    <Content Include="js\controllers\searchController.js" />
+    <Content Include="js\controllers\packagesSearchController.js" />
     <Content Include="js\hubs.js" />
     <Content Include="js\vendor\ember-1.0.0.js" />
     <Content Include="js\vendor\ember-1.0.0.min.js" />
     <Content Include="js\vendor\handlebars-1.0.0.js" />
+    <Content Include="js\vendor\jquery-2.0.3.js" />
     <Content Include="js\vendor\jquery-2.0.3.min.js" />
     <Content Include="js\vendor\jquery.signalR-1.0.1.js" />
     <Content Include="js\vendor\jquery.signalR-1.0.1.min.js" />
-    <Content Include="js\main.js" />
     <Content Include="js\models\packageIndexer.js" />
     <Content Include="js\models\packageStore.js" />
     <Content Include="js\models\paginationSupport.js" />
     <Content Include="js\models\restClient.js" />
     <Content Include="js\models\searchResults.js" />
-    <Content Include="js\restapi.js" />
+    <Content Include="js\restApi.js" />
     <Content Include="js\router.js" />
     <Content Include="js\routes\adminRoute.js" />
-    <Content Include="js\routes\searchRoute.js" />
-    <Content Include="js\routes\viewPackageRoute.js" />
-    <Content Include="js\vendor\require-2.1.9.js" />
+    <Content Include="js\routes\packagesSearchRoute.js" />
+    <Content Include="js\routes\packagesViewRoute.js" />
     <Content Include="js\views\footer.js" />
     <Content Include="js\views\packageIcon.js" />
     <Content Include="Web.config" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -251,6 +250,7 @@
   <ItemGroup>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <PropertyGroup>
@@ -280,19 +280,4 @@
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.8\tools\Microsoft.Bcl.Build.targets" />
-  <PropertyGroup>
-    <PipelineTransformPhaseDependsOn>
-      CompileJavascript;
-      IncludeCompiledJavascript
-      $(PipelineTransformPhaseDependsOn)
-    </PipelineTransformPhaseDependsOn>
-  </PropertyGroup>
-  <Target Name="CompileJavascript" Inputs="js\**\*;build.js" Outputs="js\klondike.min.js">
-    <Exec Command="r.js.cmd -o build.js out=js/klondike.min.js" />
-  </Target>
-  <Target Name="IncludeCompiledJavascript" Inputs="js\**\*;build.js" Outputs="js\klondike.min.js">
-    <ItemGroup>
-      <Content Include="js\klondike.min.js" />
-    </ItemGroup>
-  </Target>
 </Project>

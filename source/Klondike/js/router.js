@@ -1,4 +1,4 @@
-﻿define(["app"], function (app) {
+﻿(function (em, app) {
     app.Router.map(function () {
         this.route('index', { path: '/' });
         this.route('admin');
@@ -9,4 +9,4 @@
     });
 
     return app.Router;
-});
+}(Ember, App));

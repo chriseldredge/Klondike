@@ -1,5 +1,5 @@
-﻿define(['ember'], function (em) {
-    return em.ObjectController.extend({
+﻿(function (em, app) {
+    app.AdminController = em.ObjectController.extend(app.BaseControllerMixin, {
         synchronize: function () {
             App.PackageIndexer.synchronize();
         },
@@ -7,4 +7,4 @@
             App.PackageIndexer.cancel();
         }
     });
-});
+}(Ember, App));

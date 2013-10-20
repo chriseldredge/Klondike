@@ -4,10 +4,12 @@
     such as pushing or deleting packages require an api key, but
     read-only operations do not.
 */
-define([], function () {
-    return {
-        apiKey: '',
-        // Note: must end with trailing slash:
-        baseDataUrl: '/api/'
-    };
-});
+(function (app) {
+
+    app.config = app.config || {};
+    
+    app.config.apiKey = '';
+
+    // Note: must end with trailing slash:
+    app.config.baseDataUrl = '/api/';
+}(App));

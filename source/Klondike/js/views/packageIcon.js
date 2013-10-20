@@ -1,5 +1,5 @@
-﻿define(['ember'], function (em) {
-    return em.View.extend({
+﻿(function (em, app) {
+    app.PackageIcon = em.View.extend({
         DefaultIconUrl: 'img/package-default-icon-50x50.png',
         tagName: 'img',
         classNames: ['package-icon'],
@@ -24,4 +24,4 @@
             });
         }
     });
-});
+}(Ember, App));

@@ -1,5 +1,5 @@
-﻿define(['ember'], function (em) {
-    return em.Controller.extend({
+﻿(function (em, app) {
+    app.ApplicationController = em.Controller.extend(app.BaseControllerMixin, {
         needs: 'packagesSearch',
         searchBoxBinding: em.Binding.oneWay('controllers.packagesSearch.query'),
         actions: {
@@ -8,4 +8,4 @@
             }
         }
     });
-});
+}(Ember, App));

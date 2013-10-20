@@ -1,7 +1,7 @@
-﻿define(['ember'], function (em) {
-    return em.Route.extend({
+﻿(function (em, app) {
+    app.AdminRoute = em.Route.extend({
         model: function () {
             return App.PackageIndexer;
         }
     });
-});
+}(Ember, App));

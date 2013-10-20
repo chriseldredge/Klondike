@@ -1,6 +1,6 @@
-﻿define(['require', 'config', 'ember', 'jquery'], function (require, config, em, jQuery) {
-    var module = em.Object.extend(em.DeferredMixin, {
-        apiInfo: [],
+﻿(function($, em, app) {
+    var module = em.Object.extend(Ember.DeferredMixin, {
+        apiInfo: {},
         getApi: function (apiName, method) {
             if (!method) {
                 method = "GET";
@@ -10,9 +10,11 @@
         }
     }).create();
 
-    var url = config.baseDataUrl;
+    var url = app.config.baseDataUrl;
 
-    jQuery.ajax(url, {
+    console.log('Loading ajax api info from', url);
+    
+    $.ajax(url, {
         type: 'GET',
         success: function (data) {
             var apiInfo = {};
@@ -33,6 +35,6 @@
             module.resolve(apiInfo);
         }
     });
-
-    return module;
-});
+    
+    app.RestApi = module;
+}(jQuery, Ember, App));

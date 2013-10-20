@@ -1,15 +1,16 @@
-﻿define(['ember', 'restapi'], function (em, restapi) {
-    return em.Object.extend(em.DeferredMixin, {
+﻿(function ($, em, app) {
+    var client = em.Object.extend(em.DeferredMixin, {
         baseUrl: '',
         apiKey: '',
         packageSourceUri: '',
 
         init: function () {
             var self = this;
-            restapi.then(function() {
-                var api = restapi.getApi('Packages.OData');
+            app.RestApi.then(function () {
+                var api = app.RestApi.getApi('Packages.OData');
                 if (!api) {
                     self.set('packageSourceUri', 'unknown');
+                    self.reject('Failed to locate Packages.OData api endpoint.');
                     return;
                 }
                 
@@ -23,6 +24,7 @@
                     href = window.location.protocol + '//' + window.location.host + href;
                 }
                 self.set('packageSourceUri', href);
+                self.resolve(self);
             });
         },
         
@@ -32,7 +34,7 @@
                 method = options.type;
             }
 
-            var api = restapi.getApi(apiName, method);
+            var api = app.RestApi.getApi(apiName, method);
             
             if (!api) {
                 throw 'Rest API method not found: ' + apiName;
@@ -63,7 +65,7 @@
                 param = param.substring(1, param.length - 1);
                 
                 if (!(param in options.data)) {
-                    throw 'must specify required parameter "' + param + '" for REST method "' + api.name + '"';
+                    throw 'Must specify required parameter "' + param + '" for REST method "' + api.name + '"';
                 }
                 
                 var value = options.data[param];
@@ -72,4 +74,6 @@
             });
         }
     });
-});
+
+    app.RestClient = client.create();
+}($, Ember, App));

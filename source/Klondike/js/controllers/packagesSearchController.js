@@ -1,5 +1,5 @@
-﻿define(['ember', 'models/paginationSupport'], function (em, paginationSupport) {
-    return em.ObjectController.extend(paginationSupport, {
+﻿(function (em, app) {
+    app.PackagesSearchController = em.ObjectController.extend(app.BaseControllerMixin, app.PaginationSupport, {
         totalBinding: em.Binding.oneWay('model.totalHits'),
 
         didRequestPage: function () {
@@ -27,4 +27,8 @@
             },
         },
     });
-});
+    
+    //TODO: move to not here
+    app.IndexController = em.Controller.extend(app.BaseControllerMixin);
+    app.PackagesViewController = em.ObjectController.extend(app.BaseControllerMixin);
+}(Ember, App));

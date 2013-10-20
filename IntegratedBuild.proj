@@ -52,11 +52,15 @@
 	</Target>
 
 	<Target Name="Package">
-		<MakeDir Directories="build/artifacts"/>
+		<MSBuild Projects="source/Klondike.sln" Targets="Build" Properties="
+			Configuration=Release;
+			RestorePackages=false;
+			DeployOnBuild=true;
+			PublishProfile=Local;
+			AspnetCompilerPath=C:\Windows\Microsoft.NET\Framework\v4.0.30319"/>
 	</Target>
 
-	<Target Name="Publish" Condition=" '$(NuGetPublishUrl)' != '' ">
-		<Exec Command="$(NuGetCommand) push &quot;AspNet.WebApi.HtmlMicrodataFormatter.$(PackageVersion).nupkg&quot; -Source &quot;$(NuGetPublishUrl)&quot; -ConfigFile nuget.config" WorkingDirectory="build/artifacts"/>
+	<Target Name="Publish">
 	</Target>
 
 	<Target Name="GenerateVersionInfo">

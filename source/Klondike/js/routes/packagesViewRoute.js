@@ -1,5 +1,5 @@
-﻿define(['ember'], function (em) {
-    return em.Route.extend({
+﻿(function (em, app) {
+    app.PackagesViewRoute = em.Route.extend({
         model: function (params) {
             return App.Packages.find(params.id, params.version);
         },
@@ -7,4 +7,4 @@
             return { id: model.id, version: model.version };
         },
     });
-});
+}(Ember, App));

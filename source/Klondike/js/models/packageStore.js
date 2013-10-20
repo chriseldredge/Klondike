@@ -1,5 +1,5 @@
-﻿define(['ember', 'models/searchResults'], function (em, searchResults) {
-    return em.Object.extend({
+﻿(function ($, em, app) {
+    var defn = em.Object.extend({
         restClient: null,
         find: function (packageId, packageVersion) {
             var results = em.Object.extend(em.DeferredMixin, {
@@ -8,42 +8,49 @@
                 versionHistory: []
             }).create();
 
-            this.get('restClient').ajax('packages.getPackageInfo', {
-                data: {
-                    id: packageId,
-                    version: packageVersion
-                },
-                success: function (json) {
-                    results.set('versionHistory', json.versionHistory);
-                    results.setProperties(json.package);
-                    results.resolve(results);
-                }
+            var client = this.get('restClient');
+            client.then(function() {
+                client.ajax('packages.getPackageInfo', {
+                    data: {
+                        id: packageId,
+                        version: packageVersion
+                    },
+                    success: function(json) {
+                        results.set('versionHistory', json.versionHistory);
+                        results.setProperties(json.package);
+                        results.resolve(results);
+                    }
+                });
             });
-
+            
             return results;
         },
         search: function (query, page, pageSize) {
             console.log('load search results for query', query, 'page', page);
 
-            var results = searchResults.create({
+            var results = app.SearchResults.create(em.DeferredMixin, {
                 query: query,
                 page: page,
                 pageSize: pageSize
             });
 
             var self = this;
+            var client = this.get('restClient');
             
-            this.get('restClient').ajax('packages.search', {
-                data: {
-                    query: query,
-                    offset: page * pageSize,
-                    count: pageSize
-                },
-                success: function (json) {
-                    self.convert(json.hits);
-                    results.setProperties(json);
-                    results.setProperties({ loaded: true, loading: false });
-                }
+            client.then(function() {
+                client.ajax('packages.search', {
+                    data: {
+                        query: query,
+                        offset: page * pageSize,
+                        count: pageSize
+                    },
+                    success: function(json) {
+                        self.convert(json.hits);
+                        results.setProperties(json);
+                        results.setProperties({ loaded: true, loading: false });
+                        results.resolve(results);
+                    }
+                });
             });
 
             return results;
@@ -70,4 +77,6 @@
             return hit;
         }
     });
-});
+    
+    app.Packages = defn.create({ restClient: app.RestClient });
+}(jQuery, Ember, App));

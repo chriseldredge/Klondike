@@ -1,5 +1,5 @@
-﻿define(['ember'], function (em) {
-    return em.Object.extend({
+﻿(function (em, app) {
+    app.SearchResults = em.Object.extend({
         loaded: false,
         loading: true,
         query: '',
@@ -10,4 +10,4 @@
         totalHits: 0,
         hits: []
     });
-});
+}(Ember, App));

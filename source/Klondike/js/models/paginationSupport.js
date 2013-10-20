@@ -1,5 +1,5 @@
-﻿define(['ember'], function (em) {
-    return em.Mixin.create({
+﻿(function (em, app) {
+    app.PaginationSupport = em.Mixin.create({
         hasPaginationSupport: true,
         total: 0,
         page: 0,
@@ -42,4 +42,4 @@
             this.didRequestPage(this.get('page'));
         }.observes('page')
     });
-});
+}(Ember, App));
