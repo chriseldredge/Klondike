@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
 		<VersionPrefix>1.0.0</VersionPrefix>
 	</PropertyGroup>
@@ -31,7 +31,7 @@
 		<VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyInformationalVersionAttribute(&quot;$(AssemblyInformationalVersion)&quot;)]"/>
 	</ItemGroup>
 
-	<Target Name="Build" DependsOnTargets="Clean;GenerateVersionInfo;Compile;Test;Package;Publish"/>
+	<Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;GenerateVersionInfo;Compile;Test;Package;Publish"/>
 
 	<Target Name="Clean">
 		<ItemGroup>
@@ -42,21 +42,25 @@
 		<Delete Files="@(Trash)"/>
 	</Target>
 
+	<Target Name="RestoreSolutionPackages">
+		<Exec Command="&quot;$(MSBuildProjectDirectory)/source/.nuget/nuget.exe&quot; restore Klondike.sln -NonInteractive -Source http://www.nuget.org/api/v2/"
+			  WorkingDirectory="$(MSBuildProjectDirectory)/source/" />
+	</Target>
+
 	<Target Name="Compile">
-		<MSBuild Projects="source/Klondike.sln" Targets="Build" Properties="Configuration=Debug;RestorePackages=true;PackageSources=http://nuget.org/api/v2"/>
-		<MSBuild Projects="source/Klondike.sln" Targets="Build" Properties="Configuration=Release;RestorePackages=false"/>
+		<MSBuild Projects="source/Klondike.sln" Targets="Build" Properties="Configuration=Debug;RestorePackages=false"/>
 	</Target>
 
 	<Target Name="Test" Condition=" '$(TestsEnabled)' == 'true' ">
-		<Exec Command="nunit-console ./source/AspNet.WebApi.HtmlMicrodataFormatter.Tests/bin/Debug/AspNet.WebApi.HtmlMicrodataFormatter.Tests.dll -noshadow"/>
 	</Target>
 
 	<Target Name="Package">
-		<MSBuild Projects="source/Klondike.sln" Targets="Build" Properties="
+		<MSBuild Projects="source/Klondike/Klondike.csproj" Targets="Rebuild" Properties="
 			Configuration=Release;
 			RestorePackages=false;
 			DeployOnBuild=true;
 			PublishProfile=Local;
+			VisualStudioVersion=12.0;
 			AspnetCompilerPath=C:\Windows\Microsoft.NET\Framework\v4.0.30319"/>
 	</Target>
 
