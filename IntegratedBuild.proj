@@ -59,9 +59,7 @@
 			Configuration=Release;
 			RestorePackages=false;
 			DeployOnBuild=true;
-			PublishProfile=Local;
-			VisualStudioVersion=12.0;
-			AspnetCompilerPath=C:\Windows\Microsoft.NET\Framework\v4.0.30319"/>
+			PublishProfile=Local"/>
 	</Target>
 
 	<Target Name="Publish">
