@@ -234,8 +234,9 @@
     <Content Include="js\controllers\baseControllerMixin.js" />
     <Content Include="js\controllers\packagesSearchController.js" />
     <Content Include="js\hubs.js" />
-    <Content Include="js\vendor\ember-1.0.0.js" />
-    <Content Include="js\vendor\ember-1.0.0.min.js" />
+    <Content Include="js\models\session.js" />
+    <Content Include="js\vendor\ember-1.1.1.js" />
+    <Content Include="js\vendor\ember-1.1.1.min.js" />
     <Content Include="js\vendor\handlebars-1.0.0.js" />
     <Content Include="js\vendor\jquery-2.0.3.js" />
     <Content Include="js\vendor\jquery-2.0.3.min.js" />
@@ -253,7 +254,9 @@
     <Content Include="js\routes\packagesViewRoute.js" />
     <Content Include="js\views\footer.js" />
     <Content Include="js\views\packageIcon.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\Local.pubxml" />
   </ItemGroup>
   <ItemGroup>
