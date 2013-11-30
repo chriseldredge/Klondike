@@ -8,8 +8,10 @@
 
     app.config = app.config || {};
     
-    app.config.apiKey = '';
+    app.config.apiKey = app.config.apiKey || '';
 
     // Note: must end with trailing slash:
-    app.config.baseDataUrl = '/api/';
+    var appPath = window.location.pathname.replace(/[^\\\/]*$/, '');
+    
+    app.config.baseDataUrl = app.config.baseDataUrl || (appPath + 'api/');
 }(App));
