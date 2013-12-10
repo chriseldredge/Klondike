@@ -1,0 +1,13 @@
+<footer>
+    {{#with view.content}}
+        <div>
+            Total Packages: {{totalPackages}}
+        </div>
+        <div>
+            Synchronizer State: {{synchronizationState}}
+            {{#if packagesToIndex}}
+                {{completedPackages}} / {{packagesToIndex}}
+            {{/if}}
+        </div>
+    {{/with}}
+</footer>

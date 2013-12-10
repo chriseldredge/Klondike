@@ -1,0 +1,29 @@
+$icon-font-path: "/bower_components/sass-bootstrap/fonts/";
+
+@import 'sass-bootstrap/lib/bootstrap';
+
+dl {
+    border-left: 2px solid #ddd;
+    border-top: 2px solid #ddd;
+    background-color: #fafafa;
+}
+
+a[rel]:before {
+    content: '(rels: ' attr(rel) ') ';
+}
+
+*[itemtype]:before {
+    content: '(microdata object: ' attr(itemtype) ') ';
+}
+
+label > input[type="text"] {
+    display: block;
+}
+
+label {
+	display: block;
+}
+
+nav.user-info {
+    float: right;
+}

@@ -1,0 +1,56 @@
+<h1>Search results for "{{query}}"</h1>
+{{#if loaded}}
+    {{#if total}}
+        Showing {{first}} to {{last}} of {{total}}.
+
+        {{#if hasPrevious}}
+            <a href="#" {{action previousPage}}>Previous Page</a>
+        {{/if}}
+        {{#if hasNext}}
+            <a href="#" {{action nextPage}}>Next Page</a>
+        {{/if}}
+
+        <ol {{bindAttr start=first}}>
+            {{#each hits}}
+            <li>
+                <div>
+                    {{view App.PackageIcon contentBinding="this"}}
+                    {{#linkTo 'packages.view' this}}
+                    {{#if title}}
+                        {{title}}
+                    {{else}}
+                        {{id}}
+                    {{/if}}
+                    {{/linkTo}}
+                </div>
+                <div>
+                    By:
+                    {{#each author in authors}}
+                        <a href="#" {{action goTo author}}>{{author}}</a>
+                    {{/each}}
+                </div>
+                <div>
+                    {{description}}
+                </div>
+                <div>
+                    Tags: 
+                    {{#each tag in tags}}
+                        <a href="#" {{action goTo tag}}>{{tag}}</a>
+                    {{/each}}
+                </div>
+            </li>
+            {{/each}}
+        </ol>
+
+        {{#if hasPrevious}}
+            <a href="#" {{action previousPage}}>Previous Page</a>
+        {{/if}}
+        {{#if hasNext}}
+            <a href="#" {{action nextPage}}>Next Page</a>
+        {{/if}}
+    {{else}}
+        No results :(
+    {{/if}}
+{{else}}
+    Loading spinner thingy goes here.
+{{/if}}

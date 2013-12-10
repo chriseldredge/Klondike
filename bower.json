@@ -1,0 +1,12 @@
+{
+  "name": "bower-sandbox",
+  "version": "0.0.0",
+  "dependencies": {
+    "sass-bootstrap": "~3.0.0",
+    "jquery": "~2.0.3",
+    "jquery-signalr": "https://github.com/chriseldredge/bower-jquery-signalr.git",
+    "ember": "~1.2.0",
+    "ember-resolver": "git://github.com/stefanpenner/ember-jj-abrams-resolver.git#master"
+  },
+  "devDependencies": {}
+}

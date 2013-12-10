@@ -1,0 +1,25 @@
+<div class="container">
+    <header>
+        <nav class="user-info">
+            {{#if isLoggedIn}}
+                <a href="#" {{action 'editSessionProfile'}}>{{username}}</a>
+            {{else}}
+                <a href="#" {{action 'logIn'}}>Sign In</a>
+            {{/if}}
+        </nav>
+        <nav>
+            {{#linkTo 'index'}}Home{{/linkTo}}
+            {{#linkTo 'admin'}}Admin{{/linkTo}}
+            <a {{bindAttr href=apiUrl}}>Api</a>
+        </nav>
+        <div class="search-box">
+            {{input type="text" value=searchBox action="search" placeholder="Search..."}}
+        </div>
+    </header>
+
+    <div class="content">
+        {{outlet}}
+    </div>
+
+    {{view App.Footer}}
+</div>

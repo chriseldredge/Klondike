@@ -1,0 +1,21 @@
+<h1>Add User</h1>
+
+<label>
+    Username
+    {{input type="text" value=username}}
+</label>
+
+<label>
+    Api Key (Leave blank to generate)
+    {{input type="text" value=key}}
+</label>
+
+<fieldset>
+    <legend>Permissions</legend>
+    
+    {{view App.CheckboxGroup name="roles" selection=roles content=App.roles checkboxLabelPath="content.label" checkboxValuePath="content.name"}}
+    
+    Roles: {{#each r in roles}}{{r}}{{/each}}
+</fieldset>
+
+<button {{action "save"}}>Submit</button>

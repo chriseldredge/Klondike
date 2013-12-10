@@ -1,0 +1,9 @@
+<h1>The list of users</h1>
+
+<ul>
+{{#each model}}
+    <li>{{#linkTo 'users.edit' this}}{{username}}{{/linkTo}}</li>
+{{/each}}
+</ul>
+
+{{#linkTo 'users.add'}}Add User{{/linkTo}}
