@@ -5,7 +5,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<SolutionDir>$(MSBuildProjectDirectory)/source/</SolutionDir>
+		<SolutionDir>$(MSBuildProjectDirectory)\source\</SolutionDir>
+		<DistDir>$(MSBuildProjectDirectory)\dist\</DistDir>
 
 		<VersionControlInfo Condition=" '$(TRAVIS)' == 'true' ">$(TRAVIS_COMMIT) ($(TRAVIS_BRANCH))</VersionControlInfo>
 		<VersionControlInfo Condition=" '$(VersionControlInfo)' == '' ">(unknown version control revision)</VersionControlInfo>
@@ -31,7 +32,7 @@
 		<VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyInformationalVersionAttribute(&quot;$(AssemblyInformationalVersion)&quot;)]"/>
 	</ItemGroup>
 
-	<Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;GenerateVersionInfo;Compile;Test;Package;Publish"/>
+	<Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;GenerateVersionInfo;Stage;IntegrationTest"/>
 
 	<Target Name="Clean">
 		<ItemGroup>
@@ -43,26 +44,35 @@
 	</Target>
 
 	<Target Name="RestoreSolutionPackages">
-		<Exec Command="&quot;$(MSBuildProjectDirectory)/source/.nuget/nuget.exe&quot; restore Klondike.sln -NonInteractive -Source http://www.nuget.org/api/v2/"
-			  WorkingDirectory="$(MSBuildProjectDirectory)/source/" />
+		<Exec Command="&quot;$(SolutionDir)/.nuget/nuget.exe&quot; restore Klondike.sln -NonInteractive -Source http://www.nuget.org/api/v2/"
+			  WorkingDirectory="$(SolutionDir)" />
 	</Target>
 
 	<Target Name="Compile">
-		<MSBuild Projects="source/Klondike.sln" Targets="Build" Properties="Configuration=Debug;RestorePackages=false"/>
+		<MSBuild Projects="$(SolutionDir)Klondike.sln" Targets="Build" Properties="Configuration=Debug;RestorePackages=false"/>
 	</Target>
 
-	<Target Name="Test" Condition=" '$(TestsEnabled)' == 'true' ">
+	<Target Name="Stage" DependsOnTargets="BuildInReleaseMode;StageContentFiles"/>
+
+	<Target Name="StageContentFiles">
+		<MakeDir Directories="$(DistDir)"/>
+
+		<Exec Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(SolutionDir)Klondike/Web.config&quot; &quot;$(SolutionDir)Klondike/Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"/>
+
+		<ItemGroup>
+			<Content Include="$(SolutionDir)Klondike\**\*" Exclude="$(SolutionDir)Klondike\**\*.cs;$(SolutionDir)Klondike\**\*.csproj*;$(SolutionDir)Klondike\**\*.config;$(SolutionDir)Klondike\**\*ncrunch*;$(SolutionDir)Klondike\App_Data\**\*;$(SolutionDir)Klondike\obj\**\*"/>
+		</ItemGroup>
+
+		<Copy SourceFiles="@(Content)" DestinationFolder="$(DistDir)%(RecursiveDir)"/>
 	</Target>
 
-	<Target Name="Package">
-		<MSBuild Projects="source/Klondike/Klondike.csproj" Targets="Rebuild" Properties="
+	<Target Name="BuildInReleaseMode">
+		<MSBuild Projects="$(SolutionDir)/Klondike/Klondike.csproj" Targets="Rebuild" Properties="
 			Configuration=Release;
-			RestorePackages=false;
-			DeployOnBuild=true;
-			PublishProfile=Local"/>
+			RestorePackages=false"/>
 	</Target>
 
-	<Target Name="Publish">
+	<Target Name="IntegrationTest" Condition=" '$(TestsEnabled)' == 'true' ">
 	</Target>
 
 	<Target Name="GenerateVersionInfo">
