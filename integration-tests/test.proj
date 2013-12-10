@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Test" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <HttpPort>10080</HttpPort>
+        <HttpUrl>http://localhost:$(HttpPort)/</HttpUrl>
+
+        <TestCaseTargets Condition="'$(TestCase)' != ''">$(TestCase)</TestCaseTargets>
+        <TestCaseTargets Condition="'$(TestCaseTargets)' == ''">RunEachTest</TestCaseTargets>
+
+        <SolutionDir>$(MSBuildProjectDirectory)\..\source\</SolutionDir>
+    </PropertyGroup>
+
+    <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+    <Import Project="..\source\.nuget\NuGet.targets" />
+    <Import Project="..\source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" />
+
+    <Target Name="Test" DependsOnTargets="Clean;StartIISExpress">
+        <CallTarget Targets="$(TestCaseTargets)"/>
+        <CallTarget Targets="StopIISExpress" />
+        <OnError ExecuteTargets="StopIISExpress"/>
+    </Target>
+
+    <Target Name="RunEachTest">
+        <CallTarget RunEachTargetSeparately="true"
+            Targets="
+                TestPutPackageToRootPath;
+                TestPutPackageWithFullPath;
+                "/>
+    </Target>
+
+    <Target Name="TestPutPackageToRootPath">
+        <PropertyGroup>
+            <PackagePath>$(MSBuildProjectDirectory)\..\source\packages\Microsoft.Bcl.Build.1.0.13\Microsoft.Bcl.Build.1.0.13.nupkg</PackagePath>
+        </PropertyGroup>
+        <Error Text="$(MSBuildProjectDirectory)" Condition="!Exists('$(PackagePath)')"/>
+        <Exec Command="$(NuGetCommand) push &quot;$(PackagePath)&quot; -Source $(HttpUrl) -ApiKey ''"/>
+    </Target>
+
+    <Target Name="TestPutPackageWithFullPath">
+        <PropertyGroup>
+            <PackagePath>$(MSBuildProjectDirectory)\..\source\packages\Microsoft.Bcl.Build.1.0.13\Microsoft.Bcl.Build.1.0.13.nupkg</PackagePath>
+        </PropertyGroup>
+        <Error Text="$(MSBuildProjectDirectory)" Condition="!Exists('$(PackagePath)')"/>
+        <Exec Command="$(NuGetCommand) push &quot;$(PackagePath)&quot; -Source $(HttpUrl)api/packages -ApiKey ''"/>
+    </Target>
+
+  <!-- test cases:
+    put package to http://example/
+    put package to http://example/nuget/
+    put package to http://example/nuget/api/odata
+    delete with same
+
+    list http://example/
+    list http://example/api/odata
+    list http://example/nuget
+    list http://example/nuget/api/odata
+
+    list mirrored packages
+    mirror package with nuget restore
+    mirror package with nuget install
+
+    create user with roles
+    delete user
+    cannot create user when using api key without admin role
+    cannot see api key for other users without admin role
+    can see own api key without admin role
+    can change own api key without admin role
+   -->
+
+    <Target Name="Clean">
+        <ItemGroup>
+            <AppData Include="$(DistDir)\App_Data\**\*"/>
+        </ItemGroup>
+
+        <Delete Files="@(AppData)"/>
+    </Target>
+
+    <Target Name="StartIISExpress">
+        <StartProcess
+                Command="c:\Program Files\IIS Express\iisexpress.exe"
+                Arguments="/clr:v4.0 /port:$(HttpPort) /path:&quot;$(DistDir.TrimEnd('\'))&quot;">
+
+            <Output TaskParameter="ProcessId" PropertyName="IISExpressPid"/>
+        </StartProcess>
+
+        <Message Text="Started pid $(IISExpressPid)."/>
+    </Target>
+
+    <Target Name="StopIISExpress" Condition=" '$(IISExpressPid)' != '' ">
+        <Message Text="Stopping IIS Express PID $(IISExpressPid)."/>
+        <StopProcess ProcessId="$(IISExpressPid)"/>
+    </Target>
+
+    <UsingTask TaskName="StartProcess" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+        <ParameterGroup>
+            <Command Required="true" />
+            <Arguments Required="false" />
+            <WorkingDirectory Required="false" />
+            <ProcessId ParameterType="System.Int32" Output="true" />
+        </ParameterGroup>
+        <Task>
+            <Reference Include="System"/>
+            <Using Namespace="System.Diagnostics"/>
+            <Code Type="Fragment" Language="cs">
+                var startup = new ProcessStartInfo(Command, Arguments);
+                startup.WorkingDirectory = WorkingDirectory;
+                startup.UseShellExecute = false;
+
+                var process = Process.Start(startup);
+                ProcessId = process.Id;
+            </Code>
+        </Task>
+    </UsingTask>
+
+    <UsingTask TaskName="StopProcess" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+        <ParameterGroup>
+            <ProcessId ParameterType="System.Int32" Required="true" />
+        </ParameterGroup>
+        <Task>
+            <Reference Include="System"/>
+            <Using Namespace="System.Diagnostics"/>
+            <Code Type="Fragment" Language="cs">
+                Process.GetProcessById(ProcessId).Kill();
+            </Code>
+        </Task>
+    </UsingTask>
+</Project>

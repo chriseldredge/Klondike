@@ -73,6 +73,7 @@
     </Target>
 
     <Target Name="IntegrationTest" Condition=" '$(TestsEnabled)' == 'true' ">
+        <MSBuild Projects="$(MSBuildProjectDirectory)\integration-tests\test.proj" Properties="DistDir=$(DistDir);TestCase=$(TestCase)"/>
     </Target>
 
     <Target Name="GenerateVersionInfo">
