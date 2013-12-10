@@ -1,89 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<PropertyGroup>
-		<VersionPrefix>1.0.0</VersionPrefix>
-	</PropertyGroup>
+    <PropertyGroup>
+        <VersionPrefix>1.0.0</VersionPrefix>
+    </PropertyGroup>
 
-	<PropertyGroup>
-		<SolutionDir>$(MSBuildProjectDirectory)\source\</SolutionDir>
-		<DistDir>$(MSBuildProjectDirectory)\dist\</DistDir>
+    <PropertyGroup>
+        <SolutionDir>$(MSBuildProjectDirectory)\source\</SolutionDir>
+        <DistDir>$(MSBuildProjectDirectory)\dist\</DistDir>
 
-		<VersionControlInfo Condition=" '$(TRAVIS)' == 'true' ">$(TRAVIS_COMMIT) ($(TRAVIS_BRANCH))</VersionControlInfo>
-		<VersionControlInfo Condition=" '$(VersionControlInfo)' == '' ">(unknown version control revision)</VersionControlInfo>
+        <VersionControlInfo Condition=" '$(TRAVIS)' == 'true' ">$(TRAVIS_COMMIT) ($(TRAVIS_BRANCH))</VersionControlInfo>
+        <VersionControlInfo Condition=" '$(VersionControlInfo)' == '' ">(unknown version control revision)</VersionControlInfo>
 
-		<BuildNumber Condition=" '$(TRAVIS)' == 'true' ">$(TRAVIS_BUILD_NUMBER)</BuildNumber>
-		<BuildNumber Condition=" '$(BuildNumber)' == '' ">0</BuildNumber>
+        <BuildNumber Condition=" '$(TRAVIS)' == 'true' ">$(TRAVIS_BUILD_NUMBER)</BuildNumber>
+        <BuildNumber Condition=" '$(BuildNumber)' == '' ">0</BuildNumber>
 
-		<AssemblyVersion>$(VersionPrefix).$(BuildNumber)</AssemblyVersion>
+        <AssemblyVersion>$(VersionPrefix).$(BuildNumber)</AssemblyVersion>
 
-		<VersionSuffix Condition=" '$(TRAVIS)' == 'true' ">build$(BuildNumber)</VersionSuffix>
+        <VersionSuffix Condition=" '$(TRAVIS)' == 'true' ">build$(BuildNumber)</VersionSuffix>
 
-		<PackageVersion>$(VersionPrefix)</PackageVersion>
-		<PackageVersion Condition=" '$(VersionSuffix)' != '' ">$(PackageVersion)-$(VersionSuffix)</PackageVersion>
+        <PackageVersion>$(VersionPrefix)</PackageVersion>
+        <PackageVersion Condition=" '$(VersionSuffix)' != '' ">$(PackageVersion)-$(VersionSuffix)</PackageVersion>
 
-		<AssemblyInformationalVersion>$(PackageVersion) $(VersionControlInfo)</AssemblyInformationalVersion>
+        <AssemblyInformationalVersion>$(PackageVersion) $(VersionControlInfo)</AssemblyInformationalVersion>
 
-		<TestsEnabled>true</TestsEnabled>
-	</PropertyGroup>
+        <TestsEnabled>true</TestsEnabled>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyVersionAttribute(&quot;$(AssemblyVersion)&quot;)]"/>
-		<VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyFileVersionAttribute(&quot;$(AssemblyVersion)&quot;)]"/>
-		<VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyInformationalVersionAttribute(&quot;$(AssemblyInformationalVersion)&quot;)]"/>
-	</ItemGroup>
+    <ItemGroup>
+        <VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyVersionAttribute(&quot;$(AssemblyVersion)&quot;)]"/>
+        <VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyFileVersionAttribute(&quot;$(AssemblyVersion)&quot;)]"/>
+        <VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyInformationalVersionAttribute(&quot;$(AssemblyInformationalVersion)&quot;)]"/>
+    </ItemGroup>
 
-	<Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;GenerateVersionInfo;Stage;IntegrationTest"/>
+    <Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;GenerateVersionInfo;Stage;IntegrationTest"/>
 
-	<Target Name="Clean">
-		<ItemGroup>
-			<Trash Include="build\**\*" />
-			<Trash Include="source\*\bin\**\*" />
-			<Trash Include="source\*\obj\**\*" />
-		</ItemGroup>
-		<Delete Files="@(Trash)"/>
-	</Target>
+    <Target Name="Clean">
+        <ItemGroup>
+            <Trash Include="build\**\*" />
+            <Trash Include="source\*\bin\**\*" />
+            <Trash Include="source\*\obj\**\*" />
+        </ItemGroup>
+        <Delete Files="@(Trash)"/>
+    </Target>
 
-	<Target Name="RestoreSolutionPackages">
-		<Exec Command="&quot;$(SolutionDir)/.nuget/nuget.exe&quot; restore Klondike.sln -NonInteractive -Source http://www.nuget.org/api/v2/"
-			  WorkingDirectory="$(SolutionDir)" />
-	</Target>
+    <Target Name="RestoreSolutionPackages">
+        <Exec Command="&quot;$(SolutionDir)/.nuget/nuget.exe&quot; restore Klondike.sln -NonInteractive -Source http://www.nuget.org/api/v2/"
+              WorkingDirectory="$(SolutionDir)" />
+    </Target>
 
-	<Target Name="Compile">
-		<MSBuild Projects="$(SolutionDir)Klondike.sln" Targets="Build" Properties="Configuration=Debug;RestorePackages=false"/>
-	</Target>
+    <Target Name="Compile">
+        <MSBuild Projects="$(SolutionDir)Klondike.sln" Targets="Build" Properties="Configuration=Debug;RestorePackages=false"/>
+    </Target>
 
-	<Target Name="Stage" DependsOnTargets="BuildInReleaseMode;StageContentFiles"/>
+    <Target Name="Stage" DependsOnTargets="BuildInReleaseMode;StageContentFiles"/>
 
-	<Target Name="StageContentFiles">
-		<MakeDir Directories="$(DistDir)"/>
+    <Target Name="StageContentFiles">
+        <MakeDir Directories="$(DistDir)"/>
 
-		<Exec Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(SolutionDir)Klondike/Web.config&quot; &quot;$(SolutionDir)Klondike/Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"/>
+        <Exec Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(SolutionDir)Klondike/Web.config&quot; &quot;$(SolutionDir)Klondike/Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"/>
 
-		<ItemGroup>
-			<Content Include="$(SolutionDir)Klondike\**\*" Exclude="$(SolutionDir)Klondike\**\*.cs;$(SolutionDir)Klondike\**\*.csproj*;$(SolutionDir)Klondike\**\*.config;$(SolutionDir)Klondike\**\*ncrunch*;$(SolutionDir)Klondike\App_Data\**\*;$(SolutionDir)Klondike\obj\**\*"/>
-		</ItemGroup>
+        <ItemGroup>
+            <Content Include="$(SolutionDir)Klondike\**\*" Exclude="$(SolutionDir)Klondike\**\*.cs;$(SolutionDir)Klondike\**\*.csproj*;$(SolutionDir)Klondike\**\*.config;$(SolutionDir)Klondike\**\*ncrunch*;$(SolutionDir)Klondike\App_Data\**\*;$(SolutionDir)Klondike\obj\**\*"/>
+        </ItemGroup>
 
-		<Copy SourceFiles="@(Content)" DestinationFolder="$(DistDir)%(RecursiveDir)"/>
-	</Target>
+        <Copy SourceFiles="@(Content)" DestinationFolder="$(DistDir)%(RecursiveDir)"/>
+    </Target>
 
-	<Target Name="BuildInReleaseMode">
-		<MSBuild Projects="$(SolutionDir)/Klondike/Klondike.csproj" Targets="Rebuild" Properties="
-			Configuration=Release;
-			RestorePackages=false"/>
-	</Target>
+    <Target Name="BuildInReleaseMode">
+        <MSBuild Projects="$(SolutionDir)/Klondike/Klondike.csproj" Targets="Rebuild" Properties="
+            Configuration=Release;
+            RestorePackages=false"/>
+    </Target>
 
-	<Target Name="IntegrationTest" Condition=" '$(TestsEnabled)' == 'true' ">
-	</Target>
+    <Target Name="IntegrationTest" Condition=" '$(TestsEnabled)' == 'true' ">
+    </Target>
 
-	<Target Name="GenerateVersionInfo">
-		<MakeDir Directories="build/artifacts"/>
-		<WriteLinesToFile File="build/VersionInfo.cs" Lines="@(VersionInfoContent)" Overwrite="true"/>
-		<Message Text="PackageVersion: $(PackageVersion)"/>
-		<Message Text="AssemblyVersion: $(AssemblyVersion)"/>
-		<Message Text="AssemblyInformationalVersion: $(AssemblyInformationalVersion)"/>
-		<Copy SourceFiles="build/VersionInfo.cs" DestinationFiles="build/artifacts/VersionInfo-$(BuildNumber).cs"/>
-		<Message Text="To repeat this build: git checkout $(TRAVIS_COMMIT); msbuild /p:TRAVIS=true,TRAVIS_COMMIT=$(TRAVIS_COMMIT),TRAVIS_BRANCH=$(TRAVIS_BRANCH),TRAVIS_BUILD_NUMBER=$(TRAVIS_BUILD_NUMBER)"/>
-	</Target>
+    <Target Name="GenerateVersionInfo">
+        <MakeDir Directories="build/artifacts"/>
+        <WriteLinesToFile File="build/VersionInfo.cs" Lines="@(VersionInfoContent)" Overwrite="true"/>
+        <Message Text="PackageVersion: $(PackageVersion)"/>
+        <Message Text="AssemblyVersion: $(AssemblyVersion)"/>
+        <Message Text="AssemblyInformationalVersion: $(AssemblyInformationalVersion)"/>
+        <Copy SourceFiles="build/VersionInfo.cs" DestinationFiles="build/artifacts/VersionInfo-$(BuildNumber).cs"/>
+        <Message Text="To repeat this build: git checkout $(TRAVIS_COMMIT); msbuild /p:TRAVIS=true,TRAVIS_COMMIT=$(TRAVIS_COMMIT),TRAVIS_BRANCH=$(TRAVIS_BRANCH),TRAVIS_BUILD_NUMBER=$(TRAVIS_BUILD_NUMBER)"/>
+    </Target>
 
-	<Import Project="source/.nuget/NuGet.targets"/>
+    <Import Project="source/.nuget/NuGet.targets"/>
 </Project>
