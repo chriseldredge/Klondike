@@ -43,7 +43,7 @@
         <Delete Files="@(Trash)"/>
     </Target>
 
-    <Target Name="RestoreSolutionPackages">
+    <Target Name="RestoreSolutionPackages" DependsOnTargets="CheckPrerequisites">
         <Exec Command="&quot;$(SolutionDir)/.nuget/nuget.exe&quot; restore Klondike.sln -NonInteractive -Source http://www.nuget.org/api/v2/"
               WorkingDirectory="$(SolutionDir)" />
     </Target>
@@ -52,7 +52,7 @@
         <MSBuild Projects="$(SolutionDir)Klondike.sln" Targets="Build" Properties="Configuration=Debug;RestorePackages=false"/>
     </Target>
 
-    <Target Name="Stage" DependsOnTargets="BuildInReleaseMode;StageContentFiles"/>
+    <Target Name="Stage" DependsOnTargets="BuildInReleaseMode;StageContentFiles;TransformWebConfig"/>
 
     <Target Name="StageContentFiles">
         <MakeDir Directories="$(DistDir)"/>
@@ -60,10 +60,22 @@
         <Exec Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(SolutionDir)Klondike/Web.config&quot; &quot;$(SolutionDir)Klondike/Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"/>
 
         <ItemGroup>
-            <Content Include="$(SolutionDir)Klondike\**\*" Exclude="$(SolutionDir)Klondike\**\*.cs;$(SolutionDir)Klondike\**\*.csproj*;$(SolutionDir)Klondike\**\*.config;$(SolutionDir)Klondike\**\*ncrunch*;$(SolutionDir)Klondike\App_Data\**\*;$(SolutionDir)Klondike\obj\**\*"/>
+            <Content Include="$(SolutionDir)Klondike\**\*"/>
+            <Content Remove="$(SolutionDir)Klondike\**\*.cs"/>
+            <Content Remove="$(SolutionDir)Klondike\**\*.csproj*"/>
+            <Content Remove="$(SolutionDir)Klondike\**\*.config"/>
+            <Content Remove="$(SolutionDir)Klondike\**\*ncrunch*"/>
+            <Content Remove="$(SolutionDir)Klondike\App_Data\**\*"/>
+            <Content Remove="$(SolutionDir)Klondike\obj\**\*"/>
         </ItemGroup>
 
-        <Copy SourceFiles="@(Content)" DestinationFolder="$(DistDir)%(RecursiveDir)"/>
+        <Copy SourceFiles="@(Content)" DestinationFolder="$(DistDir)%(RecursiveDir)" SkipUnchangedFiles="true"/>
+    </Target>
+
+    <Target Name="TransformWebConfig" Inputs="$(SolutionDir)Klondike/Web.config;$(SolutionDir)Klondike/Web.Release.config" Outputs="$(DistDir)Web.config">
+        <MakeDir Directories="$(DistDir)"/>
+
+        <Exec Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(SolutionDir)Klondike/Web.config&quot; &quot;$(SolutionDir)Klondike/Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"/>
     </Target>
 
     <Target Name="BuildInReleaseMode">
