@@ -11,7 +11,7 @@ This repository consists of two components:
 
 ### Front End
 
-Prerequisites: nodejs, ruby
+Prerequisites: nodejs, ruby. `node`, `npm` and `gem` should be on your PATH.
 
 Install compass if you haven't already:
 
@@ -44,6 +44,13 @@ Make sure you use the MSBuild.exe included in Visual Studio 2013:
     C:\Program Files (x86)\MSBuild\12.0\Bin\MSBuild.exe
 
 This puts the .NET assets into `./dist`.
+
+Before opening the solution in Visual Studio, make sure to restore packages. This can be
+done on the command line by doing
+
+    msbuild IntegratedBuild.proj /t:RestoreSolutionPackages
+
+This will also be done by using the default Build target.
 
 ## Front End development without .NET
 

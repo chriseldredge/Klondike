@@ -24,17 +24,8 @@
     <Target Name="RunEachTest">
         <CallTarget RunEachTargetSeparately="true"
             Targets="
-                TestPutPackageToRootPath;
                 TestPutPackageWithFullPath;
                 "/>
-    </Target>
-
-    <Target Name="TestPutPackageToRootPath">
-        <PropertyGroup>
-            <PackagePath>$(MSBuildProjectDirectory)\..\source\packages\Microsoft.Bcl.Build.1.0.13\Microsoft.Bcl.Build.1.0.13.nupkg</PackagePath>
-        </PropertyGroup>
-        <Error Text="$(MSBuildProjectDirectory)" Condition="!Exists('$(PackagePath)')"/>
-        <Exec Command="$(NuGetCommand) push &quot;$(PackagePath)&quot; -Source $(HttpUrl) -ApiKey ''"/>
     </Target>
 
     <Target Name="TestPutPackageWithFullPath">
