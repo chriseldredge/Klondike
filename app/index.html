@@ -43,6 +43,8 @@
         <script>
             //Ember.ENV.LOG_MODULE_RESOLVER = true;
             window.App = require('app')['default'].create();
+            window.App.version = "<!-- @echo ProductVersion -->";
+            console.log("Klondike Version ", window.App.version);
         </script>
 </body>
 </html>

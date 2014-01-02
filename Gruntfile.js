@@ -13,10 +13,8 @@ module.exports = function (grunt) {
     // load all grunt tasks
     require('load-grunt-tasks')(grunt);
 
-    grunt.loadNpmTasks('grunt-preprocess');
-    grunt.loadNpmTasks('grunt-ember-templates');
-
     grunt.initConfig({
+        pkg: grunt.file.readJSON("package.json"),
         // configurable paths
         yeoman: {
             app: 'app',
@@ -101,6 +99,13 @@ module.exports = function (grunt) {
                 }]
             },
             server: '.tmp'
+        },
+        'git-describe': {
+            default: {
+                options: {
+                    template: '<%= pkg.version %> ({%=object%}{%=dirty%})'
+                }
+            }
         },
         jshint: {
             options: {
@@ -286,6 +291,11 @@ module.exports = function (grunt) {
             ]
         },
         preprocess: {
+            options: {
+                context: {
+                    ProductVersion: '<%= pkg.versionWithCommit %>'
+                }
+            },
             serve: {
                 options: {
                     context: {
@@ -302,7 +312,7 @@ module.exports = function (grunt) {
                     }
                 },
                 src : [
-                    '<%= yeoman.dist %>/index.html', 
+                    '<%= yeoman.dist %>/index.html',
                 ]
             }
         },
@@ -333,6 +343,25 @@ module.exports = function (grunt) {
                 src: [".tmp/amd/**/*.amd.js"],
                 dest: ".tmp/js/amd-combined.js"
             },
+        },
+        exec: {
+            msbuild: {
+                cmd: function() {
+                    var prog = 'c:\\Program\ Files\ (x86)\\MSBuild\\12.0\\Bin\\MSBuild.exe';
+
+                    if (!grunt.file.exists(prog)) {
+                        grunt.fail.warn("Visual Studio 2013 MSBuild not found at " + prog);
+                    }
+
+                    var args = [
+                        prog,
+                        '/p:TestsEnabled=False',
+                        '/p:VersionPrefix=' + grunt.config.get('pkg.version'),
+                        '/p:VersionControlInfo=' + grunt.config.get('pkg.versionWithCommit'),
+                    ]
+                    return '"' + args.join('" "') + '"';
+                }
+            }
         }
     });
 
@@ -342,6 +371,7 @@ module.exports = function (grunt) {
         }
 
         grunt.task.run([
+            'setVersionWithCommit',
             'clean:server',
             'concurrent:server',
             'autoprefixer',
@@ -362,7 +392,16 @@ module.exports = function (grunt) {
         'mocha'
     ]);
 
+    grunt.registerTask('setVersionWithCommit', function() {
+        grunt.event.once('git-describe', function (rev) {
+            grunt.config('pkg.versionWithCommit', rev.toString());
+
+        });
+        grunt.task.run('git-describe');
+    });
+
     grunt.registerTask('build', [
+        'setVersionWithCommit',
         'clean:dist',
         'concurrent:dist',
         'preprocess:dist',
@@ -375,7 +414,8 @@ module.exports = function (grunt) {
         'uglify',
         'copy:dist',
         'rev',
-        'usemin'
+        'usemin',
+        'exec:msbuild'
     ]);
 
     grunt.registerTask('default', [

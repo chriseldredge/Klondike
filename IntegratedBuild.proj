@@ -1,36 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <VersionPrefix>1.0.0</VersionPrefix>
-    </PropertyGroup>
-
-    <PropertyGroup>
         <SolutionDir>$(MSBuildProjectDirectory)\source\</SolutionDir>
         <DistDir>$(MSBuildProjectDirectory)\dist\</DistDir>
-
-        <VersionControlInfo Condition=" '$(TRAVIS)' == 'true' ">$(TRAVIS_COMMIT) ($(TRAVIS_BRANCH))</VersionControlInfo>
-        <VersionControlInfo Condition=" '$(VersionControlInfo)' == '' ">(unknown version control revision)</VersionControlInfo>
-
-        <BuildNumber Condition=" '$(TRAVIS)' == 'true' ">$(TRAVIS_BUILD_NUMBER)</BuildNumber>
-        <BuildNumber Condition=" '$(BuildNumber)' == '' ">0</BuildNumber>
-
-        <AssemblyVersion>$(VersionPrefix).$(BuildNumber)</AssemblyVersion>
-
-        <VersionSuffix Condition=" '$(TRAVIS)' == 'true' ">build$(BuildNumber)</VersionSuffix>
-
-        <PackageVersion>$(VersionPrefix)</PackageVersion>
-        <PackageVersion Condition=" '$(VersionSuffix)' != '' ">$(PackageVersion)-$(VersionSuffix)</PackageVersion>
-
-        <AssemblyInformationalVersion>$(PackageVersion) $(VersionControlInfo)</AssemblyInformationalVersion>
-
         <TestsEnabled>true</TestsEnabled>
     </PropertyGroup>
-
-    <ItemGroup>
-        <VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyVersionAttribute(&quot;$(AssemblyVersion)&quot;)]"/>
-        <VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyFileVersionAttribute(&quot;$(AssemblyVersion)&quot;)]"/>
-        <VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyInformationalVersionAttribute(&quot;$(AssemblyInformationalVersion)&quot;)]"/>
-    </ItemGroup>
 
     <Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;GenerateVersionInfo;Stage;IntegrationTest"/>
 
@@ -85,17 +59,29 @@
     </Target>
 
     <Target Name="IntegrationTest" Condition=" '$(TestsEnabled)' == 'true' ">
-        <MSBuild Projects="$(MSBuildProjectDirectory)\integration-tests\test.proj" Properties="DistDir=$(DistDir);TestCase=$(TestCase)"/>
+        <MSBuild Projects="$(MSBuildProjectDirectory)\integration-tests\test.proj" Properties="DistDir=$(DistDir)"/>
     </Target>
 
     <Target Name="GenerateVersionInfo">
+        <PropertyGroup>
+            <VersionPrefix Condition=" '$(VersionPrefix)' == '' ">0.9</VersionPrefix>
+            <VersionControlInfo Condition=" '$(VersionControlInfo)' == '' ">$(VersionPrefix) (unknown version control revision)</VersionControlInfo>
+
+            <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+
+            <AssemblyInformationalVersion>$(VersionControlInfo)</AssemblyInformationalVersion>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyVersionAttribute(&quot;$(AssemblyVersion)&quot;)]"/>
+            <VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyFileVersionAttribute(&quot;$(AssemblyVersion)&quot;)]"/>
+            <VersionInfoContent Include="[assembly: global::System.Reflection.AssemblyInformationalVersionAttribute(&quot;$(AssemblyInformationalVersion)&quot;)]"/>
+        </ItemGroup>
+
         <MakeDir Directories="build/artifacts"/>
         <WriteLinesToFile File="build/VersionInfo.cs" Lines="@(VersionInfoContent)" Overwrite="true"/>
-        <Message Text="PackageVersion: $(PackageVersion)"/>
         <Message Text="AssemblyVersion: $(AssemblyVersion)"/>
         <Message Text="AssemblyInformationalVersion: $(AssemblyInformationalVersion)"/>
-        <Copy SourceFiles="build/VersionInfo.cs" DestinationFiles="build/artifacts/VersionInfo-$(BuildNumber).cs"/>
-        <Message Text="To repeat this build: git checkout $(TRAVIS_COMMIT); msbuild /p:TRAVIS=true,TRAVIS_COMMIT=$(TRAVIS_COMMIT),TRAVIS_BRANCH=$(TRAVIS_BRANCH),TRAVIS_BUILD_NUMBER=$(TRAVIS_BUILD_NUMBER)"/>
     </Target>
 
     <Import Project="source/.nuget/NuGet.targets"/>

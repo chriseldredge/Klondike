@@ -234,6 +234,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\build\VersionInfo.cs" Condition="Exists('..\..\build\VersionInfo.cs')" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
