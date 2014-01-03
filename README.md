@@ -32,8 +32,8 @@ Finally, build:
 
 This puts the built app into `./dist`.
 
-_Note_: `grunt build` will clean the dist directory, so you will need to run MSBuild again
-if you are testing the .NET back end locally.
+_Note_: `grunt build` will call msbuild if available to build the .NET components. Use
+`grunt build --force` to ignore the warning.
 
 ### .NET Back End
 
@@ -76,5 +76,8 @@ To execute tests without building first:
 
 To execute a specific test case:
 
-    msbuild /t:IntegrationTest /p:TestsEnabled=true /p:TestCase=TestPutPackageWithFullPath
+    msbuild /t:IntegrationTest /p:TestsEnabled=true /p:TestCase=Test_PutPackage
 
+To run the tests against a different endpoint and avoid starting and stopping IIS Express, use the `HttpUrl` property:
+
+    msbuild /t:IntegrationTest /p:HttpUrl=http://localhost:40221/
