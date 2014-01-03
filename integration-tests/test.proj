@@ -2,50 +2,123 @@
 <Project ToolsVersion="12.0" DefaultTargets="Test" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
+        <UseIISExpress Condition=" '$(HttpUrl)' == '' ">true</UseIISExpress>
+        <UseIISExpress Condition=" '$(UseIISExpress)' == '' ">false</UseIISExpress>
+
         <HttpPort>10080</HttpPort>
         <HttpUrl>http://localhost:$(HttpPort)/</HttpUrl>
 
         <TestCaseTargets Condition="'$(TestCase)' != ''">$(TestCase)</TestCaseTargets>
         <TestCaseTargets Condition="'$(TestCaseTargets)' == ''">RunEachTest</TestCaseTargets>
+        <CleanAppDataAfterTests>true</CleanAppDataAfterTests>
 
         <SolutionDir>$(MSBuildProjectDirectory)\..\source\</SolutionDir>
+        <CurlCommand>curl -s -o out.txt --write-out &quot;%25%25{http_code}&quot;</CurlCommand>
     </PropertyGroup>
 
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
     <Import Project="..\source\.nuget\NuGet.targets" />
     <Import Project="..\source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" />
 
-    <Target Name="Test" DependsOnTargets="Clean;StartIISExpress">
+    <Target Name="Test" DependsOnTargets="StartIISExpress">
+        <MSBuild Projects="$(MSBuildThisFileFullPath)" Targets="CleanAppData" Properties="Phase=BeforeTest"/>
         <CallTarget Targets="$(TestCaseTargets)"/>
-        <CallTarget Targets="StopIISExpress" />
-        <OnError ExecuteTargets="StopIISExpress"/>
+        <CallTarget Targets="CleanUp" />
+        <OnError ExecuteTargets="CleanUp"/>
+    </Target>
+
+    <Target Name="CleanUp" DependsOnTargets="StopIISExpress">
+        <MSBuild Projects="$(MSBuildThisFileFullPath)" Targets="CleanAppData" Properties="Phase=AfterTest" Condition="$(CleanAppDataAfterTests)"/>
     </Target>
 
     <Target Name="RunEachTest">
         <CallTarget RunEachTargetSeparately="true"
             Targets="
-                TestPutPackageWithFullPath;
+                Test_PutPackage;
+                Test_InstallPackageFromMirror;
+                Test_RestorePackageFromMirror;
+                Test_Session_UserIsLocalAdministratorOnLocalhost;
+                Test_Session_InvalidApiKey_Unauthorized;
+                Test_OData_Filter_IdOrTitle_ToLowerContains;
                 "/>
     </Target>
 
-    <Target Name="TestPutPackageWithFullPath">
+    <Target Name="Test_PutPackage">
         <PropertyGroup>
             <PackagePath>$(MSBuildProjectDirectory)\..\source\packages\Microsoft.Bcl.Build.1.0.13\Microsoft.Bcl.Build.1.0.13.nupkg</PackagePath>
         </PropertyGroup>
         <Error Text="$(MSBuildProjectDirectory)" Condition="!Exists('$(PackagePath)')"/>
-        <Exec Command="$(NuGetCommand) push &quot;$(PackagePath)&quot; -Source $(HttpUrl)api/packages -ApiKey ''"/>
+        <Exec Command="$(NuGetCommand) push &quot;$(PackagePath)&quot; -Source $(HttpUrl)api/packages -NonInteractive"/>
     </Target>
 
+    <Target Name="Test_InstallPackageFromMirror">
+        <PropertyGroup>
+            <WorkDir>$(MSBuildProjectDirectory)\tmp</WorkDir>
+        </PropertyGroup>
+        <MakeDir Directories="$(WorkDir)"/>
+        <Exec Command="$(NuGetCommand) install NuGet.Core -Source $(HttpUrl)api/odata"
+            WorkingDirectory="$(WorkDir)"/>
+        <CallTarget Targets="Clean_InstallPackageFromMirror" />
+        <OnError ExecuteTargets="Clean_InstallPackageFromMirror"/>
+    </Target>
+
+    <Target Name="Clean_InstallPackageFromMirror">
+        <PropertyGroup>
+            <WorkDir>$(MSBuildProjectDirectory)\tmp</WorkDir>
+        </PropertyGroup>
+        <Exec Command="rd /s /q &quot;$(WorkDir)&quot;" Condition="Exists('$(WorkDir)')"/>
+    </Target>
+
+    <Target Name="Test_RestorePackageFromMirror">
+        <PropertyGroup>
+            <WorkDir>$(MSBuildProjectDirectory)\tmp</WorkDir>
+            <NuGetCacheDir>$(LocalAppData)\NuGet\Cache</NuGetCacheDir>
+        </PropertyGroup>
+        <MakeDir Directories="$(WorkDir)"/>
+        <WriteLinesToFile File="$(WorkDir)\packages.config" Overwrite="true" Lines="&lt;packages&gt;&lt;package id=&quot;NuGet.Core&quot; version=&quot;2.7.2&quot;/&gt;&lt;/packages&gt;"/>
+
+        <Exec Command="$(NuGetCommand) restore -Source $(HttpUrl)api/odata -PackagesDirectory . -NonInteractive"
+            WorkingDirectory="$(WorkDir)"/>
+        <CallTarget Targets="Clean_RestorePackageFromMirror" />
+        <OnError ExecuteTargets="Clean_RestorePackageFromMirror"/>
+    </Target>
+
+    <Target Name="Clean_RestorePackageFromMirror">
+        <PropertyGroup>
+            <WorkDir>$(MSBuildProjectDirectory)\tmp</WorkDir>
+        </PropertyGroup>
+        <Exec Command="rd /s /q &quot;$(WorkDir)&quot;" Condition="Exists('$(WorkDir)')"/>
+    </Target>
+
+    <Target Name="Test_Session_UserIsLocalAdministratorOnLocalhost">
+        <Exec Command="$(CurlCommand) $(HttpUrl)api/session" ConsoleToMSBuild="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="HttpStatusCode"/>
+        </Exec>
+
+        <Error Text="Expected 200, was $(HttpStatusCode)" Condition=" '$(HttpStatusCode)' != '200' " />
+    </Target>
+
+    <Target Name="Test_Session_InvalidApiKey_Unauthorized">
+        <Exec Command="$(CurlCommand) $(HttpUrl)api/session -H 'X-NuGet-ApiKey: nonesuch'" ConsoleToMSBuild="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="HttpStatusCode"/>
+        </Exec>
+
+        <Error Text="Expected 401, was $(HttpStatusCode)" Condition=" '$(HttpStatusCode)' != '401' " />
+    </Target>
+
+    <Target Name="Test_OData_Filter_IdOrTitle_ToLowerContains">
+        <Exec Command="$(CurlCommand) &quot;$(HttpUrl)api/odata/Packages()?$filter=(substringof('bcl',tolower(Id))+or+Title+ne+null+and+substringof('bcl',tolower(Title)))+and+(IsLatestVersion+or+IsAbsoluteLatestVersion)&amp;$select=Id,Version
+" ConsoleToMSBuild="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="HttpStatusCode"/>
+        </Exec>
+
+        <Error Text="Expected 200, was $(HttpStatusCode)" Condition=" '$(HttpStatusCode)' != '200' " />
+    </Target>
   <!-- test cases:
-    put package to http://example/
-    put package to http://example/nuget/
-    put package to http://example/nuget/api/odata
+    put package to http://example/api/odata
     delete with same
 
-    list http://example/
     list http://example/api/odata
-    list http://example/nuget
-    list http://example/nuget/api/odata
 
     list mirrored packages
     mirror package with nuget restore
@@ -59,15 +132,18 @@
     can change own api key without admin role
    -->
 
-    <Target Name="Clean">
+    <Target Name="CleanAppData">
         <ItemGroup>
             <AppData Include="$(DistDir)\App_Data\**\*"/>
         </ItemGroup>
 
+        <Message Text="Cleaning AppData files"/>
         <Delete Files="@(AppData)"/>
     </Target>
 
-    <Target Name="StartIISExpress">
+    <Target Name="StartIISExpress" Condition="$(UseIISExpress)">
+        <Error Message="DistDir property must be specified." Condition=" '$(DistDir)' == '' "/>
+        <Error Message="DistDir path $(DistDir) does not exist." Condition="!Exists('$(DistDir)')"/>
         <StartProcess
                 Command="c:\Program Files\IIS Express\iisexpress.exe"
                 Arguments="/clr:v4.0 /port:$(HttpPort) /path:&quot;$(DistDir.TrimEnd('\'))&quot;">
