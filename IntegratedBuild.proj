@@ -31,8 +31,6 @@
     <Target Name="StageContentFiles">
         <MakeDir Directories="$(DistDir)"/>
 
-        <Exec Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(SolutionDir)Klondike/Web.config&quot; &quot;$(SolutionDir)Klondike/Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"/>
-
         <ItemGroup>
             <Content Include="$(SolutionDir)Klondike\**\*"/>
             <Content Remove="$(SolutionDir)Klondike\**\*.cs"/>
