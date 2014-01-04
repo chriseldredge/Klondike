@@ -65,6 +65,21 @@ then run
 
     grunt serve
 
+## Previewing debug/release builds
+
+IIS Express can be used to preview the contents of `./dist` including .NET back end:
+
+    grunt serve:dist:iisexpress
+
+You can also preview the debug version of the site by running
+
+    grunt serve::iisexpress
+
+This is broken at the moment because yeoman and grunt-contrib-connect want to have
+two document roots and most web servers think this is a silly idea.
+
+Also note that live reloading is not supported when using IIS Express.
+
 ## Integration Tests
 
 Integration Tests use either curl or the nuget command line client and are invoked from MSBuild targets

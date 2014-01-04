@@ -87,6 +87,23 @@ module.exports = function (grunt) {
                 }
             }
         },
+        iisexpress: {
+            options: {
+                port: 9000,
+                open: true,
+                killOn: 'SIGINT'
+            },
+            dist: {
+                options: {
+                    path: require('path').resolve('dist')
+                }
+            },
+            livereload: {
+                options: {
+                    path: require('path').resolve('.tmp'),
+                }
+            }
+        },
         clean: {
             dist: {
                 files: [{
@@ -365,7 +382,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('serve', function (target) {
+    grunt.registerTask('serve', function (target, server) {
         var readLine = require ("readline");
         var rl = readLine.createInterface ({
             input: process.stdin,
@@ -378,9 +395,20 @@ module.exports = function (grunt) {
             grunt.event.emit('SIGINT');
             process.exit();
         });
+
+        target = target || "livereload" // or dist
+        server = server || "connect"; // or iisexpress
+        var serverTarget = server + ":" + target
+
         if (target === 'dist') {
-            return grunt.task.run(['build', 'connect:dist:keepalive']);
+            return grunt.task.run(['build', serverTarget]);
         }
+
+        grunt.event.once('iisexpress.done', function(error, result, code) {
+            grunt.log.writeln();
+            grunt.log.writeln("IIS Express exited. Stopping.");
+            process.exit();
+        });
 
         grunt.task.run([
             'setVersionWithCommit',
@@ -391,7 +419,7 @@ module.exports = function (grunt) {
             'transpile',
             'concat',
             'preprocess:serve',
-            'connect:livereload',
+            serverTarget,
             'watch'
         ]);
     });
@@ -427,7 +455,7 @@ module.exports = function (grunt) {
         'copy:dist',
         'rev',
         'usemin',
-        'exec:msbuild'
+        'exec:msbuild:dist'
     ]);
 
     grunt.registerTask('default', [

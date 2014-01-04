@@ -33,7 +33,8 @@
     "grunt-es6-module-transpiler": "~0.5.2",
     "grunt-preprocess": "~3.0.1",
     "grunt-exec": "~0.4.3",
-    "grunt-git-describe": "~2.3.2"
+    "grunt-git-describe": "~2.3.2",
+    "grunt-iisexpress": "git+ssh://git@github.com/chriseldredge/grunt-iisexpress.git#v0.2.0"
   },
   "engines": {
     "node": ">=0.8.0"
