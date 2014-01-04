@@ -366,6 +366,18 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('serve', function (target) {
+        var readLine = require ("readline");
+        var rl = readLine.createInterface ({
+            input: process.stdin,
+            output: process.stdout
+        });
+
+        rl.on ("SIGINT", function (){
+            grunt.log.writeln();
+            grunt.log.writeln("Stopping...");
+            grunt.event.emit('SIGINT');
+            process.exit();
+        });
         if (target === 'dist') {
             return grunt.task.run(['build', 'connect:dist:keepalive']);
         }
