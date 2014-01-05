@@ -18,6 +18,7 @@ module.exports = function (grunt) {
         // configurable paths
         yeoman: {
             app: 'app',
+            build: '.tmp',
             dist: 'dist'
         },
         watch: {
@@ -46,9 +47,9 @@ module.exports = function (grunt) {
                     livereload: '<%= connect.options.livereload %>'
                 },
                 files: [
-                    '.tmp/*.html',
-                    '.tmp/styles/{,*/}*.css',
-                    '.tmp/js/**/*.js',
+                    '<%= yeoman.build %>/*.html',
+                    '<%= yeoman.build %>/styles/{,*/}*.css',
+                    '<%= yeoman.build %>/js/**/*.js',
                     '<%= yeoman.app %>}/js/loader.js',
                     '<%= yeoman.app %>/images/{,*/}*.{gif,jpeg,jpg,png,svg,webp}'
                 ]
@@ -65,7 +66,7 @@ module.exports = function (grunt) {
                 options: {
                     open: true,
                     base: [
-                        '.tmp',
+                        '<%= yeoman.build %>',
                         '<%= yeoman.app %>'
                     ]
                 }
@@ -73,7 +74,7 @@ module.exports = function (grunt) {
             test: {
                 options: {
                     base: [
-                        '.tmp',
+                        '<%= yeoman.build %>',
                         'test',
                         '<%= yeoman.app %>'
                     ]
@@ -95,12 +96,12 @@ module.exports = function (grunt) {
             },
             dist: {
                 options: {
-                    path: require('path').resolve('dist')
+                    path: '<%= yeoman.dist %>'
                 }
             },
             livereload: {
                 options: {
-                    path: require('path').resolve('.tmp'),
+                    path: '<%= yeoman.build %>',
                 }
             }
         },
@@ -109,13 +110,13 @@ module.exports = function (grunt) {
                 files: [{
                     dot: true,
                     src: [
-                        '.tmp',
+                        '<%= yeoman.build %>',
                         '<%= yeoman.dist %>/*',
                         '!<%= yeoman.dist %>/.git*'
                     ]
                 }]
             },
-            server: '.tmp'
+            server: '<%= yeoman.build %>'
         },
         'git-describe': {
             default: {
@@ -147,8 +148,8 @@ module.exports = function (grunt) {
         compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/styles',
-                cssDir: '.tmp/styles',
-                generatedImagesDir: '.tmp/images/generated',
+                cssDir: '<%= yeoman.build %>/styles',
+                generatedImagesDir: '<%= yeoman.build %>/images/generated',
                 imagesDir: '<%= yeoman.app %>/images',
                 javascriptsDir: '<%= yeoman.app %>/js',
                 fontsDir: '<%= yeoman.app %>/styles/fonts',
@@ -177,9 +178,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '.tmp/styles/',
+                    cwd: '<%= yeoman.build %>/styles/',
                     src: '{,*/}*.css',
-                    dest: '.tmp/styles/'
+                    dest: '<%= yeoman.build %>/styles/'
                 }]
             }
         },
@@ -230,20 +231,6 @@ module.exports = function (grunt) {
             }
         },
         cssmin: {
-            // This task is pre-configured if you do not wish to use Usemin
-            // blocks for your CSS. By default, the Usemin block from your
-            // `index.html` will take care of minification, e.g.
-            //
-            //     <!-- build:css({.tmp,app}) styles/main.css -->
-            //
-            // dist: {
-            //     files: {
-            //         '<%= yeoman.dist %>/styles/main.css': [
-            //             '.tmp/styles/{,*/}*.css',
-            //             '<%= yeoman.app %>/styles/{,*/}*.css'
-            //         ]
-            //     }
-            // }
         },
         htmlmin: {
             dist: {
@@ -287,7 +274,7 @@ module.exports = function (grunt) {
                 expand: true,
                 dot: true,
                 cwd: '<%= yeoman.app %>/styles',
-                dest: '.tmp/styles/',
+                dest: '<%= yeoman.build %>/styles/',
                 src: '{,*/}*.css'
             }
         },
@@ -320,7 +307,7 @@ module.exports = function (grunt) {
                     }
                 },
                 src: '<%= yeoman.app %>/index.html',
-                dest: '.tmp/index.html'
+                dest: '<%= yeoman.build %>/index.html'
             },
             dist: {
                 options: {
@@ -339,7 +326,7 @@ module.exports = function (grunt) {
                     templateBasePath: /app\/templates\//
                 },
                 files: {
-                    ".tmp/js/templates.js": ["<%= yeoman.app %>/templates/**/*.{hbs,hjs,handlebars}"]
+                    "<%= yeoman.build %>/js/templates.js": ["<%= yeoman.app %>/templates/**/*.{hbs,hjs,handlebars}"]
                 }
             }
         },
@@ -350,15 +337,15 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: '<%= yeoman.app %>/js/',
                     src: ['**/*.js', '!loader.js'],
-                    dest: '.tmp/amd/',
+                    dest: '<%= yeoman.build %>/amd/',
                     ext: '.amd.js'
                 }]
             }
         },
         concat: {
             amd: {
-                src: [".tmp/amd/**/*.amd.js"],
-                dest: ".tmp/js/amd-combined.js"
+                src: ["<%= yeoman.build %>/amd/**/*.amd.js"],
+                dest: "<%= yeoman.build %>/js/amd-combined.js"
             },
         },
         exec: {
