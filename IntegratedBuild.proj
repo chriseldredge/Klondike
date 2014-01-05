@@ -4,6 +4,7 @@
         <SolutionDir>$(MSBuildProjectDirectory)\source\</SolutionDir>
         <DistDir>$(MSBuildProjectDirectory)\dist\</DistDir>
         <TestsEnabled>true</TestsEnabled>
+        <Configuration Condition=" '$(Configuration' == '' ">Debug</Configuration>
     </PropertyGroup>
 
     <Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;GenerateVersionInfo;Stage;IntegrationTest"/>
@@ -22,11 +23,7 @@
               WorkingDirectory="$(SolutionDir)" />
     </Target>
 
-    <Target Name="Compile">
-        <MSBuild Projects="$(SolutionDir)Klondike.sln" Targets="Build" Properties="Configuration=Debug;RestorePackages=false"/>
-    </Target>
-
-    <Target Name="Stage" DependsOnTargets="BuildInReleaseMode;StageContentFiles;TransformWebConfig"/>
+    <Target Name="Stage" DependsOnTargets="BuildSolution;StageContentFiles;TransformWebConfig"/>
 
     <Target Name="StageContentFiles">
         <MakeDir Directories="$(DistDir)"/>
@@ -44,16 +41,22 @@
         <Copy SourceFiles="@(Content)" DestinationFolder="$(DistDir)%(RecursiveDir)" SkipUnchangedFiles="true"/>
     </Target>
 
-    <Target Name="TransformWebConfig" Inputs="$(SolutionDir)Klondike/Web.config;$(SolutionDir)Klondike/Web.Release.config" Outputs="$(DistDir)Web.config">
+    <Target Name="TransformWebConfig"
+            Inputs="$(SolutionDir)Klondike/Web.config;$(SolutionDir)Klondike/Web.$(Configuration).config"
+            Outputs="$(DistDir)Web.config">
+
         <MakeDir Directories="$(DistDir)"/>
 
-        <Exec Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(SolutionDir)Klondike/Web.config&quot; &quot;$(SolutionDir)Klondike/Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"/>
+        <Exec
+            Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(SolutionDir)Klondike/Web.config&quot; &quot;$(SolutionDir)Klondike/Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"
+            Condition="Exists('$(SolutionDir)Klondike/Web.$(Configuration).config')"/>
+
+        <Copy SourceFiles="$(SolutionDir)Klondike/Web.config" DestinationFolder="$(DistDir)"
+            Condition="!Exists('$(SolutionDir)Klondike/Web.$(Configuration).config')"/>
     </Target>
 
-    <Target Name="BuildInReleaseMode">
-        <MSBuild Projects="$(SolutionDir)/Klondike/Klondike.csproj" Targets="Rebuild" Properties="
-            Configuration=Release;
-            RestorePackages=false"/>
+    <Target Name="BuildSolution">
+        <MSBuild Projects="$(SolutionDir)/Klondike.sln" Targets="Build" Properties="RestorePackages=false;Configuration=$(Configuration)"/>
     </Target>
 
     <Target Name="IntegrationTest" Condition=" '$(TestsEnabled)' == 'true' ">

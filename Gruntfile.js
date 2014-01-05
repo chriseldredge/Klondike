@@ -270,6 +270,22 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
+            serve: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= yeoman.app %>',
+                    dest: '<%= yeoman.build %>',
+                    src: [
+                        '*.{ico,png,txt}',
+                        '.htaccess',
+                        'images/**/*',
+                        'styles/fonts/{,*/}*.*',
+                        'js/loader.js',
+                        'vendor/**/*'
+                    ]
+                }]
+            },
             styles: {
                 expand: true,
                 dot: true,
@@ -350,7 +366,12 @@ module.exports = function (grunt) {
         },
         exec: {
             msbuild: {
-                cmd: function() {
+                cmd: function(target) {
+                    target = target || "serve";
+
+                    var configuration = target === "dist" ? "Release" : "Debug";
+                    var distDir = target === "dist" ? "dist/" : ".tmp/";
+
                     var prog = 'c:\\Program\ Files\ (x86)\\MSBuild\\12.0\\Bin\\MSBuild.exe';
 
                     if (!grunt.file.exists(prog)) {
@@ -359,10 +380,13 @@ module.exports = function (grunt) {
 
                     var args = [
                         prog,
+                        '/p:Configuration=' + configuration,
+                        '/p:DistDir=' + distDir,
                         '/p:TestsEnabled=False',
                         '/p:VersionPrefix=' + grunt.config.get('pkg.version'),
                         '/p:VersionControlInfo=' + grunt.config.get('pkg.versionWithCommit'),
                     ]
+
                     return '"' + args.join('" "') + '"';
                 }
             }
@@ -401,11 +425,13 @@ module.exports = function (grunt) {
             'setVersionWithCommit',
             'clean:serve',
             'concurrent:serve',
+            'exec:msbuild:serve',
             'autoprefixer',
             'emberTemplates',
             'transpile',
             'concat',
             'preprocess:serve',
+            'copy:serve',
             serverTarget,
             'watch'
         ]);
