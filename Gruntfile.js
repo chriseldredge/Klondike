@@ -24,7 +24,7 @@ module.exports = function (grunt) {
         watch: {
             compass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server', 'autoprefixer']
+                tasks: ['compass:serve', 'autoprefixer']
             },
             styles: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
@@ -116,7 +116,7 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
-            server: '<%= yeoman.build %>'
+            serve: '<%= yeoman.build %>'
         },
         'git-describe': {
             default: {
@@ -165,7 +165,7 @@ module.exports = function (grunt) {
                     generatedImagesDir: '<%= yeoman.dist %>/images/generated'
                 }
             },
-            server: {
+            serve: {
                 options: {
                     debugInfo: true
                 }
@@ -279,7 +279,7 @@ module.exports = function (grunt) {
             }
         },
         concurrent: {
-            server: [
+            serve: [
                 'compass',
                 'copy:styles'
             ],
@@ -399,8 +399,8 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'setVersionWithCommit',
-            'clean:server',
-            'concurrent:server',
+            'clean:serve',
+            'concurrent:serve',
             'autoprefixer',
             'emberTemplates',
             'transpile',
@@ -412,7 +412,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('test', [
-        'clean:server',
+        'clean:serve',
         'concurrent:test',
         'autoprefixer',
         'connect:test',
