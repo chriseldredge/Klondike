@@ -44,7 +44,7 @@ module.exports = function (grunt) {
             },
             livereload: {
                 options: {
-                    livereload: '<%= connect.options.livereload %>'
+                    livereload: 35729
                 },
                 files: [
                     '<%= yeoman.build %>/*.html',
@@ -58,7 +58,6 @@ module.exports = function (grunt) {
         connect: {
             options: {
                 port: 9000,
-                livereload: 35729,
                 // change this to '0.0.0.0' to access the server from outside
                 hostname: 'localhost'
             },
@@ -84,7 +83,6 @@ module.exports = function (grunt) {
                 options: {
                     open: true,
                     base: '<%= yeoman.dist %>',
-                    livereload: false
                 }
             }
         },
@@ -319,7 +317,8 @@ module.exports = function (grunt) {
             serve: {
                 options: {
                     context: {
-                        DEBUG: true
+                        DEBUG: true,
+                        livereload: '<%= watch.livereload.options.livereload %>'
                     }
                 },
                 src: '<%= yeoman.app %>/index.html',
@@ -327,9 +326,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 options: {
-                    inline: true,
-                    context: {
-                    }
+                    inline: true
                 },
                 src : [
                     '<%= yeoman.dist %>/index.html',
