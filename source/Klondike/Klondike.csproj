@@ -229,6 +229,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="js\formtemplate.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
