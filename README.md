@@ -63,7 +63,9 @@ You can develop the front end without needing to build or host the .net code.
 Edit [app/js/config.js](app/js/config.js) to point to an external Klondike API endpoint,
 then run
 
-    grunt serve
+    grunt serve --force
+
+The force flag is necessary to ignore the warning about MSBuild not being available.
 
 ## Previewing debug/release builds
 
@@ -74,11 +76,6 @@ IIS Express can be used to preview the contents of `./dist` including .NET back 
 You can also preview the debug version of the site by running
 
     grunt serve::iisexpress
-
-This is broken at the moment because yeoman and grunt-contrib-connect want to have
-two document roots and most web servers think this is a silly idea.
-
-Also note that live reloading is not supported when using IIS Express.
 
 ## Integration Tests
 
