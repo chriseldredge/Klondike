@@ -1,4 +1,4 @@
-﻿import BaseControllerMixin from 'mixins/baseControllerMixin';
+import BaseControllerMixin from 'mixins/baseControllerMixin';
 
 export default Ember.Controller.extend(BaseControllerMixin, {
     needs: 'packages/search',
@@ -6,13 +6,16 @@ export default Ember.Controller.extend(BaseControllerMixin, {
     isLoggedInBinding: Ember.Binding.oneWay('App.session.isLoggedIn'),
     usernameBinding: Ember.Binding.oneWay('App.session.username'),
     apiUrlBinding: Ember.Binding.oneWay('App.restApi.apiUrl'),
-    
+
     actions: {
         search: function () {
             this.get('controllers.packages/search').goTo(this.get('searchBox'));
         },
         logIn: function() {
-            App.session.logIn();
+            var self = this;
+            App.session.tryLogIn().then(null, function() {
+                self.transitionToRoute('login');
+            });
         },
         editSessionProfile: function() {
             this.transitionToRoute('users.edit', App.session.get('user'));

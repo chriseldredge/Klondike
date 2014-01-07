@@ -24,7 +24,7 @@ export default Ember.Object.extend({
             });
         });
     },
-    
+
     find: function(username) {
         var self = this;
         var model = this.createModel();
@@ -42,7 +42,7 @@ export default Ember.Object.extend({
 
         return model;
     },
-    
+
     save: function(user) {
         var self = this;
         return Ember.Deferred.promise(function(deferred) {
@@ -51,7 +51,7 @@ export default Ember.Object.extend({
                     type: 'PUT',
                     data: user,
                     success: function () {
-                        deffered.resolve();
+                        deferred.resolve();
                     }
                 });
             });

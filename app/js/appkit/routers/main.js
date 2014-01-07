@@ -1,7 +1,8 @@
-﻿var Router = Ember.Router.extend();
+var Router = Ember.Router.extend();
 
 Router.map(function () {
     this.route('index', { path: '/' });
+    this.route('login');
     this.route('admin');
     this.resource('packages', function() {
         this.route('search', { path: '/search/:query' });

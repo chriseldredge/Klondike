@@ -5,7 +5,6 @@
     read-only operations do not.
 */
 var config = {
-    apiKey: '',
     apiUrl: ''
 };
 

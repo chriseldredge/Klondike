@@ -1,5 +1,5 @@
 export default Ember.Deferred.extend({
     username: '',
-    apiKey: '',
+    key: '',
     roles: Ember.A()
 });

@@ -1,6 +1,6 @@
-﻿var RestApi = Ember.Deferred.extend({
+var RestApi = Ember.Deferred.extend({
     apiUrl: null,
-    apiKey: null,
+    key: null,
     apiKeyRequestHeaderName: 'X-NuGet-ApiKey',
     apiInfo: {},
     packageSourceUri: null,
@@ -28,7 +28,7 @@
                         if (key in apiInfo) {
                             console.warn('Duplicate api method: ' + key);
                         }
-                        
+
                         action.href = self._hrefToAbsolute(action.href);
                         apiInfo[key] = action;
                     }
@@ -52,7 +52,7 @@
         var key = method + '.' + apiName.toLowerCase();
         return this.get('apiInfo')[key];
     },
-    
+
     ajax: function (apiName, options) {
         var method = 'GET';
         if ('type' in options) {
@@ -60,46 +60,46 @@
         }
 
         var api = this.getApi(apiName, method);
-        
+
         if (!api) {
             throw 'Rest API method not found: ' + apiName;
         }
-        
+
         var self = this;
-        
+
         options.type = api.method;
 
-        if (this.get('apiKey')) {
+        var apiKey = this.get('key');
+
+        if (!Ember.isEmpty(apiKey)) {
             var origBeforeSend = options['beforeSend'];
             options.beforeSend = function(xhr) {
                 try {
-                    xhr.setRequestHeader(self.get('apiKeyRequestHeaderName'), self.get('apiKey'));
+                    xhr.setRequestHeader(self.get('apiKeyRequestHeaderName'), apiKey);
                     if (origBeforeSend) {
                         origBeforeSend(xhr);
                     }
                 } catch (err) {
-                    window.args = arguments;
-                    window.err = err;
                     console.log('error', err);
                 }
             };
         }
 
         var href = this._replaceParameters(api, options);
-        
+
         return $.ajax(href, options);
     },
-    
+
     _replaceParameters: function (api, options) {
         // replace {foo} with options.data.foo
         return api.href.replace(/\{[^\}]+\}/g, function (param) {
             // {foo} -> foo
             param = param.substring(1, param.length - 1);
-            
+
             if (!(param in options.data)) {
                 throw 'Must specify required parameter "' + param + '" for REST method "' + api.name + '"';
             }
-            
+
             var value = options.data[param];
             delete options.data[param];
             return value;
@@ -112,7 +112,7 @@
             this.reject('Failed to locate Packages.OData api endpoint.');
             return false;
         }
-        
+
         var href = api.href;
 
         if (href[href.length - 1] !== '/') {
