@@ -1,7 +1,9 @@
 var RestApi = Ember.Deferred.extend({
-    apiUrl: null,
-    key: null,
     apiKeyRequestHeaderName: 'X-NuGet-ApiKey',
+
+    apiUrl: null,
+    session: null,
+
     apiInfo: {},
     packageSourceUri: null,
 
@@ -54,6 +56,7 @@ var RestApi = Ember.Deferred.extend({
     },
 
     ajax: function (apiName, options) {
+        options = options || {};
         var method = 'GET';
         if ('type' in options) {
             method = options.type;
@@ -69,18 +72,14 @@ var RestApi = Ember.Deferred.extend({
 
         options.type = api.method;
 
-        var apiKey = this.get('key');
+        var apiKey = this.get('session').get('key');
 
         if (!Ember.isEmpty(apiKey)) {
             var origBeforeSend = options['beforeSend'];
             options.beforeSend = function(xhr) {
-                try {
-                    xhr.setRequestHeader(self.get('apiKeyRequestHeaderName'), apiKey);
-                    if (origBeforeSend) {
-                        origBeforeSend(xhr);
-                    }
-                } catch (err) {
-                    console.log('error', err);
+                xhr.setRequestHeader(self.get('apiKeyRequestHeaderName'), apiKey);
+                if (origBeforeSend) {
+                    origBeforeSend(xhr);
                 }
             };
         }

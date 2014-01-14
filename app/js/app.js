@@ -1,4 +1,4 @@
-﻿import config from 'config';
+import config from 'config';
 import Resolver from 'resolver';
 import RestApi from 'restApi';
 import Hubs from 'hubs';
@@ -46,6 +46,8 @@ export default Ember.Application.extend({
         this.set('packages', PackageStore.create({restApi: restApi}));
         this.set('users', UserStore.create({restApi: restApi}));
         this.set('session', Session.create({restApi: restApi, users: this.get('users')}));
+
+        restApi.set('session', this.get('session'));
 
         this._super();
     }

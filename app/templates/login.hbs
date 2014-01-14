@@ -1,3 +1,8 @@
+{{#if errorMessage}}
+    <div class="error">
+        {{errorMessage}}
+    </div>
+{{/if}}
 <label>
     Username
     {{input type="text" value=username action="logIn"}}

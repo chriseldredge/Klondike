@@ -3,8 +3,8 @@ import User from 'models/user';
 export default Ember.Object.extend({
     restApi: null,
 
-    createModel: function() {
-        var model = User.create();
+    createModel: function(params) {
+        var model = User.create(params || {});
         model.resolve(model);
         return model;
     },
@@ -17,7 +17,7 @@ export default Ember.Object.extend({
                     success: function (json) {
                         json.forEach(function(user) {
                             user.roles = user.roles || [];
-                        })
+                        });
                         deferred.resolve(json);
                     }
                 });

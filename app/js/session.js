@@ -11,13 +11,20 @@ export default Ember.Deferred.extend({
     }.property('username'),
 
     init: function () {
+        this._super();
+
+        var settings = {};
+
         var sessionKey = sessionStorage.getItem('key');
 
         if (!Ember.isEmpty(sessionKey)) {
-            this.get('restApi').set('key', sessionKey);
+            var self = this;
+            settings.beforeSend = function(xhr) {
+                xhr.setRequestHeader(self.get('restApi').get('apiKeyRequestHeaderName'), sessionKey);
+            };
         }
 
-        this._invokeLogin('users.getAuthenticationInfo', this);
+        this._invokeLogin('users.getAuthenticationInfo', this, settings);
     },
 
     tryLogIn: function() {
@@ -30,7 +37,7 @@ export default Ember.Deferred.extend({
 
         if (!Ember.isEmpty(username)) {
             settings.beforeSend = function(xhr) {
-                xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+                xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username + ':' + password));
             };
         }
 
@@ -50,7 +57,6 @@ export default Ember.Deferred.extend({
                 user.resolve(user);
                 self.set('user', user);
                 sessionStorage.setItem('key', user.get('key'));
-                self.get('restApi').set('key', user.get('key'));
                 result.resolve(self);
             }
         };
@@ -61,12 +67,12 @@ export default Ember.Deferred.extend({
             var call = restApi.ajax(apiName, allSettings);
 
             call.fail(function(xhr, statusText) {
-                window.xhr = xhr;
-                console.log("authentication failure:", xhr.status, statusText);
                 sessionStorage.removeItem('key');
-                restApi.set('key', null);
-                user.reject(statusText + " (" + xhr.status + ")");
-                result.reject(statusText + " (" + xhr.status + ")");
+                self.set('user', null);
+
+                var error = { message: statusText, request: xhr };
+                user.reject(error);
+                result.reject(error);
             });
         });
 
