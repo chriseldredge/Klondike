@@ -12,6 +12,13 @@ export default Ember.Controller.extend(BaseControllerMixin, {
 
             App.session.logIn(this.get('username'), this.get('password')).then(
                 function() {
+                    var previousTransition = self.get('previousTransition');
+
+                    if (previousTransition) {
+                        previousTransition.retry();
+                        return;
+                    }
+
                     self.transitionToRoute('index');
                 },
                 function(error) {

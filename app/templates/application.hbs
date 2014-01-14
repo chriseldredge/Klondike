@@ -2,7 +2,9 @@
     <header>
         <nav class="user-info">
             {{#if isLoggedIn}}
-                <a href="#" {{action 'editSessionProfile'}}>{{username}}</a>
+                {{#linkTo 'profile'}}{{username}}{{/linkTo}}
+                |
+                <a href="#" {{action 'logOut'}}>Sign Out</a>
             {{else}}
                 <a href="#" {{action 'logIn'}}>Sign In</a>
             {{/if}}
@@ -17,9 +19,9 @@
         </div>
     </header>
 
-    <div class="content">
+    <main>
         {{outlet}}
-    </div>
+    </main>
 
     {{view App.Footer}}
 </div>

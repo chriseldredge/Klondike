@@ -27,6 +27,44 @@ export default Ember.Deferred.extend({
         this._invokeLogin('users.getAuthenticationInfo', this, settings);
     },
 
+    isAllowed: function(apiName, method) {
+        var self = this;
+        var result = Ember.Deferred.create();
+
+        this.get('restApi').then(function (restApi) {
+            var api = restApi.getApi(apiName, method);
+            if (!api) {
+                result.reject('REST api not found: ' + method + ' ' + apiName);
+                return;
+            }
+
+            if (!api.requiresAuthentication) {
+                result.resolve(true);
+                return;
+            }
+
+            var userRoles = self.get('user.roles') || [];
+            var userRoleMissing = function(roleName) {
+                return !userRoles.contains(roleName);
+            };
+
+            var any = api.requiresRoles.any(function(roleSet) {
+                return roleSet.any(userRoleMissing);
+            });
+
+            result.resolve(!any);
+        }, function(error) {
+            result.reject(error);
+        });
+
+        return result;
+    },
+
+    logOut: function() {
+        sessionStorage.removeItem('key');
+        this.set('user', null);
+    },
+
     tryLogIn: function() {
         return this.logIn();
     },
@@ -67,8 +105,7 @@ export default Ember.Deferred.extend({
             var call = restApi.ajax(apiName, allSettings);
 
             call.fail(function(xhr, statusText) {
-                sessionStorage.removeItem('key');
-                self.set('user', null);
+                self.logOut();
 
                 var error = { message: statusText, request: xhr };
                 user.reject(error);

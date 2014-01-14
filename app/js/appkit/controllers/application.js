@@ -17,8 +17,8 @@ export default Ember.Controller.extend(BaseControllerMixin, {
                 self.transitionToRoute('login');
             });
         },
-        editSessionProfile: function() {
-            this.transitionToRoute('users.edit', App.session.get('user'));
+        logOut: function() {
+            App.session.logOut();
         }
     }
 });
