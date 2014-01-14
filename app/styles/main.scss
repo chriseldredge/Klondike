@@ -27,3 +27,28 @@ label {
 nav.user-info {
     float: right;
 }
+
+footer {
+    margin-top: 2em;
+    color: #999;
+
+
+    dl {
+        margin-bottom: 0;
+        border: 0;
+        background-color: inherit;
+    }
+
+    dt, dd {
+        display: inline;
+        font-weight: normal;
+    }
+
+    dd:after {
+        content: ' | ';
+    }
+
+    dd:last-child:after {
+        content: '';
+    }
+}

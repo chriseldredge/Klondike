@@ -1,14 +1,15 @@
+<dl>
 {{#with view.content}}
-    <div>
-        Total Packages: {{totalPackages}}
-    </div>
-    <div>
-        Synchronizer State: {{synchronizationState}}
+    <dt>Total Packages</dt>
+    <dd>{{totalPackages}}</dd>
+    <dt>Synchronizer State</dt>
+    <dd>
+        {{synchronizationState}}
         {{#if packagesToIndex}}
             {{completedPackages}} / {{packagesToIndex}}
         {{/if}}
-    </div>
+    </dd>
 {{/with}}
-<div>
-    Klondike Version {{view.version}}
-</div>
+<dt>Version</dt>
+<dd>{{view.version}}</dd>
+</dl>
