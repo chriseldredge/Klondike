@@ -53,6 +53,25 @@ export default Ember.Object.extend({
                     success: function () {
                         deferred.resolve();
                     }
+                }).fail(function(xhr, status, error) {
+                    deferred.reject({ request: xhr, textStatus: status, errorThrown: error});
+                });
+            });
+        });
+    },
+
+    delete: function(username) {
+        var self = this;
+        return Ember.Deferred.promise(function(deferred) {
+            self.get('restApi').then(function(restApi) {
+                restApi.ajax('users.delete', {
+                    type: 'DELETE',
+                    data: {username: username},
+                    success: function () {
+                        deferred.resolve();
+                    }
+                }).fail(function(xhr, status, error) {
+                    deferred.reject({ request: xhr, textStatus: status, errorThrown: error});
                 });
             });
         });

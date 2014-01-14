@@ -1,3 +1,14 @@
-The admin page. running: {{isRunning}} connected: {{isConnected}}
-<button {{action "synchronize"}} {{bindAttr disabled="isRunning"}}>Synchronize Packages</button>
-<button {{action "cancel"}}>Cancel</button>
+<section class="package-admin">
+    <h2>Package Index</h2>
+    <p>
+        If the package directory has been modified outside of Klondike,
+        it can be synchronized with the Lucene index manually here.
+    </p>
+    <button {{action "synchronize"}} {{bindAttr disabled="isRunning"}}>Synchronize Packages</button>
+    <button {{action "cancel"}}>Cancel</button>
+</section>
+
+<section class="user-admin">
+    <h2>Accounts</h2>
+    {{#linkTo 'users.list'}}Manage Accounts{{/linkTo}}
+</section>
