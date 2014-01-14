@@ -1,8 +1,14 @@
-﻿export default Ember.Route.extend({
+export default Ember.Route.extend({
     model: function (params) {
-        return App.Packages.find(params.id, params.version);
+        return App.packages.find(params.id, params.version);
     },
-    serialize: function (model) {
-        return { id: model.id, version: model.version };
-    },
+    setupController: function(controller, model) {
+        if (Ember.isEmpty(model.versionHistory)) {
+            var fullModel = App.packages.find(model.id, model.version);
+            fullModel.then(function(m) {
+                model.setProperties(m);
+            });
+        }
+        controller.set('content', model);
+    }
 });

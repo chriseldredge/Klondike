@@ -1,4 +1,4 @@
-﻿import BaseControllerMixin from 'mixins/baseControllerMixin';
+import BaseControllerMixin from 'mixins/baseControllerMixin';
 import PaginationSupport from 'mixins/paginationSupport';
 
 export default Ember.ObjectController.extend(BaseControllerMixin, PaginationSupport, {
@@ -29,5 +29,3 @@ export default Ember.ObjectController.extend(BaseControllerMixin, PaginationSupp
         },
     },
 });
-    
-//TODO:    app.PackagesViewController = em.ObjectController.extend(app.BaseControllerMixin);

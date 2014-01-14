@@ -1,13 +1,13 @@
-﻿import SearchResults from 'models/searchResults';
+import SearchResults from 'models/searchResults';
+import Package from 'models/package';
 
 export default Ember.Object.extend({
     restApi: null,
     find: function (packageId, packageVersion) {
-        var results = Ember.Object.extend(Ember.DeferredMixin, {
+        var results = Package.create({
             id: packageId,
             version: packageVersion,
-            versionHistory: []
-        }).create();
+        });
 
         var client = this.get('restApi');
         client.then(function() {
@@ -23,7 +23,7 @@ export default Ember.Object.extend({
                 }
             });
         });
-        
+
         return results;
     },
     search: function (query, page, pageSize) {
@@ -37,7 +37,7 @@ export default Ember.Object.extend({
 
         var self = this;
         var client = this.get('restApi');
-        
+
         client.then(function() {
             client.ajax('packages.search', {
                 data: {
@@ -58,22 +58,25 @@ export default Ember.Object.extend({
     },
     convert: function (hits) {
         for (var i = 0; i < hits.length; i++) {
-            hits[i] = this.convertTags(hits[i]);
+            var model = Package.create(hits[i]);
+            hits[i] = this.convertTags(model);
+            model.resolve(model);
         }
     },
     convertTags: function(hit) {
-        if (!hit || !hit.tags) return hit;
+        var tags = hit.get('tags');
+        if (Ember.isEmpty(tags)) return hit;
 
-        var split = hit.tags.split(' ');
+        var split = tags.split(' ');
         var tags = [];
-        
+
         for (var i = 0; i < split.length; i++) {
             if (split[i] !== '') {
                 tags.push(split[i]);
             }
         }
 
-        hit.tags = tags;
+        hit.set('tags', tags);
 
         return hit;
     }
