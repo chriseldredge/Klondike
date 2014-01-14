@@ -68,7 +68,7 @@ export default Ember.Object.extend({
         if (Ember.isEmpty(tags)) return hit;
 
         var split = tags.split(' ');
-        var tags = [];
+        tags = [];
 
         for (var i = 0; i < split.length; i++) {
             if (split[i] !== '') {

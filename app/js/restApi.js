@@ -136,7 +136,7 @@ var RestApi = Ember.Deferred.extend({
             return dataUrl + href;
         }
 
-        return dataUrl.replace(/(.+:\/\/[^/]+).*/, "$1" + href)
+        return dataUrl.replace(/(.+:\/\/[^/]+).*/, "$1" + href);
     },
 
     _fullBaseDataUrl: function() {
