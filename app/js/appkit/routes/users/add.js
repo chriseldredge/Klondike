@@ -1,5 +1,7 @@
 export default Ember.Route.extend({
     model: function (params) {
-        return App.users.createModel();
+        var model = App.users.createModel();
+        model.resolve(model);
+        return model;
     }
 });

@@ -4,9 +4,7 @@ export default Ember.Object.extend({
     restApi: null,
 
     createModel: function(params) {
-        var model = User.create(params || {});
-        model.resolve(model);
-        return model;
+        return User.create(params || {});
     },
 
     list: function () {
