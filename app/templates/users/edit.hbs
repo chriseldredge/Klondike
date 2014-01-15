@@ -24,8 +24,10 @@
 <button {{action "save"}}>Save</button>
 
 {{#if canDelete}}
-<button {{action "delete"}}>Delete Account</button>
+<button {{action "delete"}}>Delete</button>
 {{/if}}
+
+<button {{action "cancel"}}>Cancel</button>
 
 {{#if errorMessage}}
 <div class="error">
