@@ -48,11 +48,29 @@ var RestApi = Ember.Deferred.extend({
     },
 
     getApi: function (apiName, method) {
-        if (!method) {
-            method = "GET";
+        var apiInfo = this.get('apiInfo');
+        apiName = apiName.toLowerCase();
+
+        if (method) {
+            var key = method + '.' + apiName;
+            return apiInfo[key];
         }
-        var key = method + '.' + apiName.toLowerCase();
-        return this.get('apiInfo')[key];
+
+        var pattern = new RegExp('^\\w+\\.' + apiName.replace('.', '\\.') + '$');
+        var matches = [];
+        for (var key in apiInfo) {
+            if (key.match(pattern)) {
+                matches.push(apiInfo[key]);
+            }
+        }
+
+        if (matches.length == 0) {
+            throw 'no method matching ' + pattern;
+        } else if (matches.length > 1) {
+            throw 'multiple APIs matched ' + apiName + '; must specify HTTP method';
+        }
+
+        return matches[0];
     },
 
     ajax: function (apiName, options) {

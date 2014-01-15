@@ -33,10 +33,6 @@ export default Ember.Deferred.extend({
 
         this.get('restApi').then(function (restApi) {
             var api = restApi.getApi(apiName, method);
-            if (!api) {
-                result.reject('REST api not found: ' + method + ' ' + apiName);
-                return;
-            }
 
             if (!api.requiresAuthentication) {
                 result.resolve(true);
@@ -53,7 +49,7 @@ export default Ember.Deferred.extend({
             });
 
             result.resolve(!any);
-        }, function(error) {
+        }).then(null, function(error) {
             result.reject(error);
         });
 
