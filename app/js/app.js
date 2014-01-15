@@ -33,19 +33,17 @@ export default Ember.Application.extend({
 
     init: function() {
         var restApi = RestApi.create({apiUrl: config.apiUrl});
-
-        this.set('restApi', restApi);
-
         var hubs = Hubs.create({restApi: restApi});
 
-        this.set('packageIndexer', PackageIndexer.create({
-            restApi: restApi,
-            hubs: hubs
-        }));
-
+        this.set('restApi', restApi);
         this.set('packages', PackageStore.create({restApi: restApi}));
         this.set('users', UserStore.create({restApi: restApi}));
         this.set('session', Session.create({restApi: restApi, users: this.get('users')}));
+        this.set('packageIndexer', PackageIndexer.create({
+            restApi: restApi,
+            hubs: hubs,
+            session: this.get('session')
+        }));
 
         restApi.set('session', this.get('session'));
 

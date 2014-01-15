@@ -14,4 +14,6 @@
 
 {{#if canEdit}}
     {{#linkTo 'users.add'}}Add Account{{/linkTo}}
+{{else}}
+    <p class="not-authorized">You are not allowed to modify accounts.</p>
 {{/if}}

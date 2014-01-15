@@ -1,23 +1,19 @@
-export default Ember.ObjectController.extend({
+import BaseControllerMixin from 'mixins/baseControllerMixin';
+import UserPermissionObserver from 'mixins/userPermissionObserver';
+
+export default Ember.ObjectController.extend(BaseControllerMixin, UserPermissionObserver, {
     errorMessage: '',
     actionLabel: 'Edit',
     isAllowedToDelete: false,
 
     init: function() {
         this._super();
-        this.sessionUserDidChange();
+        this.observeUserPermission('isAllowedToDelete', 'users.delete');
     },
 
     canDelete: function() {
         return this.get('isAllowedToDelete')
     }.property('isAllowedToDelete'),
-
-    sessionUserDidChange: function() {
-        var self = this;
-        App.session.isAllowed('users.delete', 'DELETE').then(function(result) {
-            self.set('isAllowedToDelete', result);
-        });
-    }.observes('App.session.user'),
 
     actions: {
         save: function () {

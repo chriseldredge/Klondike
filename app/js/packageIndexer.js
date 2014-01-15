@@ -1,21 +1,28 @@
-﻿var signalR = $.signalR;
+import UserPermissionObserver from 'mixins/userPermissionObserver';
 
-export default Ember.Object.extend({
+var signalR = $.signalR;
+
+export default Ember.Object.extend(UserPermissionObserver, {
     restApi: null,
     hubs: null,
 
     status: {},
     statusHub: null,
-    
+
+    canSynchronize: false,
+
     init: function () {
+        this._super();
         var self = this;
 
         var hubs = this.get('hubs');
         hubs.then(function() {
             self.set('statusHub', hubs.getHub('status'));
         });
+
+        this.observeUserPermission('canSynchronize', 'indexing.synchronize');
     },
-    
+
     statusHubDidChange: function() {
         var self = this;
         var setStatusCallback = function (status) {
@@ -53,8 +60,8 @@ export default Ember.Object.extend({
             type: 'POST',
         });
     },
-    
+
     isRunning: function () {
         return this.status.synchronizationState != 'Idle';
     }.property('status'),
-}); 
+});

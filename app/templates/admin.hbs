@@ -4,8 +4,12 @@
         If the package directory has been modified outside of Klondike,
         it can be synchronized with the Lucene index manually here.
     </p>
-    <button {{action "synchronize"}} {{bindAttr disabled="isRunning"}}>Synchronize Packages</button>
-    <button {{action "cancel"}}>Cancel</button>
+    {{#if canSynchronize}}
+        <button {{action "synchronize"}} {{bindAttr disabled="isRunning"}}>Synchronize Packages</button>
+        <button {{action "cancel"}}>Cancel</button>
+    {{else}}
+        <p class="not-authorized">You are not allowed to synchronize packages.</p>
+    {{/if}}
 </section>
 
 <section class="user-admin">

@@ -1,17 +1,12 @@
 import BaseControllerMixin from 'mixins/baseControllerMixin';
+import UserPermissionObserver from 'mixins/userPermissionObserver';
 
-export default Ember.Controller.extend(BaseControllerMixin, {
+export default Ember.Controller.extend(BaseControllerMixin, UserPermissionObserver, {
     canEdit: false,
 
     init: function() {
         this._super();
-        this.sessionUserDidChange();
+        this.observeUserPermission('canEdit', 'users.put');
     },
 
-    sessionUserDidChange: function() {
-        var self = this;
-        App.session.isAllowed('users.put', 'PUT').then(function(result) {
-            self.set('canEdit', result);
-        });
-    }.observes('App.session.user')
 });
