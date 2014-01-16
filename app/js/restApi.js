@@ -7,6 +7,8 @@ var RestApi = Ember.Deferred.extend({
     apiInfo: {},
     packageSourceUri: null,
 
+    simulateRequestLatency: 0,
+
     init: function() {
         var url = this.get('apiUrl');
 
@@ -104,7 +106,20 @@ var RestApi = Ember.Deferred.extend({
 
         var href = this._replaceParameters(api, options);
 
-        return $.ajax(href, options);
+        var promise = Ember.Deferred.create();
+        var timeout = this.get('simulateRequestLatency') || 0;
+
+        if (timeout) {
+            setTimeout(function() {
+                promise.resolve();
+            }, 2000);
+        } else {
+            promise.resolve();
+        }
+
+        return promise.then(function() {
+            return $.ajax(href, options);
+        });
     },
 
     _replaceParameters: function (api, options) {
