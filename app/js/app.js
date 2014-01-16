@@ -20,7 +20,7 @@ export default Ember.Application.extend({
     //LOG_TRANSITIONS: true,
     //LOG_TRANSITIONS_INTERNAL: true,
 
-    name: "NuGet",
+    name: 'NuGet',
     modulePrefix: 'appkit',
     restApi: null,
     packageIndexer: null,

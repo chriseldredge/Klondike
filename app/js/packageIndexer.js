@@ -62,6 +62,6 @@ export default Ember.Object.extend(UserPermissionObserver, {
     },
 
     isRunning: function () {
-        return this.status.synchronizationState != 'Idle';
+        return this.status.synchronizationState !== 'Idle';
     }.property('status'),
 });

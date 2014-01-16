@@ -1,3 +1,3 @@
 export default Ember.View.extend({
-    templateName: "users/edit"
+    templateName: 'users/edit'
 });

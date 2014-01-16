@@ -131,6 +131,7 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 '<%= yeoman.app %>/js/{,*/}*.js',
+                '!<%= yeoman.app %>/js/loader.js',
                 '!<%= yeoman.app %>/js/vendor/*',
                 'test/spec/{,*/}*.js'
             ]
@@ -382,7 +383,7 @@ module.exports = function (grunt) {
                         '/p:TestsEnabled=False',
                         '/p:VersionPrefix=' + grunt.config.get('pkg.version'),
                         '/p:VersionControlInfo=' + grunt.config.get('pkg.versionWithCommit'),
-                    ]
+                    ];
 
                     return '"' + args.join('" "') + '"';
                 }
@@ -404,15 +405,15 @@ module.exports = function (grunt) {
             process.exit();
         });
 
-        target = target || "livereload" // or dist
+        target = target || "livereload"; // or dist
         server = server || "connect"; // or iisexpress
-        var serverTarget = server + ":" + target
+        var serverTarget = server + ":" + target;
 
         if (target === 'dist') {
             return grunt.task.run(['build', serverTarget]);
         }
 
-        grunt.event.once('iisexpress.done', function(error, result, code) {
+        grunt.event.once('iisexpress.done', function() {
             grunt.log.writeln();
             grunt.log.writeln("IIS Express exited. Stopping.");
             process.exit();

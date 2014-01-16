@@ -14,7 +14,7 @@ var define, requireModule, require, requirejs;
     seen[name] = {};
 
     if (!registry[name]) {
-      throw new Error("Could not find module " + name);
+      throw new Error('Could not find module ' + name);
     }
 
     var mod = registry[name],
@@ -36,8 +36,8 @@ var define, requireModule, require, requirejs;
 
     function resolve(child) {
       if (child.charAt(0) !== '.') { return child; }
-      var parts = child.split("/");
-      var parentBase = name.split("/").slice(0, -1);
+      var parts = child.split('/');
+      var parentBase = name.split('/').slice(0, -1);
 
       for (var i=0, l=parts.length; i<l; i++) {
         var part = parts[i];
@@ -47,7 +47,7 @@ var define, requireModule, require, requirejs;
         else { parentBase.push(part); }
       }
 
-      return parentBase.join("/");
+      return parentBase.join('/');
     }
   };
 })();

@@ -1,4 +1,4 @@
-﻿export default Ember.View.extend({
+export default Ember.View.extend({
     defaultTemplate: Ember.Handlebars.compile('{{#each view.content}}{{view view.listItemView content=this}}{{/each}}'),
     tagName: 'ul',
     classNames: ['ember-checkbox-group'],
@@ -7,25 +7,25 @@
     content: null,
     checkboxLabelPath: 'content',
     checkboxValuePath: 'content',
-    
+
     listItemView: Ember.View.extend({
         tagName: 'li',
         template: Ember.Handlebars.compile('<label>{{input type="checkbox" name=name value=view.value checked=view.checked}} {{view.label}}</label>'),
 
         selectionBinding: 'parentView.selection',
-        
+
         checked: function () {
             return this.get('selection').contains(this.get('value'));
         }.property('selection', 'value'),
-        
+
         init: function() {
-            this.on("change", this._updateSelection);
+            this.on('change', this._updateSelection);
             this.labelPathDidChange();
             this.valuePathDidChange();
-            
+
             return this._super();
         },
-        
+
         labelPathDidChange: function () {
             var labelPath = this.get('parentView.checkboxLabelPath');
 

@@ -65,7 +65,9 @@ export default Ember.Object.extend({
     },
     convertTags: function(hit) {
         var tags = hit.get('tags');
-        if (Ember.isEmpty(tags)) return hit;
+        if (Ember.isEmpty(tags)) {
+            return hit;
+        }
 
         var split = tags.split(' ');
         tags = [];

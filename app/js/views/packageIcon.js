@@ -19,7 +19,7 @@
         var self = this;
         var img = $(this.get('element'));
         img.error(function () {
-            img.unbind("error").attr("src", self.DefaultIconUrl);
+            img.unbind('error').attr('src', self.DefaultIconUrl);
         });
     }
 });

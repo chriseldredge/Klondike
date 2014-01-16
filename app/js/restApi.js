@@ -42,8 +42,8 @@ var RestApi = Ember.Deferred.extend({
             },
         };
 
-        $.ajax(url, data).fail(function(xhr, status, error) {
-            self.reject("ajax call to " + url + " failed: " + status + "(" + xhr.status + ")");
+        $.ajax(url, data).fail(function(xhr, status) {
+            self.reject('ajax call to ' + url + ' failed: ' + status + '(' + xhr.status + ')');
         });
     },
 
@@ -52,8 +52,8 @@ var RestApi = Ember.Deferred.extend({
         apiName = apiName.toLowerCase();
 
         if (method) {
-            var key = method + '.' + apiName;
-            return apiInfo[key];
+            var fullKey = method + '.' + apiName;
+            return apiInfo[fullKey];
         }
 
         var pattern = new RegExp('^\\w+\\.' + apiName.replace('.', '\\.') + '$');
@@ -64,7 +64,7 @@ var RestApi = Ember.Deferred.extend({
             }
         }
 
-        if (matches.length == 0) {
+        if (matches.length === 0) {
             throw 'no method matching ' + pattern;
         } else if (matches.length > 1) {
             throw 'multiple APIs matched ' + apiName + '; must specify HTTP method';
@@ -93,7 +93,7 @@ var RestApi = Ember.Deferred.extend({
         var apiKey = this.get('session').get('key');
 
         if (!Ember.isEmpty(apiKey)) {
-            var origBeforeSend = options['beforeSend'];
+            var origBeforeSend = options.beforeSend;
             options.beforeSend = function(xhr) {
                 xhr.setRequestHeader(self.get('apiKeyRequestHeaderName'), apiKey);
                 if (origBeforeSend) {
@@ -136,7 +136,7 @@ var RestApi = Ember.Deferred.extend({
             href += '/';
         }
 
-        if (href.indexOf('//') == -1) {
+        if (href.indexOf('//') === -1) {
             href = window.location.protocol + '//' + window.location.host + href;
         }
         this.set('packageSourceUri', href);
@@ -154,7 +154,7 @@ var RestApi = Ember.Deferred.extend({
             return dataUrl + href;
         }
 
-        return dataUrl.replace(/(.+:\/\/[^/]+).*/, "$1" + href);
+        return dataUrl.replace(/(.+:\/\/[^/]+).*/, '$1' + href);
     },
 
     _fullBaseDataUrl: function() {
