@@ -34,3 +34,15 @@
     {{errorMessage}}
 </div>
 {{/if}}
+
+{{#if isSaving}}
+<p class="save-in-progress">
+    Saving...
+</p>
+{{else}}
+    {{#if isSaveCompleted}}
+        <p class="save-completed">
+            Saved.
+        </p>
+    {{/if}}
+{{/if}}

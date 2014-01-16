@@ -7,6 +7,8 @@ export default Ember.ObjectController.extend(BaseControllerMixin, UserPermission
     originalUsername: '',
     actionLabel: 'Edit',
     isAllowedToDelete: false,
+    isSaving: false,
+    isSaveCompleted: false,
 
     modelDidChange: function() {
         this.set('originalUsername', this.get('model.username'));
@@ -28,6 +30,12 @@ export default Ember.ObjectController.extend(BaseControllerMixin, UserPermission
         return this.get('originalUsername') !== this.get('username');
     }.property('originalUsername', 'username'),
 
+    reset: function() {
+        this.set('errorMessage', '');
+        this.set('isSaving', false);
+        this.set('isSaveCompleted', false);
+    },
+
     actions: {
         save: function () {
             var self = this;
@@ -43,6 +51,7 @@ export default Ember.ObjectController.extend(BaseControllerMixin, UserPermission
 
             if (this.get('isRenamed')) {
                 promise = promise.then(function() {
+                    ProgressIndicator.set(0.5);
                     return App.users.delete(self.get('originalUsername'));
                 });
             }
@@ -62,15 +71,23 @@ export default Ember.ObjectController.extend(BaseControllerMixin, UserPermission
 
     _handleResult: function(promise) {
         ProgressIndicator.start();
+        this.set('isSaving', true);
 
         var self = this;
+
+        var finish = function() {
+            self.set('isSaving', false);
+            ProgressIndicator.done();
+        };
+
         promise.then(
             function() {
-                ProgressIndicator.done();
+                finish();
+                self.set('isSaveCompleted', true);
                 self.transitionToRoute('users.list');
             },
             function(err) {
-                ProgressIndicator.done();
+                finish();
                 self.set('errorMessage', err);
         });
     }
