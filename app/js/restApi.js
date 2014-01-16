@@ -10,7 +10,7 @@ var RestApi = Ember.Deferred.extend({
     simulateRequestLatency: 0,
 
     init: function() {
-        var url = this.get('apiUrl');
+        var url = this.get('apiUrl') + '?nocache=' + new Date().getTime();
 
         if (!url) {
             throw 'Must set apiUrl property on RestApi.';
