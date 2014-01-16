@@ -1,3 +1,9 @@
+{{#if isRedirected}}
+    <p class="login-required-message">
+        Please log in to continue.
+    </p>
+{{/if}}
+
 {{#if errorMessage}}
     <div class="error">
         {{errorMessage}}

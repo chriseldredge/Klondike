@@ -4,6 +4,7 @@ export default Ember.Controller.extend(BaseControllerMixin, {
     username: '',
     password: '',
     errorMessage: '',
+    isRedirected: false,
 
     actions: {
         logIn: function () {
