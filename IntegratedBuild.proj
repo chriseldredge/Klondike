@@ -4,7 +4,7 @@
         <SolutionDir>$(MSBuildProjectDirectory)\source\</SolutionDir>
         <DistDir>$(MSBuildProjectDirectory)\dist\</DistDir>
         <TestsEnabled>true</TestsEnabled>
-        <Configuration Condition=" '$(Configuration' == '' ">Debug</Configuration>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     </PropertyGroup>
 
     <Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;GenerateVersionInfo;Stage;IntegrationTest"/>

@@ -24,4 +24,4 @@ _NCrunch*
 *.user
 *.suo
 _ReSharper.*
-
+integration-tests/out.txt
