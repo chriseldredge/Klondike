@@ -10,5 +10,14 @@
 	<blockquote><code>nuget push [package.nupkg] -Source {{pushUri}}</code></blockquote>
 
 {{else}}
-	Your NuGet API Key is {{key}}, but you are not allowed to push packages.
+	<p>Your NuGet API Key is {{key}}, but you are not allowed to push packages.</p>
 {{/if}}
+
+<p>
+    You have the following permissions:
+    {{#each role in roles}}
+        {{role}}
+    {{else}}
+        (none)
+    {{/each}}
+</p>

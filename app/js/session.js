@@ -5,6 +5,7 @@ export default Ember.Deferred.extend({
     user: null,
     usernameBinding: 'user.username',
     keyBinding: 'user.key',
+    rolesBinding: 'user.roles',
 
     isLoggedIn: function () {
         return !Ember.isEmpty(this.get('username'));
