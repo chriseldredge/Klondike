@@ -10,18 +10,18 @@
             <a href="#" {{action nextPage}}>Next Page</a>
         {{/if}}
 
-        <ol {{bindAttr start=first}}>
+        <ol {{bind-attr start=first}}>
             {{#each hits}}
             <li>
                 <div>
                     {{view App.PackageIcon contentBinding="this"}}
-                    {{#linkTo 'packages.view' this}}
+                    {{#link-to 'packages.view' this}}
                     {{#if title}}
                         {{title}}
                     {{else}}
                         {{id}}
                     {{/if}}
-                    {{/linkTo}}
+                    {{/link-to}}
                 </div>
                 <div>
                     By:
@@ -33,7 +33,7 @@
                     {{description}}
                 </div>
                 <div>
-                    Tags: 
+                    Tags:
                     {{#each tag in tags}}
                         <a href="#" {{action goTo tag}}>{{tag}}</a>
                     {{/each}}

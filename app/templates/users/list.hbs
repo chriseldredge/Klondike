@@ -4,7 +4,7 @@
 {{#each user in model}}
     <li>
         {{#if canEdit}}
-            {{#linkTo 'users.edit' user}}{{user.username}}{{/linkTo}}
+            {{#link-to 'users.edit' user}}{{user.username}}{{/link-to}}
         {{else}}
             {{user.username}}
         {{/if}}
@@ -13,7 +13,7 @@
 </ul>
 
 {{#if canEdit}}
-    {{#linkTo 'users.add'}}Add Account{{/linkTo}}
+    {{#link-to 'users.add'}}Add Account{{/link-to}}
 {{else}}
     <p class="not-authorized">You are not allowed to modify accounts.</p>
 {{/if}}

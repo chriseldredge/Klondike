@@ -2,7 +2,7 @@
     <header>
         <nav class="user-info">
             {{#if isLoggedIn}}
-                {{#linkTo 'profile'}}{{username}}{{/linkTo}}
+                {{#link-to 'profile'}}{{username}}{{/link-to}}
                 |
                 <a href="#" {{action 'logOut'}}>Sign Out</a>
             {{else}}
@@ -10,9 +10,9 @@
             {{/if}}
         </nav>
         <nav>
-            {{#linkTo 'index'}}Home{{/linkTo}}
-            {{#linkTo 'admin'}}Admin{{/linkTo}}
-            <a {{bindAttr href=apiUrl}}>Api</a>
+            {{#link-to 'index'}}Home{{/link-to}}
+            {{#link-to 'admin'}}Admin{{/link-to}}
+            <a {{bind-attr href=apiUrl}}>Api</a>
         </nav>
         <div class="search-box">
             {{input type="text" value=searchBox action="search" placeholder="Search..."}}

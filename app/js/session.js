@@ -101,12 +101,11 @@ export default Ember.Deferred.extend({
         this.get('restApi').then(function (restApi) {
             var call = restApi.ajax(apiName, allSettings);
 
-            call.fail(function(xhr, statusText) {
+            call.catch(function() {
                 self.logOut();
 
-                var error = { message: statusText, request: xhr };
-                user.reject(error);
-                result.reject(error);
+                user.reject(arguments);
+                result.reject(arguments);
             });
         });
 

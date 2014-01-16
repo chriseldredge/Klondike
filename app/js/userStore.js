@@ -51,8 +51,8 @@ export default Ember.Object.extend({
                     success: function () {
                         deferred.resolve();
                     }
-                }).fail(function(xhr, status, error) {
-                    deferred.reject({ request: xhr, textStatus: status, errorThrown: error});
+                }).catch(function() {
+                    deferred.reject().apply(this, arguments);
                 });
             });
         });
@@ -68,8 +68,8 @@ export default Ember.Object.extend({
                     success: function () {
                         deferred.resolve();
                     }
-                }).fail(function(xhr, status, error) {
-                    deferred.reject({ request: xhr, textStatus: status, errorThrown: error});
+                }).catch(function() {
+                    deferred.reject().apply(this, arguments);
                 });
             });
         });
