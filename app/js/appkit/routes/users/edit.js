@@ -1,8 +1,7 @@
-import AuthorizedRoute from 'mixins/authorizedRoute';
+import UsersAddRoute from 'appkit/routes/users/add';
+import LazyRoute from 'mixins/lazyRoute';
 
-export default Ember.Route.extend(AuthorizedRoute, {
-    authorizedApiName: 'users.put',
-
+export default UsersAddRoute.extend(LazyRoute, {
     model: function (params) {
         return App.users.find(params.username);
     }

@@ -1,5 +1,6 @@
 import BaseControllerMixin from 'mixins/baseControllerMixin';
 import UserPermissionObserver from 'mixins/userPermissionObserver';
+import ProgressIndicator from 'progressIndicator';
 
 export default Ember.ObjectController.extend(BaseControllerMixin, UserPermissionObserver, {
     errorMessage: '',
@@ -60,12 +61,16 @@ export default Ember.ObjectController.extend(BaseControllerMixin, UserPermission
     },
 
     _handleResult: function(promise) {
+        ProgressIndicator.start();
+
         var self = this;
         promise.then(
             function() {
+                ProgressIndicator.done();
                 self.transitionToRoute('users.list');
             },
             function(err) {
+                ProgressIndicator.done();
                 self.set('errorMessage', err);
         });
     }

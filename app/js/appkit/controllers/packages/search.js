@@ -1,28 +1,27 @@
 import BaseControllerMixin from 'mixins/baseControllerMixin';
 import PaginationSupport from 'mixins/paginationSupport';
+import ProgressIndicator from 'progressIndicator';
 
 export default Ember.ObjectController.extend(BaseControllerMixin, PaginationSupport, {
     totalBinding: Ember.Binding.oneWay('model.totalHits'),
 
-    didRequestPage: function () {
-        // when a new search is being loaded, ignore when the page gets set back to zero.
-        if (this.get('loading')) return;
+    goTo: function(query, page) {
+        page = page || 0;
 
-        var model = App.packages.search(this.get('query'), this.get('page'), this.get('pageSize'));
-        this.set('model', model);
-    },
-
-    goTo: function(query) {
-        var model = App.packages.search(query, 0, this.get('pageSize'));
+        ProgressIndicator.start();
+        var model = App.packages.search(query, page, this.get('pageSize'));
         this.transitionToRoute('packages.search', model);
+        model.then(function() {
+            ProgressIndicator.done();
+        })
     },
 
     actions: {
         'nextPage': function() {
-            this.nextPage.apply(this, arguments);
+            this.goTo(this.get('query'), this.get('page') + 1);
         },
         'previousPage': function () {
-            this.previousPage.apply(this, arguments);
+            this.goTo(this.get('query'), this.get('page') - 1);
         },
         'goTo': function () {
             this.goTo.apply(this, arguments);

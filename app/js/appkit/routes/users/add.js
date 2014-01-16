@@ -1,6 +1,8 @@
-import UsersEditRoute from 'appkit/routes/users/edit';
+import AuthorizedRoute from 'mixins/authorizedRoute';
 
-export default UsersEditRoute.extend({
+export default Ember.Route.extend(AuthorizedRoute, {
+    authorizedApiName: 'users.put',
+
     model: function (params) {
         var model = App.users.createModel();
         model.resolve(model);

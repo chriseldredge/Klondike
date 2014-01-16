@@ -1,4 +1,6 @@
-export default Ember.Route.extend({
+import LazyRoute from 'mixins/lazyRoute';
+
+export default Ember.Route.extend(LazyRoute, {
     model: function (params) {
         return App.packages.search(params.query, 0, 10);
     }
