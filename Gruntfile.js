@@ -410,7 +410,7 @@ module.exports = function (grunt) {
         var serverTarget = server + ":" + target;
 
         if (target === 'dist') {
-            return grunt.task.run(['build', serverTarget]);
+            return grunt.task.run(['build', serverTarget, 'wait-forever']);
         }
 
         grunt.event.once('iisexpress.done', function() {
