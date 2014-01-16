@@ -3,6 +3,8 @@ import Package from 'models/package';
 
 export default Ember.Object.extend({
     restApi: null,
+    defaultPageSize: 10,
+
     find: function (packageId, packageVersion) {
         var results = Package.create({
             id: packageId,
@@ -27,6 +29,9 @@ export default Ember.Object.extend({
         return results;
     },
     search: function (query, page, pageSize) {
+        page = page || 0;
+        pageSize = pageSize || this.get('defaultPageSize');
+
         console.log('load search results for query', query, 'page', page);
 
         var results = SearchResults.create({
@@ -46,6 +51,10 @@ export default Ember.Object.extend({
                     count: pageSize
                 },
                 success: function(json) {
+                    if (json.query === null) {
+                        json.query = '';
+                    }
+
                     self.convert(json.hits);
                     results.setProperties(json);
                     results.setProperties({ loaded: true, loading: false });

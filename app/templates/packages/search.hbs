@@ -1,4 +1,11 @@
-<h1>Search results for "{{query}}"</h1>
+<h1>
+    {{#if isEmptyQuery}}
+        List of All Packages
+    {{else}}
+        Search results for "{{query}}"
+    {{/if}}
+</h1>
+
 {{#if total}}
     Showing {{first}} to {{last}} of {{total}}.
 

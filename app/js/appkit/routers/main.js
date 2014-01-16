@@ -8,6 +8,7 @@ Router.map(function () {
     this.route('admin');
     this.resource('packages', function() {
         this.route('search', { path: '/search/:query' });
+        this.route('list', { path: '/list' });
         this.route('view', { path: '/:id/:version' });
     });
     this.resource('users', function() {

@@ -3,6 +3,11 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 @import 'sass-bootstrap/lib/bootstrap';
 @import 'nprogress';
 
+img.package-icon {
+    width: 50px;
+    height: auto;
+}
+
 dl {
     border-left: 2px solid #ddd;
     border-top: 2px solid #ddd;
