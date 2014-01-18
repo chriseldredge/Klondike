@@ -8,70 +8,40 @@ export default Ember.Object.extend({
     },
 
     list: function () {
-        var self = this;
-        return Ember.Deferred.promise(function(deferred) {
-            self.get('restApi').then(function(restApi) {
-                restApi.ajax('users.getAllUsers', {
-                    success: function (json) {
-                        json.forEach(function(user) {
-                            user.roles = user.roles || [];
-                        });
-                        deferred.resolve(json);
-                    }
-                });
+        return this.get('restApi').ajax('users.getAllUsers').then(function(json) {
+            json.forEach(function(user) {
+                user.roles = user.roles || [];
             });
+            return json;
         });
     },
 
     find: function(username) {
         var self = this;
-        var model = this.createModel();
 
-        self.get('restApi').then(function(restApi) {
-            restApi.ajax('users.get', {
-                data: { username: username },
-                success: function (json) {
-                    json.roles = json.roles || [];
-                    model.setProperties(json);
-                    model.resolve(model);
-                }
-            });
+        var request = self.get('restApi').ajax('users.get', { data: { username: username } });
+
+        return request.then(function (json) {
+            json.roles = json.roles || [];
+            return self.createModel(json);
         });
-
-        return model;
     },
 
-    save: function(user) {
-        var self = this;
-        return Ember.Deferred.promise(function(deferred) {
-            self.get('restApi').then(function(restApi) {
-                restApi.ajax('users.put', {
-                    type: 'PUT',
-                    data: user,
-                    success: function () {
-                        deferred.resolve();
-                    }
-                }).catch(function() {
-                    deferred.reject().apply(this, arguments);
-                });
-            });
-        });
+    add: function(user) {
+        user.overwrite = false;
+        return this._save(user, 'users.put');
+    },
+
+    update: function(user) {
+        return this._save(user, 'users.post');
     },
 
     delete: function(username) {
+        return this.get('restApi').ajax('users.delete', { data: {username: username} });
+    },
+
+    _save: function(user, apiName) {
         var self = this;
-        return Ember.Deferred.promise(function(deferred) {
-            self.get('restApi').then(function(restApi) {
-                restApi.ajax('users.delete', {
-                    type: 'DELETE',
-                    data: {username: username},
-                    success: function () {
-                        deferred.resolve();
-                    }
-                }).catch(function() {
-                    deferred.reject().apply(this, arguments);
-                });
-            });
-        });
+        return self.get('restApi').ajax(apiName, { data: user });
     }
 });

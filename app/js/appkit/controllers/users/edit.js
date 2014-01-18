@@ -47,29 +47,28 @@ export default Ember.ObjectController.extend(BaseControllerMixin, UserPermission
                 roles: this.get('roles')
             };
 
-            var promise = App.users.save(user);
-
             if (this.get('isRenamed')) {
-                promise = promise.then(function() {
-                    ProgressIndicator.set(0.5);
-                    return App.users.delete(self.get('originalUsername'));
-                });
+                user.renameTo = user.username;
+                user.username = this.get('originalUsername');
+                user.overwrite = false;
             }
 
-            this._handleResult(promise);
+            var promise = App.users.update(user);
+
+            return this._wrapAjaxPromise(promise);
         },
         delete: function() {
             this.set('errorMessage', '');
 
             var promise = App.users.delete(this.get('originalUsername'));
-            this._handleResult(promise);
+            return this._wrapAjaxPromise(promise);
         },
         cancel: function() {
             this.transitionToRoute('users.list');
         }
     },
 
-    _handleResult: function(promise) {
+    _wrapAjaxPromise: function(promise) {
         ProgressIndicator.start();
         this.set('isSaving', true);
 
@@ -80,15 +79,17 @@ export default Ember.ObjectController.extend(BaseControllerMixin, UserPermission
             ProgressIndicator.done();
         };
 
-        promise.then(
-            function() {
-                finish();
-                self.set('isSaveCompleted', true);
-                self.transitionToRoute('users.list');
-            },
-            function(err) {
-                finish();
-                self.set('errorMessage', err);
+        return promise.then(function() {
+            finish();
+            self.set('isSaveCompleted', true);
+            self.transitionToRoute('users.list');
+        }).catch(function(err) {
+            finish();
+            if (err.request && err.request.status == 409) {
+                self.set('errorMessage', 'The account ' + self.get('username') + ' already exists.');
+            } else {
+                self.set('errorMessage', err.textStatus + '(' + err.errorThrown + ')');
+            }
         });
     }
 });
