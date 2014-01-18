@@ -6,6 +6,7 @@ export default Ember.Deferred.extend({
     usernameBinding: 'user.username',
     keyBinding: 'user.key',
     rolesBinding: 'user.roles',
+    isInitialized: false,
 
     isLoggedIn: function () {
         return !Ember.isEmpty(this.get('username'));
@@ -14,30 +15,33 @@ export default Ember.Deferred.extend({
     init: function () {
         this._super();
 
+        var self = this;
         var settings = {};
-
         var sessionKey = sessionStorage.getItem('key');
 
         if (!Ember.isEmpty(sessionKey)) {
-            var self = this;
             settings.beforeSend = function(xhr) {
                 xhr.setRequestHeader(self.get('restApi').get('apiKeyRequestHeaderName'), sessionKey);
             };
         }
 
-        this._invokeLogin('users.getAuthenticationInfo', this, settings);
+        self._invokeLogin('users.getAuthenticationInfo', settings)
+            .then(function() {
+                self.set('isInitialized', true);
+                self.resolve(self);
+            })
+            .catch(function() {
+                self.set('isInitialized', true);
+                self.resolve(self);
+            });
     },
 
     isAllowed: function(apiName, method) {
         var self = this;
-        var result = Ember.Deferred.create();
 
-        this.get('restApi').then(function (restApi) {
-            var api = restApi.getApi(apiName, method);
-
+        return this.get('restApi').getApi(apiName, method).then(function (api) {
             if (!api.requiresAuthentication) {
-                result.resolve(true);
-                return;
+                return true;
             }
 
             var userRoles = self.get('user.roles') || [];
@@ -49,25 +53,23 @@ export default Ember.Deferred.extend({
                 return roleSet.any(userRoleMissing);
             });
 
-            result.resolve(!any);
-        }).then(null, function(error) {
-            result.reject(error);
+            return !any;
         });
-
-        return result;
     },
 
     logOut: function() {
-        sessionStorage.removeItem('key');
         this.set('user', null);
     },
 
     tryLogIn: function() {
-        return this.logIn();
+        return this.logIn().then(function() {
+            return true;
+        }).catch(function() {
+            return false;
+        });
     },
 
     logIn: function(username, password) {
-        var result = Ember.Deferred.create();
         var settings = {};
 
         if (!Ember.isEmpty(username)) {
@@ -76,38 +78,37 @@ export default Ember.Deferred.extend({
             };
         }
 
-        this._invokeLogin('users.getRequiredAuthenticationInfo', result, settings);
-        return result;
+        return this._invokeLogin('users.getRequiredAuthenticationInfo', settings);
     },
 
-    _invokeLogin: function (apiName, result, settings) {
+    _invokeLogin: function (apiName, settings) {
         var self = this;
-        var user = this.get('users').createModel();
 
-        var allSettings = {
-            success: function (json) {
-                json = json || {};
-                json.roles = Ember.A(json.roles || []);
-                user.setProperties(json);
-                user.resolve(user);
-                self.set('user', user);
-                sessionStorage.setItem('key', user.get('key'));
-                result.resolve(self);
-            }
-        };
+        return Ember.Deferred.promise(function(deferred) {
+            return self.get('restApi').ajax(apiName, settings)
+                .catch(function(error) {
+                    self.set('user', null);
+                    deferred.reject(error);
+                })
+                .then(function(json) {
+                    json = json || {};
+                    json.roles = Ember.A(json.roles || []);
 
-        $.extend(allSettings, settings || {});
+                    var user = self.get('users').createModel(json);
 
-        this.get('restApi').then(function (restApi) {
-            var call = restApi.ajax(apiName, allSettings);
+                    self.set('user', user);
 
-            call.catch(function() {
-                self.logOut();
-
-                user.reject(arguments);
-                result.reject(arguments);
-            });
+                    deferred.resolve(user);
+                });
         });
+    },
 
-    }
+    _keyDidChange: function() {
+        var key = this.get('key');
+        if (key) {
+            sessionStorage.setItem('key', key);
+        } else {
+            sessionStorage.removeItem('key');
+        }
+    }.observes('key'),
 });

@@ -13,8 +13,10 @@ export default Ember.Controller.extend(BaseControllerMixin, {
         },
         logIn: function() {
             var self = this;
-            App.session.tryLogIn().then(null, function() {
-                self.transitionToRoute('login');
+            App.session.tryLogIn().then(function(success) {
+                if (!success) {
+                    self.transitionToRoute('login');
+                }
             });
         },
         logOut: function() {

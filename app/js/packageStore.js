@@ -6,64 +6,48 @@ export default Ember.Object.extend({
     defaultPageSize: 10,
 
     find: function (packageId, packageVersion) {
-        var results = Package.create({
-            id: packageId,
-            version: packageVersion,
-        });
-
-        var client = this.get('restApi');
-        client.then(function() {
-            client.ajax('packages.getPackageInfo', {
-                data: {
-                    id: packageId,
-                    version: packageVersion
-                },
-                success: function(json) {
-                    results.set('versionHistory', json.versionHistory);
-                    results.setProperties(json.package);
-                    results.resolve(results);
-                }
+        return this.get('restApi').ajax('packages.getPackageInfo', {
+            data: {
+                id: packageId,
+                version: packageVersion
+            }
+        }).then(function(json) {
+            var results = Package.create(json.package, {
+                versionHistory: json.versionHistory
             });
+            results.resolve(results);
+            return results;
         });
-
-        return results;
     },
     search: function (query, page, pageSize) {
         page = page || 0;
         pageSize = pageSize || this.get('defaultPageSize');
 
-        console.log('load search results for query', query, 'page', page);
-
-        var results = SearchResults.create({
-            query: query,
-            page: page,
-            pageSize: pageSize
-        });
-
         var self = this;
-        var client = this.get('restApi');
 
-        client.then(function() {
-            client.ajax('packages.search', {
-                data: {
-                    query: query,
-                    offset: page * pageSize,
-                    count: pageSize
-                },
-                success: function(json) {
-                    if (json.query === null) {
-                        json.query = '';
-                    }
+        return this.get('restApi').ajax('packages.search', {
+            data: {
+                query: query,
+                offset: page * pageSize,
+                count: pageSize
+            }
+        }).then(function(json) {
+            if (json.query === null) {
+                json.query = '';
+            }
 
-                    self.convert(json.hits);
-                    results.setProperties(json);
-                    results.setProperties({ loaded: true, loading: false });
-                    results.resolve(results);
-                }
+            self.convert(json.hits);
+
+            var results = SearchResults.create(json, {
+                loaded: true,
+                loading: false,
+                page: page,
+                pageSize: pageSize
             });
-        });
 
-        return results;
+            results.resolve(results);
+            return results;
+        });
     },
     convert: function (hits) {
         for (var i = 0; i < hits.length; i++) {

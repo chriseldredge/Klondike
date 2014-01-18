@@ -22,34 +22,105 @@ var RestApi = Ember.Deferred.extend({
         var data = {
             type: 'GET',
             success: function (data) {
-                var apiInfo = {};
-                for (var i = 0; i < data.resources.length; i++) {
-                    var res = data.resources[i];
-                    var name = res.name.toLowerCase();
-                    for (var j = 0; j < res.actions.length; j++) {
-                        var action = res.actions[j];
-                        var key = action.method + '.' + name.toLowerCase() + '.' + action.name.toLowerCase();
-                        if (key in apiInfo) {
-                            console.warn('Duplicate api method: ' + key);
-                        }
-
-                        action.href = self._hrefToAbsolute(action.href);
-                        apiInfo[key] = action;
-                    }
-                }
-                self.set('apiInfo', apiInfo);
+                self.set('apiInfo', self._buildApiDictionary(data));
                 if (self._setPackageSource()) {
                     self.resolve(self);
+                } else {
+                    self.reject('Failed to find Packages.OData API in response from ' + url);
                 }
             },
+            fail: function(xhr, status) {
+                self.reject('ajax call to ' + url + ' failed: ' + status + '(' + xhr.status + ')');
+            }
         };
 
-        $.ajax(url, data).fail(function(xhr, status) {
-            self.reject('ajax call to ' + url + ' failed: ' + status + '(' + xhr.status + ')');
-        });
+        $.ajax(url, data);
     },
 
     getApi: function (apiName, method) {
+        var self = this;
+
+        return this.then(function() {
+            return self._lookupApi(apiName, method);
+        });
+    },
+
+    ajax: function (apiName, options) {
+        options = options || {};
+        var method;
+        if ('type' in options) {
+            method = options.type;
+        }
+
+        var self = this;
+
+        var delay = Ember.Deferred.promise(function(deferred) {
+            var timeout = self.get('simulateRequestLatency') || 0;
+
+            if (timeout) {
+                setTimeout(function() {
+                    deferred.resolve();
+                }, 2000);
+            } else {
+                deferred.resolve();
+            }
+        });
+
+        return delay.then(function() {
+            return self.getApi(apiName, method);
+        }).then(function(api) {
+            return self._invokeAjaxApi(apiName, api, options);
+        });
+    },
+
+    _invokeAjaxApi: function(apiName, api, options) {
+        if (!api) {
+            throw 'Rest API method not found: ' + apiName;
+        }
+
+        var self = this;
+
+        options.type = api.method;
+
+        var apiKey = this.get('session').get('key');
+
+        if (!Ember.isEmpty(apiKey)) {
+            var origBeforeSend = options.beforeSend;
+            options.beforeSend = function(xhr) {
+                xhr.setRequestHeader(self.get('apiKeyRequestHeaderName'), apiKey);
+                if (origBeforeSend) {
+                    origBeforeSend(xhr);
+                }
+            };
+        }
+
+        var href = this._replaceParameters(api, options);
+
+        if (options.fail) {
+            console.warn('DEPRECATION: clients should not specify ajax fail handlers.');
+        }
+
+        if (options.success) {
+            console.warn('DEPRECATION: clients should not specify ajax success handlers.');
+        }
+
+        return Ember.Deferred.promise(function(deferred) {
+            var old = options.success;
+            options.success = function(data) {
+                if (old) {
+                    console.log('invoke old success handler');
+                    old.apply(this, arguments);
+                }
+                deferred.resolve(data);
+            };
+
+            Ember.$.ajax(href, options).fail(function(request, textStatus, errorThrown) {
+                deferred.reject({ request: request, textStatus: textStatus, errorThrown: errorThrown });
+            });
+        });
+    },
+
+    _lookupApi: function(apiName, method) {
         var apiInfo = this.get('apiInfo');
         apiName = apiName.toLowerCase();
 
@@ -75,53 +146,6 @@ var RestApi = Ember.Deferred.extend({
         return matches[0];
     },
 
-    ajax: function (apiName, options) {
-        options = options || {};
-        var method = 'GET';
-        if ('type' in options) {
-            method = options.type;
-        }
-
-        var api = this.getApi(apiName, method);
-
-        if (!api) {
-            throw 'Rest API method not found: ' + apiName;
-        }
-
-        var self = this;
-
-        options.type = api.method;
-
-        var apiKey = this.get('session').get('key');
-
-        if (!Ember.isEmpty(apiKey)) {
-            var origBeforeSend = options.beforeSend;
-            options.beforeSend = function(xhr) {
-                xhr.setRequestHeader(self.get('apiKeyRequestHeaderName'), apiKey);
-                if (origBeforeSend) {
-                    origBeforeSend(xhr);
-                }
-            };
-        }
-
-        var href = this._replaceParameters(api, options);
-
-        var promise = Ember.Deferred.create();
-        var timeout = this.get('simulateRequestLatency') || 0;
-
-        if (timeout) {
-            setTimeout(function() {
-                promise.resolve();
-            }, 2000);
-        } else {
-            promise.resolve();
-        }
-
-        return promise.then(function() {
-            return $.ajax(href, options);
-        });
-    },
-
     _replaceParameters: function (api, options) {
         // replace {foo} with options.data.foo
         return api.href.replace(/\{[^\}]+\}/g, function (param) {
@@ -139,7 +163,7 @@ var RestApi = Ember.Deferred.extend({
     },
 
     _setPackageSource: function () {
-        var api = this.getApi('Packages.OData');
+        var api = this._lookupApi('Packages.OData');
         if (!api) {
             this.reject('Failed to locate Packages.OData api endpoint.');
             return false;
@@ -184,7 +208,26 @@ var RestApi = Ember.Deferred.extend({
         }
 
         return base;
-    }.property('apiUrl')
+    }.property('apiUrl'),
+
+    _buildApiDictionary: function(data) {
+        var apiInfo = {};
+        for (var i = 0; i < data.resources.length; i++) {
+            var res = data.resources[i];
+            var name = res.name.toLowerCase();
+            for (var j = 0; j < res.actions.length; j++) {
+                var action = res.actions[j];
+                var key = action.method + '.' + name.toLowerCase() + '.' + action.name.toLowerCase();
+                if (key in apiInfo) {
+                    console.warn('Duplicate api method: ' + key);
+                }
+
+                action.href = this._hrefToAbsolute(action.href);
+                apiInfo[key] = action;
+            }
+        }
+        return apiInfo;
+    }
 });
 
 export default RestApi;

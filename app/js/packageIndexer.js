@@ -50,15 +50,11 @@ export default Ember.Object.extend(UserPermissionObserver, {
     }.observes('statusHub'),
 
     synchronize: function () {
-        this.get('restApi').ajax('indexing.synchronize', {
-            type: 'POST',
-        });
+        this.get('restApi').ajax('indexing.synchronize');
     },
 
     cancel: function () {
-        this.get('restApi').ajax('indexing.cancel', {
-            type: 'POST',
-        });
+        this.get('restApi').ajax('indexing.cancel');
     },
 
     isRunning: function () {

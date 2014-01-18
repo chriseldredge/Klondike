@@ -11,8 +11,8 @@ export default Ember.Controller.extend(BaseControllerMixin, {
             var self = this;
             self.set('errorMessage', '');
 
-            App.session.logIn(this.get('username'), this.get('password')).then(
-                function() {
+            return App.session.logIn(this.get('username'), this.get('password'))
+                .then(function() {
                     var previousTransition = self.get('previousTransition');
 
                     if (previousTransition) {
@@ -21,9 +21,9 @@ export default Ember.Controller.extend(BaseControllerMixin, {
                     }
 
                     self.transitionToRoute('index');
-                },
-                function(error) {
-                    self.set('errorMessage', 'Authentication failure (' + error.request.status + ')');
+                })
+                .catch(function(error) {
+                    self.set('errorMessage', 'Authentication failed.');
                 });
         }
     }

@@ -12,8 +12,8 @@ export default Ember.Deferred.extend({
 
         var self = this;
 
-        restApi.then(function () {
-            var url = restApi.getApi('Indexing.Hub').href;
+        restApi.getApi('Indexing.Hub').then(function (hubApi) {
+            var url = hubApi.href;
             var hubUrl = url + '/hubs';
 
             console.log('Loading SignalR hubs from', hubUrl);
@@ -42,7 +42,7 @@ export default Ember.Deferred.extend({
                 self.resolve(self);
             });
 
-        }, function(error) {
+        }).catch(function(error) {
             self.reject('RestApi failed: ' + error);
         });
     },
