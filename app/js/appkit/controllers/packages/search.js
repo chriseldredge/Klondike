@@ -5,6 +5,7 @@ import ProgressIndicator from 'progressIndicator';
 export default Ember.ObjectController.extend(BaseControllerMixin, PaginationSupport, {
     totalBinding: Ember.Binding.oneWay('model.totalHits'),
     pageBinding: 'model.page',
+    sort: 'score',
 
     isEmptyQuery: function() {
         return Ember.isEmpty(this.get('query'));
@@ -39,14 +40,12 @@ export default Ember.ObjectController.extend(BaseControllerMixin, PaginationSupp
             }
         }, 250);
 
-        var model = App.packages.search(query, page, this.get('pageSize'));
-
-        model.then(function() {
-            completed = true;
-            ProgressIndicator.done();
-        });
-
-        return model;
+        return App.packages.search(query, page, this.get('pageSize'), this.get('sort'))
+            .then(function(model) {
+                completed = true;
+                ProgressIndicator.done();
+                return model;
+            });
     },
 
     actions: {

@@ -19,7 +19,7 @@ export default Ember.Object.extend({
             return results;
         });
     },
-    search: function (query, page, pageSize) {
+    search: function (query, page, pageSize, sort) {
         page = page || 0;
         pageSize = pageSize || this.get('defaultPageSize');
 
@@ -29,7 +29,8 @@ export default Ember.Object.extend({
             data: {
                 query: query,
                 offset: page * pageSize,
-                count: pageSize
+                count: pageSize,
+                sort: sort || 'score'
             }
         }).then(function(json) {
             if (json.query === null) {
