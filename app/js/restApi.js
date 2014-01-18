@@ -96,21 +96,8 @@ var RestApi = Ember.Deferred.extend({
 
         var href = this._replaceParameters(api, options);
 
-        if (options.fail) {
-            console.warn('DEPRECATION: clients should not specify ajax fail handlers.');
-        }
-
-        if (options.success) {
-            console.warn('DEPRECATION: clients should not specify ajax success handlers.');
-        }
-
         return Ember.Deferred.promise(function(deferred) {
-            var old = options.success;
             options.success = function(data) {
-                if (old) {
-                    console.log('invoke old success handler');
-                    old.apply(this, arguments);
-                }
                 deferred.resolve(data);
             };
 
