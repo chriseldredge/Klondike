@@ -20,4 +20,9 @@ export default Ember.ObjectController.extend(BaseControllerMixin, {
         });
     }.observes('App.session.user'),
 
+    actions: {
+        changeKey: function() {
+            App.session.changeKey();
+        }
+    }
 });

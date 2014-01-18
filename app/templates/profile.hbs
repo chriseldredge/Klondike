@@ -8,10 +8,11 @@
 	<p>To push packages, run</p>
 
 	<blockquote><code>nuget push [package.nupkg] -Source {{pushUri}}</code></blockquote>
-
 {{else}}
 	<p>Your NuGet API Key is {{key}}, but you are not allowed to push packages.</p>
 {{/if}}
+
+<button {{action "changeKey"}}>Change API Key</button>
 
 <p>
     You have the following permissions:

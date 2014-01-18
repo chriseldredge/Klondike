@@ -81,6 +81,24 @@ export default Ember.Deferred.extend({
         return this._invokeLogin('users.getRequiredAuthenticationInfo', settings);
     },
 
+    changeKey: function() {
+        var self = this;
+
+        var settings = {
+            type: 'POST',
+            data: { key: '' }
+        };
+
+        var call = this.get('restApi').ajax('users.changeApiKey', settings);
+
+        return call
+            .then(function(data) {
+                self.set('key', data.key);
+                sessionStorage.setItem('key', self.get('key'));
+                return data.key;
+            });
+    },
+
     _invokeLogin: function (apiName, settings) {
         var self = this;
 
