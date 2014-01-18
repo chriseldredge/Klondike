@@ -14,18 +14,15 @@ export default Ember.ObjectController.extend(BaseControllerMixin, PaginationSupp
     goTo: function(query) {
         if (Ember.isEmpty(query)) {
             this.transitionToRoute('packages.list');
-            return;
+        } else {
+            var model = this._search(query);
+            this.transitionToRoute('packages.search', model);
         }
-
-        var model = this._search(query);
-        this.transitionToRoute('packages.search', model);
     },
 
     update: function(query, page) {
-        var model = this._search(query, page);
         var self = this;
-
-        model.then(function() {
+        this._search(query, page).then(function(model) {
             self.set('model', model);
         });
     },
