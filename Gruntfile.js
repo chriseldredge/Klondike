@@ -14,7 +14,7 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
-        pkg: grunt.file.readJSON("package.json"),
+        pkg: grunt.file.readJSON('package.json'),
         // configurable paths
         yeoman: {
             app: 'app',
@@ -340,7 +340,7 @@ module.exports = function (grunt) {
                     templateBasePath: /app\/templates\//
                 },
                 files: {
-                    "<%= yeoman.build %>/js/templates.js": ["<%= yeoman.app %>/templates/**/*.{hbs,hjs,handlebars}"]
+                    '<%= yeoman.build %>/js/templates.js': ['<%= yeoman.app %>/templates/**/*.{hbs,hjs,handlebars}']
                 }
             }
         },
@@ -358,22 +358,22 @@ module.exports = function (grunt) {
         },
         concat: {
             amd: {
-                src: ["<%= yeoman.build %>/amd/**/*.amd.js"],
-                dest: "<%= yeoman.build %>/js/amd-combined.js"
+                src: ['<%= yeoman.build %>/amd/**/*.amd.js'],
+                dest: '<%= yeoman.build %>/js/amd-combined.js'
             },
         },
         exec: {
             msbuild: {
                 cmd: function(target) {
-                    target = target || "serve";
+                    target = target || 'serve';
 
-                    var configuration = target === "dist" ? "Release" : "Debug";
-                    var distDir = target === "dist" ? "dist/" : ".tmp/";
+                    var configuration = target === 'dist' ? 'Release' : 'Debug';
+                    var distDir = target === 'dist' ? 'dist/' : '.tmp/';
 
-                    var prog = 'c:\\Program\ Files\ (x86)\\MSBuild\\12.0\\Bin\\MSBuild.exe';
+                    var prog = 'c:\\Program Files (x86)\\MSBuild\\12.0\\Bin\\MSBuild.exe';
 
                     if (!grunt.file.exists(prog)) {
-                        grunt.fail.warn("Visual Studio 2013 MSBuild not found at " + prog);
+                        grunt.fail.warn('Visual Studio 2013 MSBuild not found at ' + prog);
                     }
 
                     var args = [
@@ -392,22 +392,22 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('serve', function (target, server) {
-        var readLine = require ("readline");
+        var readLine = require ('readline');
         var rl = readLine.createInterface ({
             input: process.stdin,
             output: process.stdout
         });
 
-        rl.on ("SIGINT", function (){
+        rl.on ('SIGINT', function (){
             grunt.log.writeln();
-            grunt.log.writeln("Stopping...");
+            grunt.log.writeln('Stopping...');
             grunt.event.emit('SIGINT');
             process.exit();
         });
 
-        target = target || "livereload"; // or dist
-        server = server || "connect"; // or iisexpress
-        var serverTarget = server + ":" + target;
+        target = target || 'livereload'; // or dist
+        server = server || 'connect'; // or iisexpress
+        var serverTarget = server + ':' + target;
 
         if (target === 'dist') {
             return grunt.task.run(['build', serverTarget, 'wait-forever']);
@@ -415,7 +415,7 @@ module.exports = function (grunt) {
 
         grunt.event.once('iisexpress.done', function() {
             grunt.log.writeln();
-            grunt.log.writeln("IIS Express exited. Stopping.");
+            grunt.log.writeln('IIS Express exited. Stopping.');
             process.exit();
         });
 
