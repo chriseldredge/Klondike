@@ -443,6 +443,7 @@ module.exports = function (grunt) {
         grunt.task.run([
             'setVersionWithCommit',
             'clean:serve',
+            'copy:serve',
             'copy:nprogress',
             'concurrent:serve',
             'exec:msbuild:serve',
@@ -451,7 +452,6 @@ module.exports = function (grunt) {
             'transpile',
             'concat',
             'preprocess:serve',
-            'copy:serve',
             serverTarget,
             'watch'
         ]);
@@ -476,6 +476,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'setVersionWithCommit',
         'clean:dist',
+        'copy:serve',
         'copy:nprogress',
         'concurrent:dist',
         'preprocess:dist',
@@ -486,9 +487,9 @@ module.exports = function (grunt) {
         'concat',
         'cssmin',
         'uglify',
-        'copy:dist',
         'rev',
         'usemin',
+        'copy:dist',
         'exec:msbuild:dist'
     ]);
 
