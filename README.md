@@ -6,7 +6,7 @@ Ember front-end that builds on NuGet.Lucene for private package hosting.
 
 Available from the Releases tab on github.
 
-Alternatively, you can clone the [dist](dist) git repo to make upgrading easier.
+Alternatively, you can clone the [Klondike-Release](https://github.com/themotleyfool/Klondike-Release) git repo to make upgrading easier.
 
 ## Building Locally
 
