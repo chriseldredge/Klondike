@@ -156,7 +156,7 @@ module.exports = function (grunt) {
                 imagesDir: '<%= yeoman.app %>/images',
                 javascriptsDir: '<%= yeoman.app %>/js',
                 fontsDir: '<%= yeoman.app %>/styles/fonts',
-                importPath: '<%= yeoman.app %>/vendor',
+                importPath: '<%= yeoman.build %>/vendor',
                 httpImagesPath: '/images',
                 httpGeneratedImagesPath: '/images/generated',
                 httpFontsPath: '/styles/fonts',
@@ -301,6 +301,16 @@ module.exports = function (grunt) {
                 cwd: '<%= yeoman.app %>/styles',
                 dest: '<%= yeoman.build %>/styles/',
                 src: '{,*/}*.css'
+            },
+            nprogress: {
+                expand: true,
+                dot: true,
+                cwd: '<%= yeoman.app %>',
+                dest: '<%= yeoman.build %>/',
+                src: 'vendor/nprogress/nprogress.css',
+                rename: function(dest, src) {
+                    return dest + src.replace('.css', '.scss');
+                }
             }
         },
         concurrent: {
@@ -432,6 +442,7 @@ module.exports = function (grunt) {
         grunt.task.run([
             'setVersionWithCommit',
             'clean:serve',
+            'copy:nprogress',
             'concurrent:serve',
             'exec:msbuild:serve',
             'autoprefixer',
@@ -464,6 +475,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'setVersionWithCommit',
         'clean:dist',
+        'copy:nprogress',
         'concurrent:dist',
         'preprocess:dist',
         'useminPrepare',

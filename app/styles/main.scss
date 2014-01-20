@@ -1,7 +1,7 @@
 $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
 @import 'sass-bootstrap/lib/bootstrap';
-@import 'nprogress';
+@import 'nprogress/nprogress';
 
 img.package-icon {
     width: 50px;
