@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <SolutionDir>$(MSBuildProjectDirectory)\source\</SolutionDir>
+        <SolutionDir>$(MSBuildProjectDirectory)\app\</SolutionDir>
+        <ProjectDir>$(SolutionDir)</ProjectDir>
         <DistDir>$(MSBuildProjectDirectory)\dist\</DistDir>
         <TestsEnabled>true</TestsEnabled>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -12,8 +13,8 @@
     <Target Name="Clean">
         <ItemGroup>
             <Trash Include="build\**\*" />
-            <Trash Include="source\*\bin\**\*" />
-            <Trash Include="source\*\obj\**\*" />
+            <Trash Include="$(ProjectDir)bin**\*" />
+            <Trash Include="$(ProjectDir)obj**\*" />
         </ItemGroup>
         <Delete Files="@(Trash)"/>
     </Target>
@@ -23,23 +24,7 @@
               WorkingDirectory="$(SolutionDir)" />
     </Target>
 
-    <Target Name="Stage" DependsOnTargets="BuildSolution;StageContentFiles;TransformWebConfig"/>
-
-    <Target Name="StageContentFiles">
-        <MakeDir Directories="$(DistDir)"/>
-
-        <ItemGroup>
-            <Content Include="$(SolutionDir)Klondike\**\*"/>
-            <Content Remove="$(SolutionDir)Klondike\**\*.cs"/>
-            <Content Remove="$(SolutionDir)Klondike\**\*.csproj*"/>
-            <Content Remove="$(SolutionDir)Klondike\**\*.config"/>
-            <Content Remove="$(SolutionDir)Klondike\**\*ncrunch*"/>
-            <Content Remove="$(SolutionDir)Klondike\App_Data\**\*"/>
-            <Content Remove="$(SolutionDir)Klondike\obj\**\*"/>
-        </ItemGroup>
-
-        <Copy SourceFiles="@(Content)" DestinationFolder="$(DistDir)%(RecursiveDir)" SkipUnchangedFiles="true"/>
-    </Target>
+    <Target Name="Stage" DependsOnTargets="BuildSolution;TransformWebConfig"/>
 
     <Target Name="TransformWebConfig"
             Inputs="$(SolutionDir)Klondike/Web.config;$(SolutionDir)Klondike/Web.$(Configuration).config"
@@ -48,11 +33,11 @@
         <MakeDir Directories="$(DistDir)"/>
 
         <Exec
-            Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(SolutionDir)Klondike/Web.config&quot; &quot;$(SolutionDir)Klondike/Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"
-            Condition="Exists('$(SolutionDir)Klondike/Web.$(Configuration).config')"/>
+            Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(ProjectDir)/Web.config&quot; &quot;$(ProjectDir)/Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"
+            Condition="Exists('$(ProjectDir)/Web.$(Configuration).config')"/>
 
-        <Copy SourceFiles="$(SolutionDir)Klondike/Web.config" DestinationFolder="$(DistDir)"
-            Condition="!Exists('$(SolutionDir)Klondike/Web.$(Configuration).config')"/>
+        <Copy SourceFiles="$(ProjectDir)/Web.config" DestinationFolder="$(DistDir)"
+            Condition="!Exists('$(ProjectDir)/Web.$(Configuration).config')"/>
     </Target>
 
     <Target Name="BuildSolution">
@@ -85,5 +70,5 @@
         <Message Text="AssemblyInformationalVersion: $(AssemblyInformationalVersion)"/>
     </Target>
 
-    <Import Project="source/.nuget/NuGet.targets"/>
+    <Import Project="$(SolutionDir).nuget/NuGet.targets"/>
 </Project>

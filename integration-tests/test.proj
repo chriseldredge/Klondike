@@ -12,13 +12,13 @@
         <TestCaseTargets Condition="'$(TestCaseTargets)' == ''">RunEachTest</TestCaseTargets>
         <CleanAppDataAfterTests>true</CleanAppDataAfterTests>
 
-        <SolutionDir>$(MSBuildProjectDirectory)\..\source\</SolutionDir>
+        <SolutionDir>$(MSBuildProjectDirectory)\..\app\</SolutionDir>
         <CurlCommand>curl -s -o out.txt --write-out &quot;%25%25{http_code}&quot;</CurlCommand>
     </PropertyGroup>
 
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-    <Import Project="..\source\.nuget\NuGet.targets" />
-    <Import Project="..\source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" />
+    <Import Project="$(SolutionDir).nuget\NuGet.targets" />
+    <Import Project="$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" />
 
     <Target Name="Test" DependsOnTargets="StartIISExpress">
         <MSBuild Projects="$(MSBuildThisFileFullPath)" Targets="CleanAppData" Properties="Phase=BeforeTest"/>
@@ -45,9 +45,9 @@
 
     <Target Name="Test_PutPackage">
         <PropertyGroup>
-            <PackagePath>$(MSBuildProjectDirectory)\..\source\packages\Microsoft.Bcl.Build.1.0.13\Microsoft.Bcl.Build.1.0.13.nupkg</PackagePath>
+            <PackagePath>$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.13\Microsoft.Bcl.Build.1.0.13.nupkg</PackagePath>
         </PropertyGroup>
-        <Error Text="$(MSBuildProjectDirectory)" Condition="!Exists('$(PackagePath)')"/>
+        <Error Text="Sample package not found at $(PackagePath)" Condition="!Exists('$(PackagePath)')"/>
         <Exec Command="$(NuGetCommand) push &quot;$(PackagePath)&quot; -Source $(HttpUrl)api/packages -NonInteractive"/>
     </Target>
 

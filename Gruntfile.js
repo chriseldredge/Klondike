@@ -42,6 +42,10 @@ module.exports = function (grunt) {
                 files: ['<%= yeoman.app %>/js/**/*.js', '!<%= yeoman.app %>/js/loader.js'],
                 tasks: ['transpile', 'concat']
             },
+            copy: {
+                files: ['<%= yeoman.app %>/bin/*', '<%= yeoman.app %>/Web.config', '<%= yeoman.app %>/Global.asax'],
+                tasks: ['copy:serve']
+            },
             livereload: {
                 options: {
                     livereload: 35729
@@ -50,8 +54,7 @@ module.exports = function (grunt) {
                     '<%= yeoman.build %>/*.html',
                     '<%= yeoman.build %>/styles/{,*/}*.css',
                     '<%= yeoman.build %>/js/**/*.js',
-                    '<%= yeoman.app %>}/js/loader.js',
-                    '<%= yeoman.app %>/images/{,*/}*.{gif,jpeg,jpg,png,svg,webp}'
+                    '<%= yeoman.build %>/images/{,*/}*.{gif,jpeg,jpg,png,svg,webp}'
                 ]
             }
         },
@@ -132,6 +135,7 @@ module.exports = function (grunt) {
                 'Gruntfile.js',
                 '<%= yeoman.app %>/js/{,*/}*.js',
                 '!<%= yeoman.app %>/js/loader.js',
+                '!<%= yeoman.app %>/js/formtemplate.min.js',
                 '!<%= yeoman.app %>/js/vendor/*',
                 'test/spec/{,*/}*.js'
             ]
@@ -265,7 +269,10 @@ module.exports = function (grunt) {
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
                         'styles/fonts/{,*/}*.*',
-                        'vendor/sass-bootstrap/fonts/*.*'
+                        'vendor/sass-bootstrap/fonts/*.*',
+                        'js/formtemplate.min.js',
+                        'Global.asax',
+                        'bin/*'
                     ]
                 }]
             },
@@ -281,7 +288,10 @@ module.exports = function (grunt) {
                         'images/**/*',
                         'styles/fonts/{,*/}*.*',
                         'js/loader.js',
-                        'vendor/**/*'
+                        'js/formtemplate.min.js',
+                        'vendor/**/*',
+                        'Global.asax',
+                        'bin/*'
                     ]
                 }]
             },
@@ -350,7 +360,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: '<%= yeoman.app %>/js/',
-                    src: ['**/*.js', '!loader.js'],
+                    src: ['**/*.js', '!loader.js', '!formtemplate.min.js'],
                     dest: '<%= yeoman.build %>/amd/',
                     ext: '.amd.js'
                 }]

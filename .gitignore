@@ -18,7 +18,7 @@ bin/
 obj/
 /build/
 /Release/
-/source/packages/
+/app/packages/
 _NCrunch*
 *.ncrunch*
 *.user
