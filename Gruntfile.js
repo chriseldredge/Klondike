@@ -195,6 +195,7 @@ module.exports = function (grunt) {
                         '<%= yeoman.dist %>/styles/{,*/}*.css',
                         '<%= yeoman.dist %>/images/{,*/}*.{gif,jpeg,jpg,png,webp}',
                         '!<%= yeoman.dist %>/images/package-default-icon-50x50.png',
+                        '!<%= yeoman.dist %>/js/formtemplate.min.js',
                         '<%= yeoman.dist %>/styles/fonts/{,*/}*.*'
                     ]
                 }
