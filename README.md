@@ -6,6 +6,8 @@ Ember front-end that builds on NuGet.Lucene for private package hosting.
 
 Available from the Releases tab on github.
 
+Alternatively, you can clone the [dist](dist) git repo to make upgrading easier.
+
 ## Building Locally
 
 This repository consists of two components:
@@ -76,6 +78,9 @@ IIS Express can be used to preview the contents of `./dist` including .NET back 
 You can also preview the debug version of the site by running
 
     grunt serve::iisexpress
+
+When using the latter target, live reloading will take place whenever you rebuild the
+c# project, e.g. from Visual Studio.
 
 ## Integration Tests
 
