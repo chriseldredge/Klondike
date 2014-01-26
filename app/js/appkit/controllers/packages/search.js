@@ -11,7 +11,7 @@ export default Ember.ObjectController.extend(BaseControllerMixin, PaginationSupp
         return Ember.isEmpty(this.get('query'));
     }.property('query'),
 
-    goTo: function(query) {
+    search: function(query) {
         if (Ember.isEmpty(query)) {
             this.transitionToRoute('packages.list');
         } else {
@@ -51,9 +51,6 @@ export default Ember.ObjectController.extend(BaseControllerMixin, PaginationSupp
         },
         'previousPage': function () {
             this.update(this.get('query'), this.get('page') - 1);
-        },
-        'goTo': function () {
-            this.goTo.apply(this, arguments);
         },
     },
 });

@@ -12,7 +12,7 @@ export default Ember.Controller.extend(BaseControllerMixin, {
 
     actions: {
         search: function () {
-            this.get('controllers.packages/search').goTo(this.get('searchBox'));
+            this.get('controllers.packages/search').search(this.get('searchBox'));
         },
         logIn: function() {
             var self = this;

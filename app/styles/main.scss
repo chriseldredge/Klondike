@@ -14,10 +14,6 @@ dl {
     background-color: #fafafa;
 }
 
-a[rel]:before {
-    content: '(rels: ' attr(rel) ') ';
-}
-
 *[itemtype]:before {
     content: '(microdata object: ' attr(itemtype) ') ';
 }

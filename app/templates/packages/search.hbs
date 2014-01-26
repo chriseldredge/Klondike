@@ -10,10 +10,10 @@
     Showing {{first}} to {{last}} of {{total}}.
 
     {{#if hasPrevious}}
-        <a href="#" {{action previousPage}}>Previous Page</a>
+        <a href="#" {{action previousPage}} rel="nofollow">Previous Page</a>
     {{/if}}
     {{#if hasNext}}
-        <a href="#" {{action nextPage}}>Next Page</a>
+        <a href="#" {{action nextPage}} rel="nofollow">Next Page</a>
     {{/if}}
 
     <ol {{bind-attr start=first}}>
@@ -32,7 +32,7 @@
             <div>
                 By:
                 {{#each author in authors}}
-                    <a href="#" {{action goTo author}}>{{author}}</a>
+                    {{#link-to 'packages.search' author rel="nofollow"}}{{author}}{{/link-to}}
                 {{/each}}
             </div>
             <div>
@@ -41,7 +41,7 @@
             <div>
                 Tags:
                 {{#each tag in tags}}
-                    <a href="#" {{action goTo tag}}>{{tag}}</a>
+                    {{#link-to 'packages.search' tag rel="nofollow"}}{{tag}}{{/link-to}}
                 {{/each}}
             </div>
         </li>
@@ -49,10 +49,10 @@
     </ol>
 
     {{#if hasPrevious}}
-        <a href="#" {{action previousPage}}>Previous Page</a>
+        <a href="#" {{action previousPage}} rel="nofollow">Previous Page</a>
     {{/if}}
     {{#if hasNext}}
-        <a href="#" {{action nextPage}}>Next Page</a>
+        <a href="#" {{action nextPage}} rel="nofollow">Next Page</a>
     {{/if}}
 {{else}}
     No results :'(

@@ -7,14 +7,14 @@
                 |
                 <a href="#" {{action 'logOut'}}>Sign Out</a>
             {{else}}
-                <a href="#" {{action 'logIn'}}>Sign In</a>
+                {{#link-to 'login' rel="nofollow"}}Sign In{{/link-to}}
             {{/if}}
         </nav>
         {{/if}}
         <nav>
             {{#link-to 'index'}}Home{{/link-to}}
             {{#link-to 'packages.list'}}Packages{{/link-to}}
-            {{#link-to 'admin'}}Admin{{/link-to}}
+            {{#link-to 'admin' rel="nofollow"}}Admin{{/link-to}}
             <a {{bind-attr href=apiUrl}}>Api</a>
         </nav>
         <div class="search-box">
