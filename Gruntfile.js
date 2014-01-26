@@ -430,31 +430,20 @@ module.exports = function (grunt) {
         server = server || 'connect'; // or iisexpress
         var serverTarget = server + ':' + target;
 
-        if (target === 'dist') {
-            return grunt.task.run(['build', serverTarget, 'wait-forever']);
-        }
-
         grunt.event.once('iisexpress.done', function() {
             grunt.log.writeln();
             grunt.log.writeln('IIS Express exited. Stopping.');
             process.exit();
         });
 
-        grunt.task.run([
-            'setVersionWithCommit',
-            'clean:serve',
-            'copy:serve',
-            'copy:nprogress',
-            'concurrent:serve',
-            'exec:msbuild:serve',
-            'autoprefixer',
-            'emberTemplates',
-            'transpile',
-            'concat',
-            'preprocess:serve',
-            serverTarget,
-            'watch'
-        ]);
+        var tasks;
+        if (target === 'dist') {
+            tasks = ['build', serverTarget, 'wait-forever'];
+        } else {
+            tasks = ['stage', serverTarget, 'watch'];
+        }
+
+        grunt.task.run(tasks);
     });
 
     grunt.registerTask('test', [
@@ -489,8 +478,22 @@ module.exports = function (grunt) {
         'uglify',
         'rev',
         'usemin',
+        'exec:msbuild:dist',
         'copy:dist',
-        'exec:msbuild:dist'
+    ]);
+
+    grunt.registerTask('stage', [
+        'setVersionWithCommit',
+        'clean:serve',
+        'exec:msbuild:serve',
+        'copy:serve',
+        'copy:nprogress',
+        'concurrent:serve',
+        'autoprefixer',
+        'emberTemplates',
+        'transpile',
+        'concat',
+        'preprocess:serve',
     ]);
 
     grunt.registerTask('default', [
