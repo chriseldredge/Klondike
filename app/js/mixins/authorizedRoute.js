@@ -32,4 +32,31 @@ export default Ember.Mixin.create({
             });
         });
     },
+
+    activate: function() {
+        var self = this;
+        var session = this.get('session');
+
+        var observer = function() {
+            Ember.run.once(function() {
+                if (!session.get('isLoggedIn')) {
+                    self.transitionTo(self.get('index'));
+                } else {
+                    session.isAllowed(self.get('authorizedApiName')).then(function(result) {
+                        if (!result) {
+                            self.transitionTo('denied');
+                        }
+                    });
+                }
+            });
+        };
+
+        this.set('_sessionUserObserver', observer);
+        session.addObserver('user', observer);
+    },
+
+    deactivate: function() {
+        var session = this.get('session');
+        session.removeObserver('user', this.get('_sessionUserObserver'));
+    }
 });
