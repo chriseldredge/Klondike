@@ -23,11 +23,8 @@ var RestApi = Ember.Deferred.extend({
             type: 'GET',
             success: function (data) {
                 self.set('apiInfo', self._buildApiDictionary(data));
-                if (self._setPackageSource()) {
-                    self.resolve(self);
-                } else {
-                    self.reject('Failed to find Packages.OData API in response from ' + url);
-                }
+                self._setPackageSource();
+                self.resolve(self);
             },
             fail: function(xhr, status) {
                 self.reject('ajax call to ' + url + ' failed: ' + status + '(' + xhr.status + ')');
@@ -150,13 +147,7 @@ var RestApi = Ember.Deferred.extend({
     },
 
     _setPackageSource: function () {
-        var api = this._lookupApi('Packages.OData');
-        if (!api) {
-            this.reject('Failed to locate Packages.OData api endpoint.');
-            return false;
-        }
-
-        var href = api.href;
+        var href = this.get('apiUrl');
 
         if (href[href.length - 1] !== '/') {
             href += '/';
@@ -165,8 +156,8 @@ var RestApi = Ember.Deferred.extend({
         if (href.indexOf('//') === -1) {
             href = window.location.protocol + '//' + window.location.host + href;
         }
+
         this.set('packageSourceUri', href);
-        return true;
     },
 
     _hrefToAbsolute: function(href) {

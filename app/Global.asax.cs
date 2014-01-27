@@ -14,6 +14,7 @@ using NuGet.Lucene.Web.Filters;
 using NuGet.Lucene.Web.Formatters;
 using NuGet.Lucene.Web.MessageHandlers;
 using AspNet.WebApi.HtmlMicrodataFormatter;
+using RouteNames = NuGet.Lucene.Web.RouteNames;
 
 namespace Klondike
 {
@@ -30,12 +31,19 @@ namespace Klondike
             ConfigureWebApi(GlobalConfiguration.Configuration);
 
             MapApiRoutes(GlobalConfiguration.Configuration);
+            RouteMapper.MapNuGetClientRedirectRoutes(GlobalConfiguration.Configuration, RouteMapper.PathPrefix);
             RouteMapper.MapApiRoutes(GlobalConfiguration.Configuration);
             RouteMapper.MapDataServiceRoutes(RouteTable.Routes);
         }
 
         private void MapApiRoutes(HttpConfiguration configuration)
         {
+            configuration.Routes.MapHttpRoute("Root NuGet Client Redirect",
+                "",
+                new {},
+                new { userAgent = new NuGetUserAgentConstraint() },
+                new RedirectHandler(RouteNames.Packages.Feed, RouteNames.PackageFeedRouteValues) { AppendTrailingSlash = true });
+
             configuration.Routes.MapHttpRoute("Version", "api/version",
                 new {controller = "Meta"});
         }

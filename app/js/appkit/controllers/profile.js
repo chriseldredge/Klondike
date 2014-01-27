@@ -2,7 +2,7 @@ import BaseControllerMixin from 'mixins/baseControllerMixin';
 
 export default Ember.ObjectController.extend(BaseControllerMixin, {
     pushApiName: 'packages.putPackage',
-    pushUri: '',
+    pushUriBinding: 'App.restApi.packageSourceUri',
     canPushPackages: false,
 
     init: function() {
@@ -14,9 +14,6 @@ export default Ember.ObjectController.extend(BaseControllerMixin, {
         var self = this;
         App.session.isAllowed(this.get('pushApiName')).then(function(result) {
             self.set('canPushPackages', result);
-            App.restApi.getApi(self.get('pushApiName')).then(function(api) {
-                self.set('pushUri', api.href);
-            });
         });
     }.observes('App.session.user'),
 
