@@ -58,3 +58,14 @@ footer {
         content: '';
     }
 }
+
+#status-code {
+    position: absolute;
+    top: 0;
+    font-size: 300pt;
+    color: #ddd;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    z-index: -1000;
+}
