@@ -48,7 +48,7 @@
             <PackagePath>$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.13\Microsoft.Bcl.Build.1.0.13.nupkg</PackagePath>
         </PropertyGroup>
         <Error Text="Sample package not found at $(PackagePath)" Condition="!Exists('$(PackagePath)')"/>
-        <Exec Command="$(NuGetCommand) push &quot;$(PackagePath)&quot; -Source $(HttpUrl)api/packages -NonInteractive"/>
+        <Exec Command="$(NuGetCommand) push &quot;$(PackagePath)&quot; -Source $(HttpUrl) -NonInteractive"/>
     </Target>
 
     <Target Name="Test_InstallPackageFromMirror">
@@ -56,7 +56,7 @@
             <WorkDir>$(MSBuildProjectDirectory)\tmp</WorkDir>
         </PropertyGroup>
         <MakeDir Directories="$(WorkDir)"/>
-        <Exec Command="$(NuGetCommand) install NuGet.Core -Source $(HttpUrl)api/odata"
+        <Exec Command="$(NuGetCommand) install NuGet.Core -Source $(HttpUrl)"
             WorkingDirectory="$(WorkDir)"/>
         <CallTarget Targets="Clean_InstallPackageFromMirror" />
         <OnError ExecuteTargets="Clean_InstallPackageFromMirror"/>
@@ -75,9 +75,9 @@
             <NuGetCacheDir>$(LocalAppData)\NuGet\Cache</NuGetCacheDir>
         </PropertyGroup>
         <MakeDir Directories="$(WorkDir)"/>
-        <WriteLinesToFile File="$(WorkDir)\packages.config" Overwrite="true" Lines="&lt;packages&gt;&lt;package id=&quot;NuGet.Core&quot; version=&quot;2.7.2&quot;/&gt;&lt;/packages&gt;"/>
+        <WriteLinesToFile File="$(WorkDir)\packages.config" Overwrite="true" Lines="&lt;packages&gt;&lt;package id=&quot;NuGet.Server&quot; version=&quot;2.7.2&quot;/&gt;&lt;/packages&gt;"/>
 
-        <Exec Command="$(NuGetCommand) restore -Source $(HttpUrl)api/odata -PackagesDirectory . -NonInteractive"
+        <Exec Command="$(NuGetCommand) restore -Source $(HttpUrl) -PackagesDirectory . -NonInteractive"
             WorkingDirectory="$(WorkDir)"/>
         <CallTarget Targets="Clean_RestorePackageFromMirror" />
         <OnError ExecuteTargets="Clean_RestorePackageFromMirror"/>
