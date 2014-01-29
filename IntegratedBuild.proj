@@ -19,9 +19,8 @@
         <Delete Files="@(Trash)"/>
     </Target>
 
-    <Target Name="RestoreSolutionPackages" DependsOnTargets="CheckPrerequisites">
-        <Exec Command="&quot;$(SolutionDir)/.nuget/nuget.exe&quot; restore Klondike.sln -NonInteractive -Source http://www.nuget.org/api/v2/"
-              WorkingDirectory="$(SolutionDir)" />
+    <Target Name="RestoreSolutionPackages" DependsOnTargets="DownloadNuGetCommandLineClient">
+        <Exec Command="$(NuGetCommand) restore $(SolutionDir) -NonInteractive -Source http://www.nuget.org/api/v2/"/>
     </Target>
 
     <Target Name="Stage" DependsOnTargets="BuildSolution;TransformWebConfig"/>
@@ -70,5 +69,5 @@
         <Message Text="AssemblyInformationalVersion: $(AssemblyInformationalVersion)"/>
     </Target>
 
-    <Import Project="$(SolutionDir).nuget/NuGet.targets"/>
+    <Import Project="NuGet.targets"/>
 </Project>

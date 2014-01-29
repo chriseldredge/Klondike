@@ -16,9 +16,7 @@
         <CurlCommand>curl -s -o out.txt --write-out &quot;%25%25{http_code}&quot;</CurlCommand>
     </PropertyGroup>
 
-    <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-    <Import Project="$(SolutionDir).nuget\NuGet.targets" />
-    <Import Project="$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" />
+    <Import Project="..\NuGet.targets" />
 
     <Target Name="Test" DependsOnTargets="StartIISExpress">
         <MSBuild Projects="$(MSBuildThisFileFullPath)" Targets="CleanAppData" Properties="Phase=BeforeTest"/>

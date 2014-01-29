@@ -25,3 +25,4 @@ _NCrunch*
 *.suo
 _ReSharper.*
 integration-tests/out.txt
+NuGet.exe
