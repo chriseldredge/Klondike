@@ -26,17 +26,17 @@
     <Target Name="Stage" DependsOnTargets="BuildSolution;TransformWebConfig"/>
 
     <Target Name="TransformWebConfig"
-            Inputs="$(SolutionDir)Klondike/Web.config;$(SolutionDir)Klondike/Web.$(Configuration).config"
+            Inputs="$(ProjectDir)Klondike/Web.config;$(ProjectDir)Klondike/Web.$(Configuration).config"
             Outputs="$(DistDir)Web.config">
 
         <MakeDir Directories="$(DistDir)"/>
 
         <Exec
-            Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(ProjectDir)/Web.config&quot; &quot;$(ProjectDir)/Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"
-            Condition="Exists('$(ProjectDir)/Web.$(Configuration).config')"/>
+            Command="&quot;$(SolutionDir)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(ProjectDir)Web.config&quot; &quot;$(ProjectDir)Web.Release.config&quot; &quot;$(DistDir)Web.config&quot;"
+            Condition="Exists('$(ProjectDir)Web.$(Configuration).config')"/>
 
-        <Copy SourceFiles="$(ProjectDir)/Web.config" DestinationFolder="$(DistDir)"
-            Condition="!Exists('$(ProjectDir)/Web.$(Configuration).config')"/>
+        <Copy SourceFiles="$(ProjectDir)Web.config" DestinationFolder="$(DistDir)"
+            Condition="!Exists('$(ProjectDir)Web.$(Configuration).config')"/>
     </Target>
 
     <Target Name="BuildSolution">
