@@ -33,6 +33,7 @@ namespace Klondike
             MapApiRoutes(GlobalConfiguration.Configuration);
             RouteMapper.MapNuGetClientRedirectRoutes(GlobalConfiguration.Configuration, RouteMapper.PathPrefix);
             RouteMapper.MapApiRoutes(GlobalConfiguration.Configuration);
+            RouteMapper.MapSymbolSourceRoutes(GlobalConfiguration.Configuration);
             RouteMapper.MapDataServiceRoutes(RouteTable.Routes);
         }
 
