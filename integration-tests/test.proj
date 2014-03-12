@@ -38,6 +38,7 @@
                 Test_Session_UserIsLocalAdministratorOnLocalhost;
                 Test_Session_InvalidApiKey_Unauthorized;
                 Test_OData_Filter_IdOrTitle_ToLowerContains;
+                Test_OData_Filter_DateTime;
                 "/>
     </Target>
 
@@ -112,6 +113,14 @@
 
         <Error Text="Expected 200, was $(HttpStatusCode)" Condition=" '$(HttpStatusCode)' != '200' " />
     </Target>
+
+    <Target Name="Test_OData_Filter_DateTime">
+        <Exec Command="$(CurlCommand) &quot;$(HttpUrl)api/odata/Packages()?$filter=Published+lt+datetime'2014-01-01T12:20:01'" ConsoleToMSBuild="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="HttpStatusCode"/>
+        </Exec>
+
+        <Error Text="Expected 200, was $(HttpStatusCode)" Condition=" '$(HttpStatusCode)' != '200' " />
+    </Target>
   <!-- test cases:
     put package to http://example/api/odata
     delete with same
@@ -142,6 +151,7 @@
     <Target Name="StartIISExpress" Condition="$(UseIISExpress)">
         <Error Message="DistDir property must be specified." Condition=" '$(DistDir)' == '' "/>
         <Error Message="DistDir path $(DistDir) does not exist." Condition="!Exists('$(DistDir)')"/>
+        <Message Text="Starting iisexpress in $(DistDir) port $(HttpPort)."/>
         <StartProcess
                 Command="c:\Program Files\IIS Express\iisexpress.exe"
                 Arguments="/clr:v4.0 /port:$(HttpPort) /path:&quot;$(DistDir.TrimEnd('\'))&quot;">

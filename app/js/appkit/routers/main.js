@@ -5,6 +5,7 @@ Router.map(function () {
     this.route('login');
     this.route('denied');
     this.route('profile');
+    this.route('symbols');
     this.route('admin');
     this.resource('packages', function() {
         this.route('search', { path: '/search/:query' });
