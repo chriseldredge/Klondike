@@ -1,6 +1,7 @@
 export default Ember.Deferred.extend({
     restApi: null,
     users: null,
+    fixedKey: null,
 
     user: null,
     usernameBinding: 'user.username',
@@ -17,7 +18,7 @@ export default Ember.Deferred.extend({
 
         var self = this;
         var settings = {};
-        var sessionKey = sessionStorage.getItem('key');
+        var sessionKey = sessionStorage.getItem('key') || this.get('fixedKey');
 
         if (!Ember.isEmpty(sessionKey)) {
             settings.beforeSend = function(xhr) {

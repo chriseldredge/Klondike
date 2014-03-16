@@ -5,7 +5,8 @@
     read-only operations do not.
 */
 var config = {
-    apiUrl: ''
+    apiUrl: '',
+    apiKey: ''
 };
 
 if (config.apiUrl.indexOf('://') === -1 && window && 'location' in window) {

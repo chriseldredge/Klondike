@@ -40,7 +40,7 @@ export default Ember.Application.extend({
         this.set('restApi', restApi);
         this.set('packages', PackageStore.create({restApi: restApi}));
         this.set('users', UserStore.create({restApi: restApi}));
-        this.set('session', Session.create({restApi: restApi, users: this.get('users')}));
+        this.set('session', Session.create({restApi: restApi, users: this.get('users'), fixedKey: config.apiKey}));
         this.set('packageIndexer', PackageIndexer.create({
             restApi: restApi,
             hubs: hubs,
