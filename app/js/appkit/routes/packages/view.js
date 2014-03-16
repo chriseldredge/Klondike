@@ -6,6 +6,8 @@ export default Ember.Route.extend(LazyRoute, {
         return App.packages.find(params.id, params.version);
     },
     setupController: function(controller, model) {
+        this._super(controller, model);
+
         if (Ember.isEmpty(model.versionHistory)) {
             ProgressIndicator.start();
             var fullModel = App.packages.find(model.id, model.version);
@@ -17,7 +19,5 @@ export default Ember.Route.extend(LazyRoute, {
         else {
             ProgressIndicator.done();
         }
-
-        controller.set('model', model);
     }
 });

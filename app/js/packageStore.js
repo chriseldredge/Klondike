@@ -12,11 +12,7 @@ export default Ember.Object.extend({
                 version: packageVersion
             }
         }).then(function(json) {
-            var results = Package.create(json.package, {
-                versionHistory: json.versionHistory
-            });
-            results.resolve(results);
-            return results;
+            return Package.create(json);
         });
     },
     search: function (query, page, pageSize, sort) {
@@ -54,7 +50,6 @@ export default Ember.Object.extend({
         for (var i = 0; i < hits.length; i++) {
             var model = Package.create(hits[i]);
             hits[i] = this.convertTags(model);
-            model.resolve(model);
         }
     },
     convertTags: function(hit) {

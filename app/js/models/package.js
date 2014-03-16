@@ -1,4 +1,4 @@
-export default Ember.Deferred.extend({
+export default Ember.Object.extend({
     id: '',
     version: '',
     versionHistory: []
