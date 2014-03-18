@@ -12,6 +12,13 @@ export default Ember.Object.extend({
                 version: packageVersion
             }
         }).then(function(json) {
+            if (json && json.versionHistory) {
+                for (var i=0; i<json.versionHistory.length; i++) {
+                    var model = Package.create(json.versionHistory[i], {id: json.id});
+                    model.set('active', model.get('version') === json.version);
+                    json.versionHistory[i] = model;
+                }
+            }
             return Package.create(json);
         });
     },

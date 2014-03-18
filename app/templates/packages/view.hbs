@@ -1,22 +1,22 @@
-<h1>{{id}} {{version}}</h1>
+<h1>{{displayTitle}} {{version}}</h1>
 <p>To install {{id}} run this command in the Package Manager Console</p>
 <pre><code>PM&gt; Install-Package {{id}} -Version {{version}} -Source {{packageSourceUri}}</code></pre>
 <p>{{summary}}</p>
 <p>{{description}}</p>
-<table>
+<table class="sortable">
     <caption>Version History</caption>
     <thead>
-        <th>Version</th>
-        <th>Downloads</th>
-        <th>Published</th>
+        <th {{action 'sortVersions' 'version'}}>Version</th>
+        <th {{action 'sortVersions' 'versionDownloadCount'}}>Downloads</th>
+        <th {{action 'sortVersions' 'lastUpdated'}}>Last Update</th>
     </thead>
     <tbody>
-        {{#each versionHistory}}
-          <tr>
-              <td>{{version}}</td>
-              <td>{{versionDownloadCount}}</td>
-              <td>{{lastUpdated}}</td>
-          </tr>
+        {{#each item in versionHistory}}
+            <tr {{bind-attr class='item.active'}}>
+                <td>{{#link-to 'packages.view' item}}{{item.version}}{{/link-to}}</td>
+                <td>{{item.versionDownloadCount}}</td>
+                <td>{{format-date item.lastUpdated}}</td>
+            </tr>
         {{/each}}
     </tbody>
 </table>

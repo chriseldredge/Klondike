@@ -14,6 +14,14 @@ dl {
     background-color: #fafafa;
 }
 
+table.sortable th {
+    cursor: pointer;
+}
+
+tr.active {
+    font-weight: bold;
+}
+
 *[itemtype]:before {
     content: '(microdata object: ' attr(itemtype) ') ';
 }

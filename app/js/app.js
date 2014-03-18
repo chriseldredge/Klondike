@@ -11,6 +11,11 @@ import CheckboxGroup from 'views/checkboxGroup';
 import FocusInputComponent from 'views/focusInputComponent';
 import UserStore from 'userStore';
 
+Ember.Handlebars.registerBoundHelper('format-date', function(date, options) {
+    var format = options.hash.format || 'dddd, MMMM Do YYYY, HH:mm:ss A Z'
+    return moment(date).format(format);
+});
+
 export default Ember.Application.extend({
     Resolver: Resolver,
     Footer: Footer,
