@@ -1,15 +1,15 @@
 <h1>{{username}}</h1>
 
 {{#if canPushPackages}}
-	<p>To push packages, first set your API Key:</p>
+    <p>To push packages, first set your API Key:</p>
 
-	<blockquote><code>nuget setApiKey {{key}} -Source {{pushUri}}</code></blockquote>
+    {{code-snippet content=setApiKeyCommandWithPrompt data=setApiKeyCommand}}
 
-	<p>To push packages, run</p>
+    <p>To push packages, run:</p>
 
-	<blockquote><code>nuget push [package.nupkg] -Source {{pushUri}}</code></blockquote>
+    {{code-snippet content=pushPackageCommandWithPrompt data=pushPackageCommand}}
 {{else}}
-	<p>Your NuGet API Key is {{key}}, but you are not allowed to push packages.</p>
+    <p>Your NuGet API Key is {{key}}, but you are not allowed to push packages.</p>
 {{/if}}
 
 <button {{action "changeKey"}}>Change API Key</button>

@@ -270,7 +270,9 @@ module.exports = function (grunt) {
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
                         'styles/fonts/{,*/}*.*',
+                        'vendor/font-awesome/fonts/*.*',
                         'vendor/sass-bootstrap/fonts/*.*',
+                        'vendor/zeroclipboard/ZeroClipboard.swf',
                         'js/formtemplate.min.js',
                         'Global.asax',
                         'bin/*'

@@ -8,6 +8,7 @@ import Session from 'session';
 import Footer from 'views/footer';
 import PackageIcon from 'views/packageIcon';
 import CheckboxGroup from 'views/checkboxGroup';
+import CodeSnippetComponent from 'views/codeSnippetComponent';
 import FocusInputComponent from 'views/focusInputComponent';
 import UserStore from 'userStore';
 
@@ -21,6 +22,7 @@ export default Ember.Application.extend({
     Footer: Footer,
     PackageIcon: PackageIcon,
     CheckboxGroup: CheckboxGroup,
+    CodeSnippetComponent: CodeSnippetComponent,
     FocusInputComponent: FocusInputComponent,
 
     //LOG_ACTIVE_GENERATION: true,

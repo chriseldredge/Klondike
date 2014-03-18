@@ -1,6 +1,8 @@
 <h1>{{displayTitle}} {{version}}</h1>
 <p>To install {{id}} run this command in the Package Manager Console</p>
-<pre><code>PM&gt; Install-Package {{id}} -Version {{version}} -Source {{packageSourceUri}}</code></pre>
+
+{{code-snippet content=installCommandWithPrompt data=installCommand}}
+
 <p>{{summary}}</p>
 <p>{{description}}</p>
 <table class="sortable">

@@ -11,6 +11,7 @@
         <script src="vendor/jquery/jquery.js"></script>
         <script src="vendor/jquery-signalr/jquery.signalR.js"></script>
         <script src="vendor/nprogress/nprogress.js"></script>
+        <script src="vendor/zeroclipboard/ZeroClipboard.js"></script>
         <script src="vendor/handlebars/handlebars.js"></script>
         <script src="vendor/momentjs/min/moment.min.js"></script>
         <!-- @ifdef DEBUG -->
@@ -100,10 +101,10 @@
             <h2>Getting Started</h2>
 
             <p>To use this repository from Visual Studio, add a new Package Source using this URL:</p>
-            <blockquote><code>{{packageSourceUri}}</code></blockquote>
+            {{code-snippet content=packageSourceUri}}
 
             <p>Alternatively, you can add the package source from the command line as follows:</p>
-            <blockquote><code>nuget sources add -name Klondike -source {{packageSourceUri}}</code></blockquote>
+            {{code-snippet content=packageSourceCommandWithPrompt data=packageSourceCommand}}
 
             <h2>Wait, What is this Thing?</h2>
             <p>

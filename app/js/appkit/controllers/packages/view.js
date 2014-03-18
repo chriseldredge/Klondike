@@ -2,6 +2,15 @@ import BaseControllerMixin from 'mixins/baseControllerMixin';
 import PaginationSupport from 'mixins/paginationSupport';
 
 export default Ember.ObjectController.extend(BaseControllerMixin, {
+    installCommand: function() {
+        return 'Install-Package ' + this.get('model.id')
+            + ' -Version ' + this.get('model.version')
+            + ' -Source ' + this.get('packageSourceUri');
+    }.property('model.id', 'model.version', 'packageSourceUri'),
+
+    installCommandWithPrompt: function() {
+        return 'PM> ' + this.get('installCommand');
+    }.property('installCommand'),
 
     sortColumn: 'version',
     sortAscending: true,

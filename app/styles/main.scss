@@ -1,11 +1,35 @@
-$icon-font-path: "/bower_components/sass-bootstrap/fonts/";
+$icon-font-path: "/vendor/sass-bootstrap/fonts/";
+$fa-font-path: "/vendor/font-awesome/fonts";
 
+@import 'font-awesome/scss/font-awesome';
 @import 'sass-bootstrap/lib/bootstrap';
 @import 'nprogress/nprogress';
 
 img.package-icon {
     width: 50px;
     height: auto;
+}
+
+div.code-snippet {
+    border: 5px solid silver;
+    background-color: #222;
+    border-radius: 5px;
+    padding: 1em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+}
+
+div.code-snippet button {
+    margin-right: 1em;
+}
+
+div.code-snippet input {
+    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+    background-color: #222;
+    color: #e2e2e2;
+    border:  0;
+    width: 60em;
 }
 
 dl {
@@ -22,6 +46,10 @@ tr.active {
     font-weight: bold;
 }
 
+.zeroclipboard-is-hover {
+    background-color: #eee;
+}
+
 *[itemtype]:before {
     content: '(microdata object: ' attr(itemtype) ') ';
 }
@@ -31,7 +59,7 @@ label > input[type="text"], label > input[type="password"] {
 }
 
 label {
-	display: block;
+    display: block;
 }
 
 nav.user-info {
