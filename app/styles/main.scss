@@ -49,6 +49,14 @@ dl {
     background-color: #fafafa;
 }
 
+#debug-icon .fa-ban {
+    color: red;
+}
+
+#debug-icon.symbols-available .fa {
+    color: green;
+}
+
 table.sortable th {
     cursor: pointer;
 }

@@ -1,10 +1,24 @@
-<h1>{{displayTitle}} {{version}}</h1>
-<p>To install {{id}} run this command in the Package Manager Console</p>
-
-{{code-snippet content=installCommandWithPrompt data=installCommand}}
+<h1>{{view App.PackageIcon contentBinding="this"}} {{displayTitle}} {{version}}</h1>
 
 <p>{{summary}}</p>
 <p>{{description}}</p>
+
+<p>To install {{id}} run this command in the Package Manager Console</p>
+{{code-snippet content=installCommandWithPrompt data=installCommand}}
+
+<p>
+    <span id="debug-icon" {{bind-attr class="symbolsAvailable :fa-stack :fa-2x"}}>
+        <i class="fa fa-bug fa-stack-1x"></i>
+        {{#unless symbolsAvailable}}
+        <i class="fa fa-ban fa-stack-2x"></i>
+        {{/unless}}
+    </span>
+
+    Symbols and source code are
+    {{#unless symbolsAvailable}}<strong>not</strong>{{/unless}}
+    available for this package.
+</p>
+
 <table class="sortable">
     <caption>Version History</caption>
     <thead>
