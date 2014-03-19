@@ -2,12 +2,14 @@ import zeroClipboard from 'zeroClipboard';
 
 export default Ember.View.extend({
     template: Ember.Handlebars.compile('<div class="code-snippet"><button class="copy-to-clipboard"><i class="fa fa-copy"></i></button>' +
+                                       '<div class="message"></div>' +
                                        '<input type="text" class="code-snippet" readonly="readonly" {{bind-attr value=view.content}}/></div>'),
     tagName: 'div',
 
     activateZeroClipboard: function() {
         var self = this;
         var button = this.$('button');
+        var copyCompleted = this.$('div.message');
         var client = new zeroClipboard(button);
 
         this.$('input').click(function(e) {
@@ -48,8 +50,17 @@ export default Ember.View.extend({
                 client.setText(self.get('data') || self.get('content'));
             });
 
+            client.on('mouseover', function(client, args) {
+                copyCompleted.text('Copy to clipboard');
+                copyCompleted.show();
+            });
+
+            client.on('mouseout', function(client, args) {
+                copyCompleted.fadeOut();
+            });
+
             client.on('complete', function(client, args) {
-                console.log('Copied text to clipboard:', args.text );
+                copyCompleted.text('Copied!');
             });
         });
     }.on('didInsertElement')

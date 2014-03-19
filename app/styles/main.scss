@@ -13,6 +13,7 @@ img.package-icon {
 div.code-snippet {
     border: 5px solid silver;
     background-color: #222;
+    color: #e2e2e2;
     border-radius: 5px;
     padding: 1em;
     margin-left: 2em;
@@ -28,8 +29,18 @@ div.code-snippet input {
     font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
     background-color: #222;
     color: #e2e2e2;
+
     border:  0;
     width: 60em;
+}
+
+div.code-snippet div.message {
+    display: none;
+    position: absolute;
+    background-color: #ffa;
+    color: black;
+    padding: 2px;
+    border: 1px solid black;
 }
 
 dl {
