@@ -14,7 +14,7 @@ export default Ember.Object.extend({
         }).then(function(json) {
             if (json && json.versionHistory) {
                 for (var i=0; i<json.versionHistory.length; i++) {
-                    var model = Package.create(json.versionHistory[i], {id: json.id});
+                    var model = Package.create(json.versionHistory[i]);
                     model.set('active', model.get('version') === json.version);
                     json.versionHistory[i] = model;
                 }
