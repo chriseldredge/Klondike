@@ -45,9 +45,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="AspNet.WebApi.HtmlMicrodataFormatter, Version=2.2.0.37, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AspNet.WebApi.HtmlMicrodataFormatter, Version=2.3.0.39, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\AspNet.WebApi.HtmlMicrodataFormatter.2.2.0\lib\net40\AspNet.WebApi.HtmlMicrodataFormatter.dll</HintPath>
+      <HintPath>packages\AspNet.WebApi.HtmlMicrodataFormatter.2.3.0\lib\net40\AspNet.WebApi.HtmlMicrodataFormatter.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -133,13 +133,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Nuget.Core.2.8.0\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Lucene, Version=2.9.2.45, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NuGet.Lucene, Version=2.9.3.46, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\NuGet.Lucene.2.9.2\lib\net451\NuGet.Lucene.dll</HintPath>
+      <HintPath>packages\NuGet.Lucene.2.9.3\lib\net451\NuGet.Lucene.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Lucene.Web, Version=2.9.2.45, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NuGet.Lucene.Web, Version=2.9.3.46, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\NuGet.Lucene.Web.2.9.2\lib\net451\NuGet.Lucene.Web.dll</HintPath>
+      <HintPath>packages\NuGet.Lucene.Web.2.9.3\lib\net451\NuGet.Lucene.Web.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
