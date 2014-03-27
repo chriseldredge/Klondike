@@ -3,12 +3,12 @@
     <PropertyGroup>
         <SolutionDir>$(MSBuildProjectDirectory)\app\</SolutionDir>
         <ProjectDir>$(SolutionDir)</ProjectDir>
-        <DistDir>$(MSBuildProjectDirectory)\.tmp\</DistDir>
+        <DistDir>$(ProjectDir)</DistDir>
         <TestsEnabled>true</TestsEnabled>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     </PropertyGroup>
 
-    <Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;GenerateVersionInfo;Stage;IntegrationTest"/>
+    <Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;GenerateVersionInfo;IntegrationTest"/>
 
     <Target Name="Clean">
         <ItemGroup>
