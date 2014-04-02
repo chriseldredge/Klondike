@@ -409,7 +409,9 @@ module.exports = function (grunt) {
                         '/p:VersionControlInfo=' + grunt.config.get('pkg.versionWithCommit'),
                     ];
 
-                    return '"' + args.join('" "') + '"';
+                    var cmdstr = '"' + args.join('" "') + '"';
+                    console.log("exec", cmdstr);
+                    return cmdstr;
                 }
             }
         }

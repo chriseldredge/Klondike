@@ -8,7 +8,7 @@
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     </PropertyGroup>
 
-    <Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;GenerateVersionInfo;IntegrationTest"/>
+    <Target Name="Build" DependsOnTargets="Clean;RestoreSolutionPackages;BuildSolution;IntegrationTest"/>
 
     <Target Name="Clean">
         <ItemGroup>
@@ -39,7 +39,7 @@
             Condition="!Exists('$(ProjectDir)Web.$(Configuration).config')"/>
     </Target>
 
-    <Target Name="BuildSolution">
+    <Target Name="BuildSolution" DependsOnTargets="GenerateVersionInfo">
         <MSBuild Projects="$(SolutionDir)/Klondike.sln" Targets="Build" Properties="RestorePackages=false;Configuration=$(Configuration)"/>
     </Target>
 
