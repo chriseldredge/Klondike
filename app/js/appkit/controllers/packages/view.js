@@ -12,24 +12,20 @@ export default Ember.ObjectController.extend(BaseControllerMixin, {
         return 'PM> ' + this.get('installCommand');
     }.property('installCommand'),
 
-    sortColumn: 'version',
-    sortAscending: true,
+    sortColumn: 'semanticVersion',
 
     actions: {
         sortVersions: function(column) {
             var arr = this.get('model.versionHistory');
             var prevSortColumn = this.get('sortColumn');
 
-            arr = arr.sortBy(column);
-
-            if (prevSortColumn === column && this.get('sortAscending')) {
-                arr = arr.reverse();
-                this.set('sortAscending', false);
+            if (prevSortColumn === column) {
+                arr = arr.copy().reverse();
             } else {
-                this.set('sortAscending', true);
+                arr = arr.sortBy(column).reverse();
+                this.set('sortColumn', column);
             }
 
-            this.set('sortColumn', column);
             this.set('model.versionHistory', arr);
         }
     }

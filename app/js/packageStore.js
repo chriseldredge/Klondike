@@ -18,6 +18,7 @@ export default Ember.Object.extend({
                     model.set('active', model.get('version') === json.version);
                     json.versionHistory[i] = model;
                 }
+                json.versionHistory = json.versionHistory.sortBy('semanticVersion').reverse();
             }
             return Package.create(json);
         });

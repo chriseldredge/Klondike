@@ -1,3 +1,5 @@
+import SemanticVersion from 'models/semanticVersion';
+
 export default Ember.Object.extend({
     id: '',
     version: '',
@@ -5,5 +7,9 @@ export default Ember.Object.extend({
 
     displayTitle: function() {
         return this.get('title') || this.get('id');
-    }.property('title', 'id')
+    }.property('title', 'id'),
+
+    semanticVersion: function() {
+        return SemanticVersion(this.get('version'));
+    }.property('version')
 });
