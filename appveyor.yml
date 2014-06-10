@@ -13,14 +13,13 @@ environment:
 install:
   # Get the latest stable version of Node 0.STABLE.latest
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
-  - cmd: npm install -g grunt-cli bower
-  - cmd: npm install
-  - cmd: bower install
-  - cmd: npm uninstall grunt # https://github.com/npm/npm/issues/3958
   - cmd: node --version
   - cmd: npm --version
+  - cmd: npm install -g grunt-cli bower
   - cmd: bower --version
   - cmd: grunt --version
+  - cmd: npm install
+  - cmd: bower install
   - cmd: grunt build
 
 # Don't actually build.
