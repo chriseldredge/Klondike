@@ -17,15 +17,11 @@ install:
   - cmd: npm install
   - cmd: bower install
   - cmd: npm uninstall grunt # https://github.com/npm/npm/issues/3958
+  - cmd: node --version
+  - cmd: npm --version
+  - cmd: bower --version
+  - cmd: grunt --version
   - cmd: grunt build
-
-# Post-install test scripts.
-test_script:
-  # Output useful info for debugging.
-  - node --version
-  - npm --version
-  - bower --version
-  - gem --version
 
 # Don't actually build.
 build: off
