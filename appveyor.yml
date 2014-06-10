@@ -21,8 +21,6 @@ install:
   - cmd: grunt --version
   - cmd: npm install
   - cmd: bower install
-
-before_build:
   - cmd: grunt build
 
 # Don't actually build.
