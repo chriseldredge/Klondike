@@ -23,7 +23,7 @@
         <Exec Command="$(NuGetCommand) restore $(SolutionDir) -NonInteractive -Source http://www.nuget.org/api/v2/"/>
     </Target>
 
-    <Target Name="Stage" DependsOnTargets="BuildSolution;TransformWebConfig"/>
+    <Target Name="Stage" DependsOnTargets="RestoreSolutionPackages;BuildSolution;TransformWebConfig"/>
 
     <Target Name="TransformWebConfig"
             Inputs="$(ProjectDir)Klondike/Web.config;$(ProjectDir)Klondike/Web.$(Configuration).config"
