@@ -1,0 +1,39 @@
+# http://www.appveyor.com/docs/appveyor-yml
+
+# Fix line endings in Windows. (runs before repo cloning)
+init:
+  - git config --global core.autocrlf input
+
+# Test against these versions of Node.js.
+environment:
+  matrix:
+    - nodejs_version: "0.11"
+
+# Allow failing jobs for bleeding-edge Node.js versions.
+matrix:
+  allow_failures:
+    - nodejs_version: "0.11"
+
+# Install scripts. (runs after repo cloning)
+install:
+  # Get the latest stable version of Node 0.STABLE.latest
+  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
+  # Typical npm stuff.
+  - npm install -g grunt-cli bower
+  - npm install
+  - bower install
+  - npm uninstall grunt # https://github.com/npm/npm/issues/3958
+
+# Post-install test scripts.
+test_script:
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  - bower --version
+  - gem --version
+
+# Don't actually build.
+build: grunt build
+
+# Set build version format here instead of in the admin panel.
+version: "{build}"
