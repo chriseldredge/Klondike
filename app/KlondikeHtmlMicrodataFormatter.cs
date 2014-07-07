@@ -18,17 +18,23 @@ namespace Klondike
         {
             const string stylePath = "~/styles/";
             var cssDir = HostingEnvironment.MapPath(stylePath);
-            var file = Path.GetFileName(Directory.GetFiles(cssDir, "*.css").First());
+            var first = Directory.GetFiles(cssDir, "*.css").FirstOrDefault();
+            if (first == null) return null;
+            var file = Path.GetFileName(first);
             return VirtualPathUtility.ToAbsolute(stylePath + file);
         }
 
         public override IEnumerable<XObject> BuildHeadElements(object value, HttpRequestMessage request)
         {
+            var headElements = base.BuildHeadElements(value, request);
+
+            if (_cssFilename.Value == null) return headElements;
+            
             var cssLink = new XElement("link",
                 new XAttribute("rel", "stylesheet"),
                 new XAttribute("href", _cssFilename.Value));
 
-            return base.BuildHeadElements(value, request).Union(new [] {cssLink});
+            return headElements.Union(new [] {cssLink});
         }
     }
 }
