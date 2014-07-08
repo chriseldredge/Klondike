@@ -11,8 +11,9 @@ export default Ember.Mixin.create({
             result = result.then(function(resolved) {
                 ProgressIndicator.done();
                 return resolved;
-            }, function() {
+            }, function(err) {
                 ProgressIndicator.done();
+                throw err;
             });
         }
 
