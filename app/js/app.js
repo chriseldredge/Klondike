@@ -1,5 +1,5 @@
 import config from 'config';
-import Resolver from 'resolver';
+import Resolver from 'ember/resolver';
 import RestApi from 'restApi';
 import Hubs from 'hubs';
 import PackageIndexer from 'packageIndexer';

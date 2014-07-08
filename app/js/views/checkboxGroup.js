@@ -10,7 +10,7 @@ export default Ember.View.extend({
 
     listItemView: Ember.View.extend({
         tagName: 'li',
-        template: Ember.Handlebars.compile('<label>{{input type="checkbox" name=name value=view.value checked=view.checked}} {{view.label}}</label>'),
+        template: Ember.Handlebars.compile('<label>{{input type="checkbox" name=name checked=view.checked}} {{view.label}}</label>'),
 
         selectionBinding: 'parentView.selection',
 
