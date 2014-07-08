@@ -1,7 +1,7 @@
 import PackagesSearchRoute from 'appkit/routes/packages/search';
 
 export default PackagesSearchRoute.extend({
-    model: function (params) {
+    loadModel: function (params) {
         return App.packages.search('', undefined, undefined, 'id');
     }
 });

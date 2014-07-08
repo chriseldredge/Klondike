@@ -5,7 +5,7 @@ export default Ember.Route.extend(LazyRoute, {
         this._super(transition);
         return App.session;
     },
-    model: function () {
+    loadModel: function () {
         return App.users.list();
     }
 });

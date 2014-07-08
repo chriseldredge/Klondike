@@ -2,7 +2,7 @@ import LazyRoute from 'mixins/lazyRoute';
 import ProgressIndicator from 'progressIndicator';
 
 export default Ember.Route.extend(LazyRoute, {
-    model: function (params) {
+    loadModel: function (params) {
         return App.packages.find(params.id, params.version);
     },
     setupController: function(controller, model) {
@@ -15,9 +15,6 @@ export default Ember.Route.extend(LazyRoute, {
                 model.setProperties(m);
                 ProgressIndicator.done();
             });
-        }
-        else {
-            ProgressIndicator.done();
         }
     }
 });
