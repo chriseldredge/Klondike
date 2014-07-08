@@ -3,17 +3,14 @@
   "version": "1.6.2",
   "dependencies": {
     "sass-bootstrap": "~3.0.0",
-    "jquery": "~2.0.3",
-    "jquery-signalr": "https://github.com/chriseldredge/bower-jquery-signalr.git",
-    "ember": "~1.3.1",
+    "jquery": "~2.1.1",
+    "jquery-signalr": "https://github.com/chriseldredge/bower-jquery-signalr.git#2.1.0",
+    "ember": "~1.7.0-beta.1",
     "ember-resolver": "git://github.com/stefanpenner/ember-jj-abrams-resolver.git#master",
     "nprogress": "~0.1.2",
     "zeroclipboard": "~1.3.2",
-    "font-awesome": "~4.0.3",
-    "momentjs": "~2.5.1"
+    "font-awesome": "~4.1.0",
+    "momentjs": "~2.7.0"
   },
-  "devDependencies": {},
-  "resolutions": {
-    "ember": "~1.3.1"
-  }
+  "devDependencies": {}
 }
