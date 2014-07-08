@@ -12,7 +12,9 @@ export default Ember.Controller.extend(BaseControllerMixin, {
 
     actions: {
         search: function () {
-            this.get('controllers.packages/search').search(this.get('searchBox'));
+            var query = this.get('searchBox');
+            var route = Ember.isEmpty(query) ? 'packages.list' : 'packages.search';
+            this.transitionToRoute(route, {queryParams: {query: query, page: 0}});
         },
         logIn: function() {
             var self = this;

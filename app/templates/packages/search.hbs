@@ -13,7 +13,7 @@
         <a href="#" {{action previousPage}} rel="nofollow">Previous Page</a>
     {{/if}}
     {{#if hasNext}}
-        <a href="#" {{action nextPage}} rel="nofollow">Next Page</a>
+        <a href="#" {{action nextPage}}>Next Page</a>
     {{/if}}
 
     <ol {{bind-attr start=first}}>
@@ -32,7 +32,7 @@
             <div>
                 By:
                 {{#each author in authors}}
-                    {{#link-to 'packages.search' author rel="nofollow"}}{{author}}{{/link-to}}
+                    {{#link-to 'packages.search' (query-params query=author page=0) rel="nofollow"}}{{author}}{{/link-to}}
                 {{/each}}
             </div>
             <div>
@@ -41,7 +41,7 @@
             <div>
                 Tags:
                 {{#each tag in tags}}
-                    {{#link-to 'packages.search' tag rel="nofollow"}}{{tag}}{{/link-to}}
+                    {{#link-to 'packages.search' (query-params query=tag page=0) rel="nofollow"}}{{tag}}{{/link-to}}
                 {{/each}}
             </div>
         </li>
