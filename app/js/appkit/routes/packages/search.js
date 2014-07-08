@@ -1,6 +1,6 @@
-import LazyRoute from 'mixins/lazyRoute';
+import ProgressIndicatorRoute from 'mixins/progressIndicatorRoute';
 
-export default Ember.Route.extend(LazyRoute, {
+export default Ember.Route.extend(ProgressIndicatorRoute, {
     queryParams: {
         query: {
             refreshModel: true
@@ -13,7 +13,7 @@ export default Ember.Route.extend(LazyRoute, {
         }
     },
 
-    loadModel: function (params) {
+    model: function (params) {
         return App.packages.search(params.query || '', params.page || 0, /* page size */ undefined, params.sortBy);
     },
 

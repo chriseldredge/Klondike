@@ -1,8 +1,8 @@
-import LazyRoute from 'mixins/lazyRoute';
 import ProgressIndicator from 'progressIndicator';
+import ProgressIndicatorRoute from 'mixins/progressIndicatorRoute';
 
-export default Ember.Route.extend(LazyRoute, {
-    loadModel: function (params) {
+export default Ember.Route.extend(ProgressIndicatorRoute, {
+    model: function (params) {
         return App.packages.find(params.id, params.version);
     },
     setupController: function(controller, model) {
