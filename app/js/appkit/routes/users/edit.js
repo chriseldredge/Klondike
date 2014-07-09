@@ -1,8 +1,6 @@
-import UsersAddRoute from 'appkit/routes/users/add';
 import ProgressIndicatorRoute from 'mixins/progressIndicatorRoute';
+import AuthorizedRoute from 'mixins/authorizedRoute';
 
-export default UsersAddRoute.extend(ProgressIndicatorRoute, {
-    model: function (params) {
-        return App.users.find(params.username);
-    }
+export default Ember.Route.extend(ProgressIndicatorRoute, AuthorizedRoute, {
+    authorizedApiName: 'users.post'
 });

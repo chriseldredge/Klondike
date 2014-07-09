@@ -1,5 +1,5 @@
 export default Ember.Route.extend({
     model: function () {
-        return App.restApi.ajax('symbols.getSettings');
+        return this.get('restClient').ajax('symbols.getSettings');
     }
 });

@@ -3,7 +3,7 @@ import BaseControllerMixin from 'mixins/baseControllerMixin';
 export default Ember.Controller.extend(BaseControllerMixin, {
     title: function() {
         var model = this.get('model');
-        return model.errorThrown || 'Oops';
+        return (model || {}).errorThrown || 'Oops';
     }.property('model'),
 
     statusCode: function() {

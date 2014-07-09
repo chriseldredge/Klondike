@@ -4,11 +4,11 @@ export default Ember.Controller.extend(BaseControllerMixin, {
     needs: 'packages/search',
     searchBoxBinding: Ember.Binding.oneWay('controllers.packages/search.query'),
 
-    isLoggedInBinding: Ember.Binding.oneWay('App.session.isLoggedIn'),
-    usernameBinding: Ember.Binding.oneWay('App.session.username'),
-    isSessionInitializedBinding: Ember.Binding.oneWay('App.session.isInitialized'),
+    isLoggedInBinding: Ember.Binding.oneWay('session.isLoggedIn'),
+    usernameBinding: Ember.Binding.oneWay('session.username'),
+    isSessionInitializedBinding: Ember.Binding.oneWay('session.isInitialized'),
 
-    apiUrlBinding: Ember.Binding.oneWay('App.restApi.apiUrl'),
+    apiUrlBinding: Ember.Binding.oneWay('restClient.apiUrl'),
 
     actions: {
         search: function () {
@@ -18,14 +18,14 @@ export default Ember.Controller.extend(BaseControllerMixin, {
         },
         logIn: function() {
             var self = this;
-            App.session.tryLogIn().then(function(success) {
+            this.get('session').tryLogIn().then(function(success) {
                 if (!success) {
                     self.transitionToRoute('login');
                 }
             });
         },
         logOut: function() {
-            App.session.logOut();
+            this.get('session').logOut();
         }
     }
 });

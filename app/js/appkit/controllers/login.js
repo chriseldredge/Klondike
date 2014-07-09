@@ -11,7 +11,7 @@ export default Ember.Controller.extend(BaseControllerMixin, {
             var self = this;
             self.set('errorMessage', '');
 
-            return App.session.logIn(this.get('username'), this.get('password'))
+            return this.get('session').logIn(this.get('username'), this.get('password'))
                 .then(function() {
                     var previousTransition = self.get('previousTransition');
 

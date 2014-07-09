@@ -2,14 +2,6 @@ export default Ember.Mixin.create({
     _permissionObservers: [],
 
     init: function() {
-        if (!this.get('session')) {
-            if (typeof(App)==='undefined') {
-                throw 'Must explicitly set session property on ' + Ember.inspect(this) +
-                    ' or App.session must be available before init() is invoked.';
-            }
-            var sessionBinding = Ember.Binding.oneWay('App.session').to('session');
-            sessionBinding.connect(this);
-        }
         this.set('_permissionObservers', []);
         this._super();
     },

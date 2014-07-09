@@ -1,18 +1,16 @@
 var signalR = $.signalR;
 
 export default Ember.Deferred.extend({
-    restApi: null,
-
     init: function() {
-        var restApi = this.get('restApi');
+        var restClient = this.get('restClient');
 
-        if (!restApi) {
-            throw 'Must set restApi property on hub';
+        if (!restClient) {
+            throw 'Must set restClient property on hub';
         }
 
         var self = this;
 
-        restApi.getApi('Indexing.Hub').then(function (hubApi) {
+        restClient.getApi('Indexing.Hub').then(function (hubApi) {
             var url = hubApi.href;
             var hubUrl = url + '/hubs';
 
@@ -43,7 +41,7 @@ export default Ember.Deferred.extend({
             });
 
         }).catch(function(error) {
-            self.reject('RestApi failed: ' + error);
+            self.reject('restClient failed: ' + error);
         });
     },
 

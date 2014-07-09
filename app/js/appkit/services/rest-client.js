@@ -1,8 +1,10 @@
+import config from 'config';
+
 var RestApi = Ember.Deferred.extend({
     apiKeyRequestHeaderName: 'X-NuGet-ApiKey',
 
-    apiUrl: null,
-    session: null,
+    apiUrl: config.apiUrl,
+    apiKey: config.apiKey,
 
     apiInfo: {},
     packageSourceUri: null,
@@ -79,7 +81,7 @@ var RestApi = Ember.Deferred.extend({
 
         options.type = api.method;
 
-        var apiKey = this.get('session').get('key');
+        var apiKey = this.get('apiKey');
 
         if (!Ember.isEmpty(apiKey)) {
             var origBeforeSend = options.beforeSend;

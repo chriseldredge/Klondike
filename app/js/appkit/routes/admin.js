@@ -1,5 +1,5 @@
-﻿export default Ember.Route.extend({
+export default Ember.Route.extend({
     model: function () {
-        return App.packageIndexer;
+        return this.get('indexer');
     }
 });

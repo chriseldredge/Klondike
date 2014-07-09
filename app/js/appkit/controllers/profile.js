@@ -2,7 +2,7 @@ import BaseControllerMixin from 'mixins/baseControllerMixin';
 
 export default Ember.ObjectController.extend(BaseControllerMixin, {
     pushApiName: 'packages.putPackage',
-    pushUriBinding: 'App.restApi.packageSourceUri',
+    pushUriBinding: 'restClient.packageSourceUri',
     canPushPackages: false,
 
     setApiKeyCommand: function() {
@@ -28,14 +28,14 @@ export default Ember.ObjectController.extend(BaseControllerMixin, {
 
     sessionUserDidChange: function() {
         var self = this;
-        App.session.isAllowed(this.get('pushApiName')).then(function(result) {
+        this.get('session').isAllowed(this.get('pushApiName')).then(function(result) {
             self.set('canPushPackages', result);
         });
-    }.observes('App.session.user'),
+    }.observes('session.user'),
 
     actions: {
         changeKey: function() {
-            App.session.changeKey();
+            this.get('session').changeKey();
         }
     }
 });

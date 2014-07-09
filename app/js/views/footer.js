@@ -1,6 +1,6 @@
 export default Ember.View.extend({
     templateName: 'footer',
     tagName: 'footer',
-    contentBinding: 'App.packageIndexer.status',
+    contentBinding: 'controller.indexer.status',
     versionBinding: 'App.version'
 });

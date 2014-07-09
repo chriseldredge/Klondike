@@ -15,7 +15,7 @@ Router.map(function () {
     this.resource('users', function() {
         this.route('list', { path: '/' });
         this.route('add', { path: '/add' });
-        this.route('edit', { path: '/edit/*username' });
+        this.route('edit', { path: '/edit/*user_id' });
     });
 });
 

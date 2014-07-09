@@ -1,5 +1,4 @@
 export default Ember.Mixin.create({
-    sessionBinding: 'App.session',
     authorizedApiName: '',
 
     beforeModel: function(transition) {

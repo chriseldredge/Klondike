@@ -3,7 +3,6 @@ import UserPermissionObserver from 'mixins/userPermissionObserver';
 var signalR = $.signalR;
 
 export default Ember.Object.extend(UserPermissionObserver, {
-    restApi: null,
     hubs: null,
 
     status: {},
@@ -50,11 +49,11 @@ export default Ember.Object.extend(UserPermissionObserver, {
     }.observes('statusHub'),
 
     synchronize: function () {
-        this.get('restApi').ajax('indexing.synchronize');
+        this.get('restClient').ajax('indexing.synchronize');
     },
 
     cancel: function () {
-        this.get('restApi').ajax('indexing.cancel');
+        this.get('restClient').ajax('indexing.cancel');
     },
 
     isRunning: function () {

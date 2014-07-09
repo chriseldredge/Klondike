@@ -1,7 +1,8 @@
+import config from 'config';
+
 export default Ember.Deferred.extend({
-    restApi: null,
     users: null,
-    fixedKey: null,
+    fixedKey: config.apiKey,
 
     user: null,
     usernameBinding: 'user.username',
@@ -22,7 +23,7 @@ export default Ember.Deferred.extend({
 
         if (!Ember.isEmpty(sessionKey)) {
             settings.beforeSend = function(xhr) {
-                xhr.setRequestHeader(self.get('restApi').get('apiKeyRequestHeaderName'), sessionKey);
+                xhr.setRequestHeader(self.get('restClient').get('apiKeyRequestHeaderName'), sessionKey);
             };
         }
 
@@ -40,7 +41,7 @@ export default Ember.Deferred.extend({
     isAllowed: function(apiName, method) {
         var self = this;
 
-        return this.get('restApi').getApi(apiName, method).then(function (api) {
+        return this.get('restClient').getApi(apiName, method).then(function (api) {
             if (!api.requiresAuthentication) {
                 return true;
             }
@@ -90,7 +91,7 @@ export default Ember.Deferred.extend({
             data: { key: '' }
         };
 
-        var call = this.get('restApi').ajax('users.changeApiKey', settings);
+        var call = this.get('restClient').ajax('users.changeApiKey', settings);
 
         return call
             .then(function(data) {
@@ -104,7 +105,7 @@ export default Ember.Deferred.extend({
         var self = this;
 
         return Ember.Deferred.promise(function(deferred) {
-            return self.get('restApi').ajax(apiName, settings)
+            return self.get('restClient').ajax(apiName, settings)
                 .catch(function(error) {
                     self.set('user', null);
                     deferred.reject(error);
@@ -113,7 +114,7 @@ export default Ember.Deferred.extend({
                     json = json || {};
                     json.roles = Ember.A(json.roles || []);
 
-                    var user = self.get('users').createModel(json);
+                    var user = self.get('store').createModel('user', json);
 
                     self.set('user', user);
 
@@ -129,5 +130,6 @@ export default Ember.Deferred.extend({
         } else {
             sessionStorage.removeItem('key');
         }
+        this.get('restClient').set('apiKey', key);
     }.observes('key'),
 });
