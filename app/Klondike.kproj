@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\AspNet\Microsoft.Web.AspNet.Props" Condition="'$(VSToolsPath)' != ''" />
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>5ac23f67-ac36-4f64-8d94-645d9bcf4f80</ProjectGuid>
+    <OutputType>Web</OutputType>
+    <RootNamespace>Klondike</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(OutputType) == 'Console'">
+    <DebuggerFlavor>ConsoleDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(OutputType) == 'Web'">
+    <DebuggerFlavor>WebDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" Label="Configuration">
+  </PropertyGroup>
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DevelopmentServerPort>50268</DevelopmentServerPort>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="KlondikeHtmlMicrodataFormatter.cs" />
+    <Compile Include="MetaController.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="images\package-default-icon-50x50.png" />
+    <Content Include="index.html" />
+    <Content Include="js\app.js" />
+    <Content Include="js\appkit\adapters\user.js" />
+    <Content Include="js\appkit\controllers\admin.js" />
+    <Content Include="js\appkit\controllers\application.js" />
+    <Content Include="js\appkit\controllers\error.js" />
+    <Content Include="js\appkit\controllers\index.js" />
+    <Content Include="js\appkit\controllers\login.js" />
+    <Content Include="js\appkit\controllers\packages\list.js" />
+    <Content Include="js\appkit\controllers\packages\search.js" />
+    <Content Include="js\appkit\controllers\packages\view.js" />
+    <Content Include="js\appkit\controllers\profile.js" />
+    <Content Include="js\appkit\controllers\users\add.js" />
+    <Content Include="js\appkit\controllers\users\edit.js" />
+    <Content Include="js\appkit\controllers\users\list.js" />
+    <Content Include="js\appkit\routers\main.js" />
+    <Content Include="js\appkit\routes\admin.js" />
+    <Content Include="js\appkit\routes\application.js" />
+    <Content Include="js\appkit\routes\error.js" />
+    <Content Include="js\appkit\routes\login.js" />
+    <Content Include="js\appkit\routes\packages\list.js" />
+    <Content Include="js\appkit\routes\packages\search.js" />
+    <Content Include="js\appkit\routes\packages\view.js" />
+    <Content Include="js\appkit\routes\profile.js" />
+    <Content Include="js\appkit\routes\symbols.js" />
+    <Content Include="js\appkit\routes\users\add.js" />
+    <Content Include="js\appkit\routes\users\edit.js" />
+    <Content Include="js\appkit\routes\users\list.js" />
+    <Content Include="js\appkit\services\hubs.js" />
+    <Content Include="js\appkit\services\package-indexer.js" />
+    <Content Include="js\appkit\services\rest-client.js" />
+    <Content Include="js\appkit\stores\main.js" />
+    <Content Include="js\appkit\views\packages\list.js" />
+    <Content Include="js\appkit\views\users\add.js" />
+    <Content Include="js\config.js" />
+    <Content Include="js\formtemplate.min.js" />
+    <Content Include="js\initializers\dependencies.js" />
+    <Content Include="js\loader.js" />
+    <Content Include="js\mixins\authorizedRoute.js" />
+    <Content Include="js\mixins\baseControllerMixin.js" />
+    <Content Include="js\mixins\paginationSupport.js" />
+    <Content Include="js\mixins\progressIndicatorRoute.js" />
+    <Content Include="js\mixins\userPermissionObserver.js" />
+    <Content Include="js\models\package.js" />
+    <Content Include="js\models\searchResults.js" />
+    <Content Include="js\models\semanticVersion.js" />
+    <Content Include="js\models\user.js" />
+    <Content Include="js\packageStore.js" />
+    <Content Include="js\progressIndicator.js" />
+    <Content Include="js\session.js" />
+    <Content Include="js\userStore.js" />
+    <Content Include="js\views\checkboxGroup.js" />
+    <Content Include="js\views\codeSnippetComponent.js" />
+    <Content Include="js\views\focusInputComponent.js" />
+    <Content Include="js\views\footer.js" />
+    <Content Include="js\views\packageIcon.js" />
+    <Content Include="js\zeroClipboard.js" />
+    <Content Include="project.json" />
+    <Content Include="styles\main.scss" />
+    <Content Include="templates\admin.hbs" />
+    <Content Include="templates\denied.hbs" />
+    <Content Include="templates\error.hbs" />
+    <Content Include="templates\footer.hbs" />
+    <Content Include="templates\login.hbs" />
+    <Content Include="templates\packages\search.hbs" />
+    <Content Include="templates\packages\view.hbs" />
+    <Content Include="templates\profile.hbs" />
+    <Content Include="templates\symbols.hbs" />
+    <Content Include="templates\users\edit.hbs" />
+    <Content Include="templates\users\list.hbs" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\AspNet\Microsoft.Web.AspNet.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

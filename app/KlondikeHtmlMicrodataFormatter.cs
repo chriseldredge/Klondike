@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Web;
-using System.Web.Hosting;
 using System.Xml.Linq;
 using NuGet.Lucene.Web.Formatters;
 
@@ -12,6 +10,7 @@ namespace Klondike
 {
     public class KlondikeHtmlMicrodataFormatter : NuGetHtmlMicrodataFormatter
     {
+        /*
         private readonly Lazy<string> _cssFilename = new Lazy<string>(FindSylesheet);
 
         private static string FindSylesheet()
@@ -36,5 +35,6 @@ namespace Klondike
 
             return headElements.Union(new [] {cssLink});
         }
+        */
     }
 }

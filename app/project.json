@@ -1,0 +1,23 @@
+﻿{
+    "dependencies": {
+        "Microsoft.AspNet.Owin": "1.0.0-*",
+        "Microsoft.AspNet.FileSystems": "1.0.0-alpha2",
+        "Microsoft.AspNet.Server.IIS" : "1.0.0-alpha2",
+        "Microsoft.AspNet.Server.WebListener": "1.0.0-alpha2",
+        "Microsoft.AspNet.StaticFiles": "1.0.0-alpha2",
+        "Microsoft.Framework.ConfigurationModel.Json": "1.0.0-alpha2",
+        "Microsoft.Owin": "2.1.0",
+        "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0-alpha2",
+        "NuGet.Lucene.Web" : "3.0.0-alpha",
+        "Owin":  "1.0",
+        "Remotion.Linq": "1.15.9.0"
+    },
+    "commands": {
+        /* Change the port number when you are self hosting this application */
+        "web": "Microsoft.AspNet.Hosting --server Microsoft.AspNet.Server.WebListener --server.urls http://localhost:5000"
+    },
+    "configurations" : {
+        "net451" : { },
+        "k10" : { }
+    }
+}
