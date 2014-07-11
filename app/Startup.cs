@@ -16,15 +16,13 @@ namespace Klondike
         {
             app.Use(next => async context =>
                 {
-                // request is incoming
-                Console.WriteLine(string.Format(
-                        "{0} {1}{2}",
+                    await next(context);
+
+                    Console.WriteLine("{0} {1}{2} {3}",
                         context.Request.Method,
                         context.Request.PathBase,
-                        context.Request.Path));
-
-                // pass control to following components
-                await next(context);
+                        context.Request.Path,
+                        context.Response.StatusCode);
                 });
 
             app.UseStaticFiles();
