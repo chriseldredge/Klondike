@@ -1,4 +1,4 @@
-﻿{
+{
     "dependencies": {
         "Microsoft.AspNet.FileSystems": "1.0.0-alpha3-*",
         "Microsoft.AspNet.Hosting": "1.0.0-alpha3-*",
@@ -12,7 +12,8 @@
         "Nowin.vNext":  "0.1-alpha-t140701111049",
         "NuGet.Lucene.Web" : "3.0.0-alpha",
         "Owin":  "1.0",
-        "Remotion.Linq": "1.15.9.0"
+        "Remotion.Linq": "1.15.9.0",
+        "Rx-PlatformServices": "2.2.4"
     },
     "commands": {
         /* Change the port number when you are self hosting this application */
