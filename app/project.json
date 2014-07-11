@@ -1,5 +1,6 @@
 {
     "dependencies": {
+        "Common.Logging": "2.2.0",
         "Microsoft.AspNet.FileSystems": "1.0.0-alpha3-*",
         "Microsoft.AspNet.Hosting": "1.0.0-alpha3-*",
         "Microsoft.AspNet.Owin": "1.0.0-*",

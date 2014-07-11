@@ -1,4 +1,7 @@
 ﻿using Autofac;
+using Common.Logging;
+using Common.Logging.Configuration;
+using Common.Logging.Simple;
 using Klondike.Extensions;
 using Microsoft.AspNet.Builder;
 using NuGet.Lucene.Web;
@@ -14,15 +17,24 @@ namespace Klondike
     {
         public void Configure(IBuilder app)
         {
+            // create properties
+            var properties = new NameValueCollection();
+            properties["showDateTime"] = "true";
+            
+            // set Adapter
+            LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter(properties) { Level = LogLevel.Info };
+
+            var requestLog = LogManager.GetLogger("RequestLog");
+
             app.Use(next => async context =>
                 {
                     await next(context);
 
-                    Console.WriteLine("{0} {1}{2} {3}",
+                    requestLog.Info(m => m("{0} {1}{2} {3}",
                         context.Request.Method,
                         context.Request.PathBase,
                         context.Request.Path,
-                        context.Response.StatusCode);
+                        context.Response.StatusCode));
                 });
 
             app.UseStaticFiles();
