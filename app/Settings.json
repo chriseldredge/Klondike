@@ -1,0 +1,123 @@
+﻿{
+    /*
+      Optional remote package repository to mirror packages from.
+    */
+    "packageMirrorTargetUrl": "http://www.nuget.org/api/v2/",
+
+    /*
+      When false, only check mirror when package being requested is not
+      present in local repository, or all packages with matching ID in local repository
+      were previously mirrored. This is an optimization to prevent looking
+      up packages that are private or locally hosted and will never be present
+      in the upstream repository.
+      
+      When true, always check mirror for available packages.
+    */
+    "alwaysCheckMirror": false,
+
+    /*
+      Determines if an Api Key is required to push/delete packages from the server.
+    */
+    "allowAnonymousPackageChanges": false,
+
+    /*
+      Determines if requests on a local address (::1, 127.0.0.1) are automatically
+      granted adminstrative roles. Enabling this flag allows a local user to create
+      accounts on a freshly installed system where there is not already an admin account.
+    */
+    "handleLocalRequestsAsAdmin": false,
+
+    /*
+      Sets the api key for LocalAdministrator to a fixed value. Useful alternative
+      to configuring more complex authentication schemes. When left blank,
+      a GUID will be generated and assigned to the LocalAdministrator account
+      when handleLocalRequestsAsAdmin is true.
+    */
+    "localAdministratorApiKey": "",
+
+    /*
+      When true, Access-Control-Allow-Origin and related headers will be added to
+      requests handled by Web Api allowing web applications to invoke Api methods
+      and access content in the response.
+    */
+    "enableCrossDomainRequests": false,
+
+    /*
+      Change the path to the packages folder. Default is ~/App_Data/Packages.
+      This can be a virtual or physical path.
+    */
+    "packagesPath": "",
+
+    /*
+      Change the path to where the lucene index is stored. Default is ~/App_Data/Lucene.
+
+      For best performance, the index should be stored on a local disk outside
+      of the document root. Storing the index outside of IIS prevents asp.net from
+      being sent file change notifications whenever the index is modified.
+
+      This can be a virtual or physical path.
+    */
+    "lucenePath": "",
+
+    /*
+      Change the path where contents of symbol packages are stored. Default is ~/App_Data/Symbols.
+
+      For best performance, the contents should be stored on a local disk outside
+      of the document root. Storing the index outside of IIS prevents asp.net from
+      being sent file change notifications whenever the index is modified.
+
+      This can be a virtual or physical path.
+    */
+    "symbolsPath": "",
+
+    /*
+      Specifies the path to Debugging Tools for Windows utilities used
+      to process symbol packages.
+    */
+    "debuggingToolsPath": "",
+
+    /*
+      When true, enables a FileSystemWatcher that monitors the packagesPath
+      and automatically updates the Lucene index when packages are created,
+      modified, renamed or deleted.
+    */
+    "enablePackageFileWatcher": false,
+
+    /*
+      When true, scans the packagesPath and compares nupkg files with
+      the Lucene index and updates the Lucene index to match the file
+      system. This setting enables the Lucene index to be kept in sync
+      when package files change while this web app isn't running.
+    */
+    "synchronizeOnStart": false,
+
+    /*
+      When true, packages that are pushed will be stored in subdirectories
+      such as ${packagesPath}\${packageId}\${packageId}.{packageVersion}.nupkg,
+      and when false, all packages will be stored in the top level packagesPath
+      directory.
+    */
+    "groupPackageFilesById": true,
+
+    /*
+      Controls whether or not to show stack trace information and other details
+      to clients when unhandled exceptions occur. Enabling this flag may
+      disclose potentially sensitive information to clients.
+    */
+    "showExceptionDetails": false,
+
+    /*
+      roleMappings allows enterprise deployments to create aliases for roles
+      used by Klondike to existing groups in your Active Directory. If a user
+      is authenticated using Windows authentication (NTLM, etc), and they are a
+      member of the role in a value attribute, they will be granted the role in
+      a key attribute. Multiple groups can be specified delimited by commas.
+      Membership in any one role is sufficient to grant a Klondike role.
+    
+      Leaving the role values blank disables this feature for a given role.
+    */
+    "roleMappings": {
+        "PackageManager": "",
+        "AccountAdministrator": ""
+    }
+}

@@ -96,6 +96,7 @@
     <Content Include="js\views\packageIcon.js" />
     <Content Include="js\zeroClipboard.js" />
     <Content Include="project.json" />
+    <Content Include="Settings.json" />
     <Content Include="styles\main.scss" />
     <Content Include="templates\admin.hbs" />
     <Content Include="templates\denied.hbs" />
