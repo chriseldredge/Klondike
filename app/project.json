@@ -10,7 +10,7 @@
         "Microsoft.Owin": "2.1.0",
         "Nowin": "0.11.0",
         "Nowin.vNext":  "0.1-alpha-t140701111049",
-        "NuGet.Lucene.Web" : "3.0.0-alpha",
+        "NuGet.Lucene.Web" : "3.0.0-alpha-build60",
         "Owin":  "1.0",
         "Remotion.Linq": "1.15.9.0",
         "Rx-PlatformServices": "2.2.4"
