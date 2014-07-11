@@ -1,36 +1,35 @@
 ﻿using Autofac;
-using Owin;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using System.Web.Http;
+using Klondike.Extensions;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.StaticFiles;
-using Microsoft.Owin.Builder;
 using NuGet.Lucene.Web;
 using NuGet.Lucene.Web.Formatters;
+using Owin;
+using System;
+using System.Net.Http.Headers;
+using System.Web.Http;
 
 namespace Klondike
 {
-    using AppFunc = Func<IDictionary<string, object>, Task>;
-
-    using BuildFunc = Action<Func<Func<IDictionary<string, object>, Task>,
-                                  Func<IDictionary<string, object>, Task>>>;
-
     public class Startup : NuGet.Lucene.Web.Startup
     {
         public void Configure(IBuilder app)
         {
+            app.Use(next => async context =>
+                {
+                // request is incoming
+                Console.WriteLine(string.Format(
+                        "{0} {1}{2}",
+                        context.Request.Method,
+                        context.Request.PathBase,
+                        context.Request.Path));
+
+                // pass control to following components
+                await next(context);
+                });
+
             app.UseStaticFiles();
 
-            var appBuilder = new AppBuilder();
-            Configuration(appBuilder);
-            AppFunc appFunc = (AppFunc)appBuilder.Build(typeof(AppFunc));
-
-            BuildFunc buildFunc = app.UseOwin();
-            buildFunc(next => appFunc.Invoke);
+            app.UseOwinAppBuilder(Configuration);
         }
 
         protected override INuGetWebApiSettings CreateSettings()
@@ -63,30 +62,6 @@ namespace Klondike
             return formatter;
         }
 
-        class KlondikeSettings : NuGetWebApiSettings
-        {
-            private readonly string applicationBase;
-
-            public KlondikeSettings()
-            {
-                applicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase ?? Directory.GetCurrentDirectory();
-            }
-
-            protected override string MapPathFromAppSetting(string key, string defaultValue)
-            {
-                var path = GetAppSetting(key, defaultValue);
-
-                if (path.StartsWith("~/"))
-                {
-                    path = path.Replace("~/", "");
-                }
-                
-                if (!Path.IsPathRooted(path))
-                {
-                    path = Path.Combine(applicationBase, path);
-                }
-                return path;
-            }
-        }
+        
     }
 }

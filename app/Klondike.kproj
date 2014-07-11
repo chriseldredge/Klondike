@@ -29,7 +29,9 @@
     <DevelopmentServerPort>50268</DevelopmentServerPort>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Extensions\OwinAppBuilderAdapterExtensions.cs" />
     <Compile Include="KlondikeHtmlMicrodataFormatter.cs" />
+    <Compile Include="KlondikeSettings.cs" />
     <Compile Include="MetaController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
