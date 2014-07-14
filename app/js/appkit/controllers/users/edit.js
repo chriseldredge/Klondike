@@ -53,14 +53,14 @@ export default Ember.ObjectController.extend(BaseControllerMixin, UserPermission
                 user.overwrite = false;
             }
 
-            var promise = App.users.update(user);
+            var promise = this.get('users').update(user);
 
             return this._wrapAjaxPromise(promise);
         },
         delete: function() {
             this.set('errorMessage', '');
 
-            var promise = App.users.delete(this.get('originalUsername'));
+            var promise = this.get('users').delete(this.get('originalUsername'));
             return this._wrapAjaxPromise(promise);
         },
         cancel: function() {

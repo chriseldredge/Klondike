@@ -2,16 +2,17 @@ import SearchResults from 'models/searchResults';
 import Package from 'models/package';
 
 export default Ember.Object.extend({
-    restApi: null,
     defaultPageSize: 10,
 
     find: function (packageId, packageVersion) {
-        return this.get('restApi').ajax('packages.getPackageInfo', {
+        console.log('get package info for ', packageId, packageVersion);
+        return this.get('restClient').ajax('packages.getPackageInfo', {
             data: {
                 id: packageId,
                 version: packageVersion
             }
         }).then(function(json) {
+            // TODO: move this into Package.init() or lazy-load it
             if (json && json.versionHistory) {
                 for (var i=0; i<json.versionHistory.length; i++) {
                     var model = Package.create(json.versionHistory[i]);
@@ -29,7 +30,7 @@ export default Ember.Object.extend({
 
         var self = this;
 
-        return this.get('restApi').ajax('packages.search', {
+        return this.get('restClient').ajax('packages.search', {
             data: {
                 query: query,
                 offset: page * pageSize,

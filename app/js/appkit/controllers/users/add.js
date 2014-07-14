@@ -15,7 +15,7 @@ export default UsersEditController.extend({
                 roles: this.get('roles')
             };
 
-            var promise = App.users.add(user);
+            var promise = this.get('users').add(user);
 
             return this._wrapAjaxPromise(promise);
         }

@@ -29,5 +29,14 @@ export default {
         app.inject('controller:application', 'indexer', 'service:package-indexer');
         app.inject('controller:admin', 'indexer', 'service:package-indexer');
         app.inject('route:admin', 'indexer', 'service:package-indexer');
+
+        // package adapter
+        app.inject('route:packages.list', 'packages', 'adapter:package');
+        app.inject('route:packages.search', 'packages', 'adapter:package');
+        app.inject('route:packages.view', 'packages', 'adapter:package');
+
+        // user adapter
+        app.inject('controller:users.add', 'users', 'adapter:user');
+        app.inject('controller:users.edit', 'users', 'adapter:user');
     }
 };

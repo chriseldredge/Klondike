@@ -14,7 +14,7 @@ export default Ember.Route.extend(ProgressIndicatorRoute, {
     },
 
     model: function (params) {
-        return App.packages.search(params.query || '', params.page || 0, /* page size */ undefined, params.sortBy);
+        return this.get('packages').search(params.query || '', params.page || 0, /* page size */ undefined, params.sortBy);
     },
 
     afterModel: function(results, transition) {
