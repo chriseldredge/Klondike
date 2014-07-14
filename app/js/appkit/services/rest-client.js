@@ -1,4 +1,5 @@
 import config from 'config';
+import ApplicationException from 'applicationException';
 
 var RestApi = Ember.Deferred.extend({
     apiKeyRequestHeaderName: 'X-NuGet-ApiKey',
@@ -15,7 +16,7 @@ var RestApi = Ember.Deferred.extend({
         var url = this.get('apiUrl') + '?nocache=' + new Date().getTime();
 
         if (!url) {
-            throw 'Must set apiUrl property on RestApi.';
+            throw new ApplicationException('Must set apiUrl property on RestApi.');
         }
 
         console.log('Loading ajax api info from', url);
@@ -74,7 +75,7 @@ var RestApi = Ember.Deferred.extend({
 
     _invokeAjaxApi: function(apiName, api, options) {
         if (!api) {
-            throw 'Rest API method not found: ' + apiName;
+            throw new ApplicationException('Rest API method not found: ' + apiName);
         }
 
         var self = this;
@@ -124,9 +125,9 @@ var RestApi = Ember.Deferred.extend({
         }
 
         if (matches.length === 0) {
-            throw 'no method matching ' + pattern;
+            throw new ApplicationException('no method matching ' + pattern);
         } else if (matches.length > 1) {
-            throw 'multiple APIs matched ' + apiName + '; must specify HTTP method';
+            throw new ApplicationException('multiple APIs matched ' + apiName + '; must specify HTTP method');
         }
 
         return matches[0];
@@ -139,7 +140,7 @@ var RestApi = Ember.Deferred.extend({
             param = param.substring(1, param.length - 1);
 
             if (!(param in options.data)) {
-                throw 'Must specify required parameter "' + param + '" for REST method "' + api.name + '"';
+                throw new ApplicationException('Must specify required parameter "' + param + '" for REST method "' + api.name + '"');
             }
 
             var value = options.data[param];

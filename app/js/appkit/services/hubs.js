@@ -1,3 +1,5 @@
+import ApplicationException from 'applicationException';
+
 var signalR = $.signalR;
 
 export default Ember.Deferred.extend({
@@ -5,7 +7,7 @@ export default Ember.Deferred.extend({
         var restClient = this.get('restClient');
 
         if (!restClient) {
-            throw 'Must set restClient property on hub';
+            throw new ApplicationException('Must set restClient property on hub');
         }
 
         var self = this;
@@ -48,13 +50,13 @@ export default Ember.Deferred.extend({
     getHub: function(hubName) {
         var hubs = this.get('hubs');
         if (!hubs) {
-            throw 'Hubs not loaded yet. Did promise complete?';
+            throw new ApplicationException('Hubs not loaded yet. Did promise complete?');
         }
 
         var hub = hubs[hubName];
 
         if (!hub) {
-            throw 'No such hub: ' + hubName;
+            throw new ApplicationException('No such hub: ' + hubName);
         }
 
         return hub;

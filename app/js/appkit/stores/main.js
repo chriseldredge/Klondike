@@ -1,3 +1,5 @@
+import ApplicationException from 'applicationException';
+
 var cache = {};
 
 function createHandler(funcName) {
@@ -6,12 +8,12 @@ function createHandler(funcName) {
         console.log('adapter:' + name + '.' + funcName, arguments);
         var adapter = this.container.lookup('adapter:' + name);
         if (!adapter) {
-            throw 'adapter:' + name + ' not registered in container';
+            throw new ApplicationException('The adapter "' + name + '" is not registered in container.');
         }
 
         var func = adapter[funcName];
         if (func === undefined) {
-            throw 'adapter ' + adapter + ' does not have a method ' + funcName;
+            throw new ApplicationException('The adapter "' + name + '" does not have a method named "' + funcName + '"');
         }
 
         return func.apply(adapter, arguments);
