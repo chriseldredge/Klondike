@@ -60,7 +60,7 @@ var RestApi = Ember.Deferred.extend({
             if (timeout) {
                 setTimeout(function() {
                     deferred.resolve();
-                }, 2000);
+                }, timeout);
             } else {
                 deferred.resolve();
             }
