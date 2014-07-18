@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" InitialTargets="Validate" DefaultTargets="Bootstrap" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!--
+        The main Ciao point of entry. Continuous Integration builds should invoke
+        this build script with MSBuild 4.0 or later.
+
+        Do not modify this file. To customize your build, modify Ciao.props and Ciao.targets.
+    -->
+    <Import Project="Ciao.props" Condition="Exists('Ciao.props')"/>
+
+    <PropertyGroup>
+        <BuildDirectory Condition=" '$(BuildDirectory)' == '' ">$([System.IO.Path]::Combine('$(MSBuildThisFileDirectory)', 'build'))$([System.IO.Path]::DirectorySeparatorChar)</BuildDirectory>
+        <ToolsDirectory Condition=" '$(ToolsDirectory)' == '' ">$([System.IO.Path]::Combine('$(BuildDirectory)', 'tools'))$([System.IO.Path]::DirectorySeparatorChar)</ToolsDirectory>
+        <NuGetExePath Condition=" '$(NuGetExePath)' == '' ">$([System.IO.Path]::Combine('$(ToolsDirectory)', 'NuGet.exe'))</NuGetExePath>
+
+        <NuGetCommand Condition=" '$(OS)' == 'Windows_NT' ">"$(NuGetExePath)"</NuGetCommand>
+        <NuGetCommand Condition=" '$(OS)' != 'Windows_NT' ">mono --runtime=v4.0.30319 $(NuGetExePath)</NuGetCommand>
+        <NuGetClientDownloadUrl Condition=" '$(NuGetClientDownloadUrl)' == '' ">https://www.nuget.org/nuget.exe</NuGetClientDownloadUrl>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <BootstrapDependsOn>
+            DownloadNuGetCommandLineClient;
+            RestoreSolutionPackages;
+            ResolveCiao;
+            Build
+        </BootstrapDependsOn>
+    </PropertyGroup>
+
+    <Target Name="Validate">
+        <Error Text="$(MSBuildThisFileDirectory)Ciao.props must define the SolutionFile property" Condition=" '$(SolutionFile)' == '' "/>
+        <Error Text="The Solution $(SolutionFile) does not exist" Condition="!Exists('$(SolutionFile)')"/>
+    </Target>
+
+    <Target Name="Bootstrap" DependsOnTargets="$(BootstrapDependsOn)"/>
+
+    <Target Name="RestoreSolutionPackages" DependsOnTargets="DownloadNuGetCommandLineClient">
+        <Exec Command="$(NuGetCommand) restore &quot;$(SolutionFile)&quot; -NonInteractive -Source http://www.nuget.org/api/v2/"/>
+    </Target>
+
+    <Target Name="ResolveCiao" Condition=" '$(CiaoPackageEntryProject)' == '' ">
+        <PropertyGroup>
+            <SolutionDirectory Condition="Exists('$(SolutionFile)')">$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetFullPath('$(SolutionFile)'))))$([System.IO.Path]::DirectorySeparatorChar)</SolutionDirectory>
+            <SolutionPackageDirectory Condition="Exists('$(SolutionDirectory)')">$([System.IO.Path]::Combine('$(SolutionDirectory)', 'packages'))$([System.IO.Path]::DirectorySeparatorChar)</SolutionPackageDirectory>
+        </PropertyGroup>
+        <ItemGroup>
+            <CiaoPackageEntryProject Include="$(SolutionPackageDirectory)Ciao.*\tools\Ciao.proj"/>
+        </ItemGroup>
+        <CreateProperty Value="%(CiaoPackageEntryProject.Identity)">
+            <Output TaskParameter="Value" PropertyName="CiaoPackageEntryProject"/>
+        </CreateProperty>
+        <Error Text="Unable to locate Caio package in Solution packages directory $(SolutionPackageDirectory) (is Ciao installed in the Solution?)" Condition="!Exists('$(CiaoPackageEntryProject)')"/>
+    </Target>
+
+    <Target Name="Build">
+        <MSBuild Projects="$(CiaoPackageEntryProject)" Targets="$(CiaoTargets)" Properties="ProjectDirectory=$(MSBuildThisFileDirectory)"/>
+    </Target>
+
+    <Target Name="DownloadNuGetCommandLineClient" Condition="!Exists('$(NuGetExePath)')">
+        <MakeDir Directories="$(ToolsDirectory)"/>
+        <Message Text="Downloading $(NuGetClientDownloadUrl) to $(NuGetExePath)"/>
+        <DownloadNuGet OutputFilename="$(NuGetExePath)" Url="$(NuGetClientDownloadUrl)" Condition=" '$(OS)' == 'Windows_NT' "/>
+        <Exec Command="curl -L -o &quot;$(NuGetExePath)&quot; $(NuGetClientDownloadUrl)" Condition=" '$(OS)' != 'Windows_NT' "/>
+    </Target>
+
+    <UsingTask TaskName="DownloadNuGet" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+        <ParameterGroup>
+            <Url ParameterType="System.String" Required="true" />
+            <OutputFilename ParameterType="System.String" Required="true" />
+        </ParameterGroup>
+        <Task>
+            <Reference Include="System.Core" />
+            <Using Namespace="System" />
+            <Using Namespace="System.IO" />
+            <Using Namespace="System.Net" />
+            <Using Namespace="Microsoft.Build.Framework" />
+            <Using Namespace="Microsoft.Build.Utilities" />
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[
+                try {
+                    OutputFilename = Path.GetFullPath(OutputFilename);
+
+                    WebClient webClient = new WebClient();
+                    webClient.DownloadFile(Url, OutputFilename);
+
+                    return true;
+                }
+                catch (Exception ex) {
+                    Log.LogErrorFromException(ex);
+                    return false;
+                }
+            ]]>
+            </Code>
+        </Task>
+    </UsingTask>
+</Project>
