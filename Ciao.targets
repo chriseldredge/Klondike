@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppDir>$([System.IO.Path]::Combine('$(ProjectDirectory)', 'app'))$([System.IO.Path]::DirectorySeparatorChar)</AppDir>
+    <StagingDir Condition=" '$(DistDir)' != '' ">$([System.IO.Path]::Combine('$(ProjectDirectory)', '$(DistDir)'))$([System.IO.Path]::DirectorySeparatorChar)</StagingDir>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+      CopyOutputsToDistDir;
+      TransformWebConfig;
+    </BuildDependsOn>
+    <TestDependsOn>
+      $(TestDependsOn);
+      IntegrationTest
+    </TestDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CopyOutputsToDistDir"
+          Condition=" '$(StagingDir)' != '' ">
+    
+    <ItemGroup>
+      <Content Include="$(AppDir)**\*.dll"/>
+      <Content Include="$(AppDir)**\*.pdb"/>
+      <Content Include="$(AppDir)**\*.xml"/>
+      <Content Include="$(AppDir)Global.asax"/>
+      <Content Remove="$(AppDir)obj\**\*;$(AppDir)bin\Debug\**\*;$(AppDir)bin\Release\**\*"/>
+    </ItemGroup>
+    
+    <Copy SourceFiles="@(Content)" DestinationFolder="$(StagingDir)%(RecursiveDir)"
+          SkipUnchangedFiles="true"/>
+  </Target>
+  
+  <Target Name="TransformWebConfig"
+          Condition=" '$(StagingDir)' != '' "
+          Inputs="$(AppDir)Web.config;$(AppDir)Web.$(Configuration).config"
+          Outputs="$(StagingDir)Web.config">
+
+    <MakeDir Directories="$(StagingDir)"/>
+
+    <Exec
+        Command="&quot;$(SolutionDirectory)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(AppDir)Web.config&quot; &quot;$(AppDir)Web.$(Configuration).config&quot; &quot;$(StagingDir)Web.config&quot;"
+        Condition="Exists('$(AppDir)Web.$(Configuration).config')"/>
+
+    <Copy SourceFiles="$(AppDir)Web.config" DestinationFolder="$(StagingDir)"
+        Condition="!Exists('$(AppDir)Web.$(Configuration).config')"/>
+  </Target>
+
+  <Target Name="IntegrationTest" Condition=" '$(TestsEnabled)' == 'true' ">
+    <MSBuild Projects="$(ProjectDirectory)\integration-tests\test.proj" Properties="DistDir=$(StagingDir)"/>
+  </Target>
+</Project>

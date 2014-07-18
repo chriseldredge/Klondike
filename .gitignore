@@ -27,3 +27,4 @@ _NCrunch*
 _ReSharper.*
 integration-tests/out.txt
 NuGet.exe
+Klondike.sln.ide/
