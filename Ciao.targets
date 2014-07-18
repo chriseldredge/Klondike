@@ -4,7 +4,7 @@
     <AppDir>$([System.IO.Path]::Combine('$(ProjectDirectory)', 'app'))$([System.IO.Path]::DirectorySeparatorChar)</AppDir>
     <StagingDir Condition=" '$(DistDir)' != '' ">$([System.IO.Path]::Combine('$(ProjectDirectory)', '$(DistDir)'))$([System.IO.Path]::DirectorySeparatorChar)</StagingDir>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <BuildDependsOn>
       $(BuildDependsOn);
@@ -19,19 +19,18 @@
 
   <Target Name="CopyOutputsToDistDir"
           Condition=" '$(StagingDir)' != '' ">
-    
+
     <ItemGroup>
       <Content Include="$(AppDir)**\*.dll"/>
       <Content Include="$(AppDir)**\*.pdb"/>
       <Content Include="$(AppDir)**\*.xml"/>
-      <Content Include="$(AppDir)Global.asax"/>
       <Content Remove="$(AppDir)obj\**\*;$(AppDir)bin\Debug\**\*;$(AppDir)bin\Release\**\*"/>
     </ItemGroup>
-    
+
     <Copy SourceFiles="@(Content)" DestinationFolder="$(StagingDir)%(RecursiveDir)"
           SkipUnchangedFiles="true"/>
   </Target>
-  
+
   <Target Name="TransformWebConfig"
           Condition=" '$(StagingDir)' != '' "
           Inputs="$(AppDir)Web.config;$(AppDir)Web.$(Configuration).config"
