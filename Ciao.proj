@@ -35,7 +35,7 @@
     <Target Name="Bootstrap" DependsOnTargets="$(BootstrapDependsOn)"/>
 
     <Target Name="RestoreSolutionPackages" DependsOnTargets="DownloadNuGetCommandLineClient">
-        <Exec Command="$(NuGetCommand) restore &quot;$(SolutionFile)&quot; -NonInteractive -Source http://www.nuget.org/api/v2/"/>
+        <Exec Command="$(NuGetCommand) restore &quot;$(SolutionFile)&quot; -NonInteractive"/>
     </Target>
 
     <Target Name="ResolveCiao" Condition=" '$(CiaoPackageEntryProject)' == '' ">
