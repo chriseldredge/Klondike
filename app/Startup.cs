@@ -35,10 +35,15 @@ namespace Klondike
 
             formatter.AddHeadContent(
                 new XElement("script",
-                    new XAttribute("src", VirtualPathUtility.ToAbsolute("~/js/formtemplate.min.js")),
+                    new XAttribute("src", MapPath("~/js/formtemplate.min.js")),
                     new XText("")));
 
             return formatter;
+        }
+
+        protected virtual string MapPath(string virtualPath)
+        {
+            return VirtualPathUtility.ToAbsolute(virtualPath);
         }
     }
 }
