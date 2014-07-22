@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Xml.Linq;
@@ -16,8 +17,26 @@ namespace Klondike
             return new NuGetWebApiWebHostSettings();
         }
 
+        protected virtual bool IsRunningOnMono
+        {
+            get
+            {
+                return Type.GetType("Mono.Runtime") != null;
+            }
+        }
+
         protected override void RegisterServices(IContainer container, IAppBuilder app, HttpConfiguration config)
         {
+            if (IsRunningOnMono)
+            {
+                var apiMapper = container.Resolve<NuGetWebApiRouteMapper>();
+
+                config.Routes.MapHttpRoute("Mono Hard-Coded OData Workspace Handler", apiMapper.ODataRoutePath,
+                    new object(),
+                    new object(),
+                    new MonoHardCodedODataWorkspaceHandler());
+            }
+
             base.RegisterServices(container, app, config);
             config.Routes.MapHttpRoute("Version", "api/version", new { controller = "Meta" });
         }
