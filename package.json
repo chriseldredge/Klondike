@@ -9,6 +9,7 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
+    "release": "ember build --environment=production",
     "test": "ember test"
   },
   "engines": {
