@@ -13,15 +13,13 @@ environment:
 install:
   # Get the latest stable version of Node 0.STABLE.latest
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
-  - cmd: gem install compass
   - cmd: node --version
   - cmd: npm --version
-  - cmd: npm install -g grunt-cli bower
+  - cmd: npm install -g bower
   - cmd: bower --version
-  - cmd: grunt --version
   - cmd: npm install
   - cmd: bower install
-  - cmd: grunt build
+  - cmd: npm run-script build
 
 # Don't actually build.
 build: off

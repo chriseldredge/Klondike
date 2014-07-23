@@ -1,61 +1,26 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
         <title>Klondike - NuGet Package Repository</title>
-        <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
-        <!-- endbuild -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {{BASE_TAG}}
+
+        <link rel="stylesheet" href="assets/vendor.css">
+        <link rel="stylesheet" href="assets/klondike.css">
     </head>
     <body>
-        <!-- build:js({.tmp,app}) js/bundle.js -->
-        <script src="vendor/jquery/dist/jquery.js"></script>
-        <script src="vendor/jquery-signalr/jquery.signalR.js"></script>
-        <script src="vendor/nprogress/nprogress.js"></script>
-        <script src="vendor/zeroclipboard/ZeroClipboard.js"></script>
-        <script src="vendor/handlebars/handlebars.js"></script>
-        <script src="vendor/momentjs/min/moment.min.js"></script>
-        <!-- @ifdef DEBUG -->
-        <script src="vendor/ember/ember.js"></script>
-        <!-- @endif -->
-        <!-- @ifndef DEBUG -->
-        <script src="vendor/ember/ember.prod.js"></script>
-        <!-- @endif -->
-        <script src="vendor/sass-bootstrap/js/affix.js"></script>
-        <script src="vendor/sass-bootstrap/js/alert.js"></script>
-        <script src="vendor/sass-bootstrap/js/dropdown.js"></script>
-        <script src="vendor/sass-bootstrap/js/tooltip.js"></script>
-        <script src="vendor/sass-bootstrap/js/modal.js"></script>
-        <script src="vendor/sass-bootstrap/js/transition.js"></script>
-        <script src="vendor/sass-bootstrap/js/button.js"></script>
-        <script src="vendor/sass-bootstrap/js/popover.js"></script>
-        <script src="vendor/sass-bootstrap/js/carousel.js"></script>
-        <script src="vendor/sass-bootstrap/js/scrollspy.js"></script>
-        <script src="vendor/sass-bootstrap/js/collapse.js"></script>
-        <script src="vendor/sass-bootstrap/js/tab.js"></script>
-        <script src="js/loader.js"></script>
-        <!-- @ifdef DEBUG -->
-        <script src="vendor/ember-resolver/dist/ember-resolver.js"></script>
-        <!-- @endif -->
-        <!-- @ifndef DEBUG -->
-        <script src="vendor/ember-resolver/dist/ember-resolver.prod.js"></script>
-        <!-- @endif -->
-        <script src="js/templates.js"></script>
-        <script src="js/amd-combined.js"></script>
-        <!-- endbuild -->
-
         <script>
-            //Ember.ENV.LOG_MODULE_RESOLVER = true;
-            window.App = require('app')['default'].create();
-            window.App.version = "<!-- @echo ProductVersion -->";
-            console.log("Klondike Version ", window.App.version);
+            window.KlondikeENV = {{ENV}};
+            window.EmberENV = window.KlondikeENV.EmberENV;
         </script>
-
-        <!-- @ifdef livereload -->
-        <script type="text/javascript">document.write('<script src="http://'
-         + (location.host || 'localhost').split(':')[0]
-         + ':<!-- @echo livereload -->/livereload.js?snipver=1" type="text/javascript"><\/script>')
+        <script src="assets/vendor.js"></script>
+        <script src="assets/klondike.js"></script>
+        <script>
+            window.Klondike = require('klondike/app')['default'].create(KlondikeENV.APP);
         </script>
-        <!-- @endif -->
 
         <script type="text/x-handlebars">
             <div class="container">
@@ -87,7 +52,7 @@
                     {{outlet}}
                 </main>
 
-                {{view App.Footer}}
+                {{view "footer"}}
             </div>
         </script>
 
@@ -133,5 +98,5 @@
                 You should not use Klondike if you are not awesome.
             </p>
         </script>
-    </body>
+  </body>
 </html>

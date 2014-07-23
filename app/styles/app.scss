@@ -1,0 +1,125 @@
+$icon-font-path: "/assets/bootstrap-sass-official/assets/fonts/bootstrap";
+$fa-font-path: "/assets/font-awesome/fonts";
+
+@import 'vendor/font-awesome/scss/font-awesome';
+@import 'vendor/bootstrap-sass-official/assets/stylesheets/bootstrap';
+
+img.package-icon {
+    width: 50px;
+    height: auto;
+}
+
+div.code-snippet {
+    border: 5px solid silver;
+    background-color: #222;
+    color: #e2e2e2;
+    border-radius: 5px;
+    padding: 1em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+}
+
+div.code-snippet button {
+    margin-right: 1em;
+}
+
+div.code-snippet input {
+    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+    background-color: #222;
+    color: #e2e2e2;
+
+    border:  0;
+    width: 60em;
+}
+
+div.code-snippet div.message {
+    display: none;
+    position: absolute;
+    background-color: #ffa;
+    color: black;
+    padding: 2px;
+    border: 1px solid black;
+}
+
+dl {
+    border-left: 2px solid #ddd;
+    border-top: 2px solid #ddd;
+    background-color: #fafafa;
+}
+
+#debug-icon .fa-ban {
+    color: red;
+}
+
+#debug-icon.symbols-available .fa {
+    color: green;
+}
+
+table.sortable th {
+    cursor: pointer;
+}
+
+tr.active {
+    font-weight: bold;
+}
+
+.zeroclipboard-is-hover {
+    background-color: #eee;
+}
+
+*[itemtype]:before {
+    content: '(microdata object: ' attr(itemtype) ') ';
+}
+
+label > input[type="text"], label > input[type="password"] {
+    display: block;
+}
+
+label {
+    display: block;
+}
+
+nav.user-info {
+    float: right;
+}
+
+main {
+    margin-top: 2em;
+}
+
+footer {
+    margin-top: 2em;
+    color: #999;
+
+
+    dl {
+        margin-bottom: 0;
+        border: 0;
+        background-color: inherit;
+    }
+
+    dt, dd {
+        display: inline;
+        font-weight: normal;
+    }
+
+    dd:after {
+        content: ' | ';
+    }
+
+    dd:last-child:after {
+        content: '';
+    }
+}
+
+#status-code {
+    position: absolute;
+    top: 0;
+    font-size: 300pt;
+    color: #ddd;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    z-index: -1000;
+}
