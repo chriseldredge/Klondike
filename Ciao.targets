@@ -38,7 +38,7 @@
       <WebHostContent Remove="@(NotContent)"/>
 
       <SelfHostContent Include="$(KlondikeSelfHostDir)bin\$(Configuration)\**\*"/>
-      <SelfHostContent Remove="$(KlondikeSelfHostDir)bin\$(Configuration)\**\Settings.config"/>
+      <SelfHostContent Remove="$(KlondikeSelfHostDir)bin\$(Configuration)\**\*.config"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(WebHostContent)" DestinationFolder="$(StagingDir)%(RecursiveDir)"
