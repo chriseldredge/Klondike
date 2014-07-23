@@ -18,15 +18,20 @@ module.exports = function(environment) {
     }
   };
 
-  var execSync = require('exec-sync');
+  var hash = '(unknown git revision)';
+  try {
+    var execSync = require('exec-sync');
 
-  var gitStatus = execSync('git describe --long --abbrev=10 --all --always --dirty');
+    var gitStatus = execSync('git describe --long --abbrev=10 --all --always --dirty');
 
-  var parts = gitStatus.split('-');
-  var hash = parts[parts.length-1];
+    var parts = gitStatus.split('-');
+    var hash = parts[parts.length-1];
 
-  if (parts[parts.length-1] == 'dirty') {
-    hash = parts[parts.length-2] + '-dirty';
+    if (parts[parts.length-1] == 'dirty') {
+      hash = parts[parts.length-2] + '-dirty';
+    }
+  } catch(error) {
+    console.error('exec-sync: git describe failed', error);
   }
 
   ENV.APP.version = require('../package.json').version + ' (' + hash + ')';
