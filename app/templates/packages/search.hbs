@@ -20,7 +20,7 @@
         {{#each hits}}
         <li>
             <div>
-                {{view App.PackageIcon contentBinding="this"}}
+                {{package-icon url=iconUrl}}
                 {{#link-to 'packages.view' this}}
                 {{#if title}}
                     {{title}}

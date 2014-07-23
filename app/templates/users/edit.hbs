@@ -13,10 +13,10 @@
 <fieldset>
     <legend>Permissions</legend>
 
-    {{view App.CheckboxGroup
+    {{checkbox-group
         name="roles"
         selection=roles
-        content=App.roles
+        content=allRoles
         checkboxLabelPath="content.label"
         checkboxValuePath="content.name"}}
 </fieldset>
