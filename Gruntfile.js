@@ -401,7 +401,7 @@ module.exports = function (grunt) {
 
                     var args = [
                         prog,
-                        '/t:Stage',
+                        'Ciao.proj',
                         '/p:Configuration=' + configuration,
                         '/p:DistDir=' + distDir,
                         '/p:TestsEnabled=False',
