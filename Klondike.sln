@@ -12,6 +12,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Klondike.SelfHost", "src\Klondike.SelfHost\Klondike.SelfHost.csproj", "{1D086F30-D81E-4659-AC99-4CC602EDB3EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ciao", "Ciao", "{62F71436-48EF-492E-BFFE-369497B7498B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ciao", "Ciao", "{89E444B8-994C-4666-9764-E60E2BF3F976}"
 	ProjectSection(SolutionItems) = preProject
 		Ciao.proj = Ciao.proj
 		Ciao.props = Ciao.props
