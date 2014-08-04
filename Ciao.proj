@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" InitialTargets="Validate" DefaultTargets="Bootstrap" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" InitialTargets="Validate" DefaultTargets="Bootstrap;Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <!--
         The main Ciao point of entry. Continuous Integration builds should invoke
         this build script with MSBuild 4.0 or later.
@@ -9,6 +9,7 @@
     <Import Project="Ciao.props" Condition="Exists('Ciao.props')"/>
 
     <PropertyGroup>
+        <ProjectDirectory>$(MSBuildThisFileDirectory)</ProjectDirectory>
         <BuildDirectory Condition=" '$(BuildDirectory)' == '' ">$([System.IO.Path]::Combine('$(MSBuildThisFileDirectory)', 'build'))$([System.IO.Path]::DirectorySeparatorChar)</BuildDirectory>
         <ToolsDirectory Condition=" '$(ToolsDirectory)' == '' ">$([System.IO.Path]::Combine('$(BuildDirectory)', 'tools'))$([System.IO.Path]::DirectorySeparatorChar)</ToolsDirectory>
         <NuGetExePath Condition=" '$(NuGetExePath)' == '' ">$([System.IO.Path]::Combine('$(ToolsDirectory)', 'NuGet.exe'))</NuGetExePath>
@@ -19,11 +20,14 @@
     </PropertyGroup>
 
     <PropertyGroup>
+        <CiaoVersion>1.1.0</CiaoVersion>
+        <CiaoPackageEntryProject>$(ProjectDirectory)packages\Ciao.$(CiaoVersion)\tools\Ciao.targets</CiaoPackageEntryProject>
+    </PropertyGroup>
+
+    <PropertyGroup>
         <BootstrapDependsOn>
             DownloadNuGetCommandLineClient;
             RestoreSolutionPackages;
-            ResolveCiao;
-            Build
         </BootstrapDependsOn>
     </PropertyGroup>
 
@@ -35,25 +39,65 @@
     <Target Name="Bootstrap" DependsOnTargets="$(BootstrapDependsOn)"/>
 
     <Target Name="RestoreSolutionPackages" DependsOnTargets="DownloadNuGetCommandLineClient">
-        <Exec Command="$(NuGetCommand) restore &quot;$(SolutionFile)&quot; -NonInteractive -Source http://www.nuget.org/api/v2/"/>
-    </Target>
-
-    <Target Name="ResolveCiao" Condition=" '$(CiaoPackageEntryProject)' == '' ">
+        <Exec Command="$(NuGetCommand) restore &quot;$(SolutionFile)&quot; -NonInteractive"/>
         <PropertyGroup>
-            <SolutionDirectory Condition="Exists('$(SolutionFile)')">$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetFullPath('$(SolutionFile)'))))$([System.IO.Path]::DirectorySeparatorChar)</SolutionDirectory>
-            <SolutionPackageDirectory Condition="Exists('$(SolutionDirectory)')">$([System.IO.Path]::Combine('$(SolutionDirectory)', 'packages'))$([System.IO.Path]::DirectorySeparatorChar)</SolutionPackageDirectory>
+            <_CiaoRestoreSolutionPackagesCompleted>True</_CiaoRestoreSolutionPackagesCompleted>
         </PropertyGroup>
-        <ItemGroup>
-            <CiaoPackageEntryProject Include="$(SolutionPackageDirectory)Ciao.*\tools\Ciao.proj"/>
-        </ItemGroup>
-        <CreateProperty Value="%(CiaoPackageEntryProject.Identity)">
-            <Output TaskParameter="Value" PropertyName="CiaoPackageEntryProject"/>
-        </CreateProperty>
-        <Error Text="Unable to locate Caio package in Solution packages directory $(SolutionPackageDirectory) (is Ciao installed in the Solution?)" Condition="!Exists('$(CiaoPackageEntryProject)')"/>
     </Target>
 
-    <Target Name="Build">
-        <MSBuild Projects="$(CiaoPackageEntryProject)" Targets="$(CiaoTargets)" Properties="ProjectDirectory=$(MSBuildThisFileDirectory)"/>
+    <!--
+        Standard Targets
+
+        These targets are defined in Ciao.targets which will override them when the Ciao package
+        is restored and present. In case the build is restoring Ciao these targets are here
+        to enable targets to be executed after Ciao is restored.
+    -->
+
+    <Target Name="Clean" DependsOnTargets="ValidateCiaoInstalled;CreateProperties">
+        <MSBuild Projects="$(CiaoPackageEntryProject)" Targets="Clean" Properties="$(_CiaoProperties)"/>
+    </Target>
+
+    <Target Name="Build" DependsOnTargets="ValidateCiaoInstalled;CreateProperties">
+        <MSBuild Projects="$(CiaoPackageEntryProject)" Targets="Build" Properties="$(_CiaoProperties)"/>
+    </Target>
+
+    <Target Name="Compile" DependsOnTargets="ValidateCiaoInstalled;CreateProperties">
+        <MSBuild Projects="$(CiaoPackageEntryProject)" Targets="Compile" Properties="$(_CiaoProperties)"/>
+    </Target>
+
+    <Target Name="Test" DependsOnTargets="ValidateCiaoInstalled;CreateProperties">
+        <MSBuild Projects="$(CiaoPackageEntryProject)" Targets="Test" Properties="$(_CiaoProperties)"/>
+    </Target>
+
+    <Target Name="Package" DependsOnTargets="ValidateCiaoInstalled;CreateProperties">
+        <MSBuild Projects="$(CiaoPackageEntryProject)" Targets="Package" Properties="$(_CiaoProperties)"/>
+    </Target>
+
+    <Target Name="Rebuild" DependsOnTargets="ValidateCiaoInstalled;CreateProperties">
+        <MSBuild Projects="$(CiaoPackageEntryProject)" Targets="Rebuild" Properties="$(_CiaoProperties)"/>
+    </Target>
+
+
+    <!-- End of Standard Targets -->
+
+    <Target Name="ValidateCiaoInstalled">
+        <Error Text="Ciao targets must be restored using the Bootstrap target before executing other targets."
+               Condition="!Exists('$(CiaoPackageEntryProject)') and '$(_CiaoRestoreSolutionPackagesCompleted)' != 'True' "/>
+        <Error Text="Ciao targets file '$(CiaoPackageEntryProject)' does not exist. Make sure to install Ciao in $(SolutionFile)."
+               Condition="!Exists('$(CiaoPackageEntryProject)')"/>
+    </Target>
+
+    <Target Name="CreateProperties">
+        <PropertyGroup>
+            <_CiaoProperties>
+                ImportCiaoProperties=True;
+                ProjectDirectory=$(ProjectDirectory);
+                SolutionFile=$([System.IO.Path]::Combine('$(ProjectDirectory)', '$(SolutionFile)'));
+                BuildDirectory=$(BuildDirectory);
+                ToolsDirectory=$(ToolsDirectory);
+                NuGetExePath=$(NuGetExePath);
+            </_CiaoProperties>
+        </PropertyGroup>
     </Target>
 
     <Target Name="DownloadNuGetCommandLineClient" Condition="!Exists('$(NuGetExePath)')">
@@ -62,6 +106,8 @@
         <DownloadNuGet OutputFilename="$(NuGetExePath)" Url="$(NuGetClientDownloadUrl)" Condition=" '$(OS)' == 'Windows_NT' "/>
         <Exec Command="curl -L -o &quot;$(NuGetExePath)&quot; $(NuGetClientDownloadUrl)" Condition=" '$(OS)' != 'Windows_NT' "/>
     </Target>
+
+    <Import Project="$(CiaoPackageEntryProject)" Condition="Exists('$(CiaoPackageEntryProject)')"/>
 
     <UsingTask TaskName="DownloadNuGet" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
         <ParameterGroup>
