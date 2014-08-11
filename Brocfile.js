@@ -2,6 +2,8 @@
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var pickFiles = require('broccoli-static-compiler');
+var select = require('broccoli-select');
+var gitDescribe = require('./broccoli-git-describe.js');
 
 var app = new EmberApp();
 
@@ -30,4 +32,14 @@ var assetTree = pickFiles('vendor', {
 });
 
 module.exports = app.toTree([assetTree]);
+
+var gitDescribeTree = pickFiles('app', {
+    srcDir: '/',
+    files: ['app.js'],
+    destDir: '/'
+});
+
+var gitDescribe = gitDescribe(gitDescribeTree);
+
+module.exports = app.toTree([gitDescribe, assetTree]);
 
