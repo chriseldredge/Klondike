@@ -21,6 +21,11 @@ app.import({
     production: 'vendor/zeroclipboard/ZeroClipboard.min.js'
 });
 
+app.index = function() {
+    var defaultIndexTree = EmberApp.prototype.index.apply(app);
+    return gitDescribe(defaultIndexTree);
+}
+
 var assetTree = pickFiles('vendor', {
   srcDir: '/',
   files: [
@@ -32,14 +37,3 @@ var assetTree = pickFiles('vendor', {
 });
 
 module.exports = app.toTree([assetTree]);
-
-var gitDescribeTree = pickFiles('app', {
-    srcDir: '/',
-    files: ['app.js'],
-    destDir: '/'
-});
-
-var gitDescribe = gitDescribe(gitDescribeTree);
-
-module.exports = app.toTree([gitDescribe, assetTree]);
-

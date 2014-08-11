@@ -6,6 +6,11 @@ export default Ember.View.extend({
     contentBinding: 'controller.indexer.status',
     version: function() {
         var app = this.get('application');
-        return app.get('version') + ' (' + app.get('revision') + ')';
+        var status = app.get('git-status');
+        var commit = status.commit;
+        if (status.dirty) {
+            commit += '-dirty';
+        }
+        return app.get('version') + ' (' + commit + ')';
     }.property('application.version', 'application.revision')
 });

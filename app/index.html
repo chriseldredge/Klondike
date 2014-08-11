@@ -14,9 +14,9 @@
     <body>
         <script>
             window.KlondikeENV = {{ENV}};
+            window.KlondikeENV.APP['git-status'] = {{GIT_REVISION}};
             window.EmberENV = window.KlondikeENV.EmberENV;
         </script>
-        <script src="revision.js"></script>
         <script src="assets/vendor.js"></script>
         <script src="assets/klondike.js"></script>
         <script>
