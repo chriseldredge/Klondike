@@ -19,17 +19,17 @@
   "license": "MIT",
   "devDependencies": {
     "body-parser": "^1.2.0",
-    "broccoli-asset-rev": "0.0.11",
+    "broccoli-asset-rev": "0.0.17",
     "broccoli-ember-hbs-template-compiler": "^1.5.0",
     "broccoli-replace": "^0.1.7",
     "broccoli-sass": "^0.2.1",
     "broccoli-static-compiler": "^0.1.4",
     "broccoli-writer": "^0.1.1",
-    "ember-cli": "0.0.39",
+    "ember-cli": "0.0.40",
     "ember-cli-ic-ajax": "0.1.1",
     "express": "^4.1.1",
     "glob": "^3.2.9",
     "originate": "0.1.5",
-    "rsvp": "^3.0.12"
+    "rsvp": "3.0.12"
   }
 }
