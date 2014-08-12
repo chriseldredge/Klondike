@@ -49,7 +49,7 @@ GitDescribe.prototype.write = function (readTree, destDir) {
         }]
       });
 
-    replacement.write(readTree, destDir);
+    return replacement.write(readTree, destDir);
   });
 }
 
