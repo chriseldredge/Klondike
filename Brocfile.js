@@ -2,6 +2,7 @@
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var pickFiles = require('broccoli-static-compiler');
+var msbuild = require('broccoli-msbuild');
 var select = require('broccoli-select');
 var gitDescribe = require('./broccoli-git-describe.js');
 
@@ -36,4 +37,25 @@ var assetTree = pickFiles('vendor', {
   destDir: '/assets'
 });
 
-module.exports = app.toTree([assetTree]);
+var msbuildInputTree = select('src', {
+  acceptFiles: [ '**/*.csproj', '**/*.cs', '**/*.config' ],
+  outputDir: '/build'
+});
+
+var package = require('./package.json');
+var versionParts = package.version.split('-');
+var versionPrefix = versionParts[0];
+var versionSuffix = versionParts.length > 1 ? versionParts[1] : '';
+
+var msbuildTree = msbuild(msbuildInputTree, {
+  project: require('path').join(__dirname, 'Ciao.proj'),
+  targets: 'Build',
+  configuration: 'Release', /* TODO: inject from config/environment */
+  properties: {
+    VersionPrefix: versionPrefix,
+    VersionSuffix:  versionSuffix,
+    DistDir: '{destDir}'
+  }
+});
+
+module.exports = app.toTree([msbuildTree, assetTree]);
