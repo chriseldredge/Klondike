@@ -2,8 +2,6 @@
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var pickFiles = require('broccoli-static-compiler');
-var msbuild = require('broccoli-msbuild');
-var select = require('broccoli-select');
 var gitDescribe = require('./broccoli-git-describe.js');
 
 var app = new EmberApp();
@@ -27,35 +25,42 @@ app.index = function() {
     return gitDescribe(defaultIndexTree);
 }
 
-var assetTree = pickFiles('vendor', {
-  srcDir: '/',
-  files: [
-  	'bootstrap-sass-official/assets/fonts/bootstrap/*',
-  	'font-awesome/fonts/*',
-  	'zeroclipboard/ZeroClipboard.swf'
-  ],
-  destDir: '/assets'
-});
+function assetTree() {
+  return pickFiles('vendor', {
+    srcDir: '/',
+    files: [
+    	'bootstrap-sass-official/assets/fonts/bootstrap/*',
+    	'font-awesome/fonts/*',
+    	'zeroclipboard/ZeroClipboard.swf'
+    ],
+    destDir: '/assets'
+  });
+}
 
-var msbuildInputTree = select('src', {
-  acceptFiles: [ '**/*.csproj', '**/*.cs', '**/*.config' ],
-  outputDir: '/build'
-});
+function msbuildTree() {
+  var msbuild = require('broccoli-msbuild');
+  var select = require('broccoli-select');
 
-var package = require('./package.json');
-var versionParts = package.version.split('-');
-var versionPrefix = versionParts[0];
-var versionSuffix = versionParts.length > 1 ? versionParts[1] : '';
+  var msbuildInputTree = select('src', {
+    acceptFiles: [ '**/*.csproj', '**/*.cs', '**/*.config' ],
+    outputDir: '/build'
+  });
 
-var msbuildTree = msbuild(msbuildInputTree, {
-  project: require('path').join(__dirname, 'Ciao.proj'),
-  targets: 'Build',
-  configuration: 'Release', /* TODO: inject from config/environment */
-  properties: {
-    VersionPrefix: versionPrefix,
-    VersionSuffix:  versionSuffix,
-    DistDir: '{destDir}'
-  }
-});
+  var versionParts = app.project.pkg.version.split('-');
+  var versionPrefix = versionParts[0];
+  var versionSuffix = versionParts.length > 1 ? versionParts[1] : '';
 
-module.exports = app.toTree([msbuildTree, assetTree]);
+  var config = require('./config/environment')(app.env);
+
+  return msbuild(msbuildInputTree, {
+    project: require('path').join(__dirname, 'Ciao.proj'),
+    toolsVersion: '4.0',
+    configuration: config.configuration,
+    properties: {
+      VersionPrefix: versionPrefix,
+      VersionSuffix:  versionSuffix,
+      DistDir: '{destDir}'
+    }
+  });
+}
+module.exports = app.toTree([msbuildTree(), assetTree()]);
