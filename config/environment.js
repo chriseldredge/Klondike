@@ -3,6 +3,7 @@
 module.exports = function(environment) {
   var ENV = {
     environment: environment,
+    configuration: 'Debug',
     baseURL: '/',
     locationType: 'hash',
     EmberENV: {
@@ -30,7 +31,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV.configuration = 'Release';
   }
 
   return ENV;
