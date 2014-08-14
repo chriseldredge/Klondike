@@ -5,9 +5,6 @@ var ZeroClipboard = window.ZeroClipboard;
 ZeroClipboard.config({moviePath: '/assets/zeroclipboard/ZeroClipboard.swf'});
 
 export default Ember.View.extend({
-    template: Ember.Handlebars.compile('<div class="code-snippet"><button class="copy-to-clipboard"><i class="fa fa-copy"></i></button>' +
-                                       '<div class="message"></div>' +
-                                       '<input type="text" class="code-snippet" readonly="readonly" {{bind-attr value=view.content}}/></div>'),
     tagName: 'div',
 
     activateZeroClipboard: function() {
