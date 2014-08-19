@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <KlondikeAppDir>$([System.IO.Path]::Combine('$(ProjectDirectory)', 'src', 'Klondike'))$([System.IO.Path]::DirectorySeparatorChar)</KlondikeAppDir>
+
+    <StagingDir Condition=" '$(DistDir)' != '' ">$([System.IO.Path]::Combine('$(ProjectDirectory)', '$(DistDir)'))$([System.IO.Path]::DirectorySeparatorChar)</StagingDir>
+    <Configuration>Debug</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+    </BuildDependsOn>
+    <TestDependsOn>
+      $(TestDependsOn);
+      IntegrationTest
+    </TestDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CompileTargets" Condition=" '$(DistDir)' != '' ">
+    <MakeDir Directories="$(DistDir)"/>
+    <Exec Command="kpm pack -o &quot;$(StagingDir)&quot; --overwrite --configuration $(Configuration)"
+          WorkingDirectory="$(KlondikeAppDir)"/>
+  </Target>
+
+  <Target Name="IntegrationTest" Condition=" '$(TestsEnabled)' == 'true' ">
+    <MSBuild Projects="$(ProjectDirectory)\integration-tests\test.proj" Properties="DistDir=$(StagingDir)"/>
+  </Target>
+</Project>

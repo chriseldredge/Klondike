@@ -1,14 +1,17 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
 # compiled output
-/.tmp/
-/dist/
+/dist
+/tmp
 
 # dependencies
-/node_modules/
-/app/vendor/
+/node_modules
+/vendor/*
 
 # misc
 /.sass-cache
 /connect.lock
+/coverage/*
 /libpeerconnection.log
 .DS_Store
 Thumbs.db
@@ -18,14 +21,13 @@ App_Data/
 bin/
 obj/
 /build/
-/Release/
-/packages/
 _NCrunch*
 *.ncrunch*
 *.user
 *.suo
 _ReSharper.*
 integration-tests/out.txt
-NuGet.exe
-
 Klondike.sln.ide/
+npm-debug.log
+testem.log
+packages/

@@ -1,0 +1,31 @@
+<div class="container">
+    <header>
+        {{#if isSessionInitialized}}
+        <nav class="user-info">
+            {{#if isLoggedIn}}
+                {{#link-to 'profile'}}{{username}}{{/link-to}}
+                |
+                <a href="#" {{action 'logOut'}}>Sign Out</a>
+            {{else}}
+                <a href="#" {{action 'logIn'}}>Sign In</a>
+            {{/if}}
+        </nav>
+        {{/if}}
+        <nav>
+            {{#link-to 'index'}}Home{{/link-to}}
+            {{#link-to 'packages.list' (query-params page=0)}}Packages{{/link-to}}
+            {{#link-to 'symbols'}}Symbols{{/link-to}}
+            {{#link-to 'admin' rel="nofollow"}}Admin{{/link-to}}
+            <a {{bind-attr href=apiUrl}}>Api</a>
+        </nav>
+        <div class="search-box">
+            {{input type="text" value=searchBox action="search" placeholder="Search..."}}
+        </div>
+    </header>
+
+    <main>
+        {{outlet}}
+    </main>
+
+    {{view "footer"}}
+</div>
