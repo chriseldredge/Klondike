@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Package from './package';
 
 export default Ember.Object.extend({
     query: '',

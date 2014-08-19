@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Package from '../models/package';
 import SearchResults from '../models/search-results';
+import describePromise from '/klondike/util/describe-promise';
 
 export default Ember.Object.extend({
     defaultPageSize: 10,
@@ -14,7 +15,7 @@ export default Ember.Object.extend({
             }
         }).then(function(json) {
             return self._createPackageModel(json);
-        }, null, 'adapter:package.find:map-json');
+        }, null, describePromise(this, 'find', arguments));
     },
 
     search: function (query, page, pageSize, sort) {
@@ -44,7 +45,7 @@ export default Ember.Object.extend({
                 page: page,
                 pageSize: pageSize
             });
-        }, null, 'adapters:package.search:map-json');
+        }, null, describePromise(this, 'search', arguments));
     },
 
     _createPackageModel: function(json) {

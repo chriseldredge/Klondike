@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import describePromise from '/klondike/util/describe-promise';
 
 export default Ember.Mixin.create({
     _permissionObservers: [],
@@ -21,11 +22,10 @@ export default Ember.Mixin.create({
             if (result===prevResult) {
                 return;
             }
-            console.debug(observer.property, prevResult, '=>', result);
+
             self.set(observer.property, result);
-        }).then(null, function(error) {
-            console.error(error);
-        });
+            return result;
+        }, null, describePromise(this, '_updateUserPermission'));
     },
 
     _sessionUserDidChange: function() {

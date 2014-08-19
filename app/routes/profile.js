@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import AuthorizedRoute from 'Klondike/mixins/authorized-route';
+import describePromise from '/klondike/util/describe-promise';
 
 export default Ember.Route.extend(AuthorizedRoute, {
     authorizedApiName: 'users.getAuthenticationInfo',
@@ -7,6 +8,6 @@ export default Ember.Route.extend(AuthorizedRoute, {
         var self = this;
         return this.get('session').then(function() {
             return self.get('session').get('user');
-        }, null, 'Route:\'profile\': get user from session');
+        }, null, describePromise(this, 'model'));
     }
 });

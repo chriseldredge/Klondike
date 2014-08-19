@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import User from '../models/user';
+import describePromise from '/klondike/util/describe-promise';
 
 export default Ember.Object.extend({
     find: function(id) {
@@ -7,7 +8,7 @@ export default Ember.Object.extend({
         var query = this.get('restClient').ajax('users.get', { data: { username: id } });
         return query.then(function(json) {
             return self.createModel(json);
-        });
+        }, null, describePromise(this, 'find', arguments));
     },
 
     createModel: function(params) {
@@ -20,7 +21,7 @@ export default Ember.Object.extend({
             return json.map(function(user) {
                 return self.createModel(user);
             });
-        });
+        }, null, describePromise(this, 'list'));
     },
 
     add: function(user) {

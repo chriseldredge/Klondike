@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import config from 'Klondike/config';
 import ApplicationException from 'Klondike/application-exception';
+import describePromise from '/klondike/util/describe-promise';
 
-var RestApi = Ember.Deferred.extend({
+var RestApi = Ember.Object.extend({
     apiKeyRequestHeaderName: 'X-NuGet-ApiKey',
 
     apiUrl: config.apiUrl,
@@ -13,14 +14,14 @@ var RestApi = Ember.Deferred.extend({
 
     simulateRequestLatency: 0,
 
+    _promise: null,
+
     init: function() {
         var url = this.get('apiUrl') + '?nocache=' + new Date().getTime();
 
-        if (!url) {
-            throw new ApplicationException('Must set apiUrl property on RestApi.');
-        }
+        var deferred = Ember.RSVP.defer(describePromise(this, 'init', [url]));
+        this.set('_promise', deferred.promise);
 
-        console.log('Loading ajax api info from', url);
         var self = this;
 
         var data = {
@@ -28,22 +29,21 @@ var RestApi = Ember.Deferred.extend({
             success: function (data) {
                 self.set('apiInfo', self._buildApiDictionary(data));
                 self._setPackageSource();
-                self.resolve(self);
-            },
-            fail: function(xhr, status) {
-                self.reject('ajax call to ' + url + ' failed: ' + status + '(' + xhr.status + ')');
+                deferred.resolve(self);
             }
         };
 
-        Ember.$.ajax(url, data);
+        Ember.$.ajax(url, data).fail(function(xhr, status) {
+            deferred.reject('ajax call to ' + url + ' failed: ' + status + '(' + xhr.status + ')');
+        });
     },
 
     getApi: function (apiName, method) {
         var self = this;
 
-        return this.then(function() {
+        return self.get('_promise').then(function() {
             return self._lookupApi(apiName, method);
-        });
+        }, null, describePromise(this, 'getApi', arguments));
     },
 
     ajax: function (apiName, options) {
@@ -55,23 +55,23 @@ var RestApi = Ember.Deferred.extend({
 
         var self = this;
 
-        var delay = Ember.Deferred.promise(function(deferred) {
-            var timeout = self.get('simulateRequestLatency') || 0;
+        var timeout = self.get('simulateRequestLatency') || 0;
 
-            if (timeout) {
-                setTimeout(function() {
-                    deferred.resolve();
-                }, timeout);
-            } else {
-                deferred.resolve();
-            }
-        });
+        var invoke = function() {
+            return self.getApi(apiName, method).then(function(api) {
+                return self._invokeAjaxApi(apiName, api, options);
+            }, null, describePromise(self, 'ajax', [apiName]));
+        };
 
-        return delay.then(function() {
-            return self.getApi(apiName, method);
-        }).then(function(api) {
-            return self._invokeAjaxApi(apiName, api, options);
-        });
+        if (timeout) {
+            var deferred = Ember.RSVP.defer(describePromise(this, 'ajax') + ': Simulate Request Latency');
+
+            setTimeout(function() { deferred.resolve(); }, timeout);
+
+            return deferred.promise.then(invoke, null, describePromise(this, 'ajax', [apiName]) + ': Invoke');
+        } else {
+            return invoke();
+        }
     },
 
     _invokeAjaxApi: function(apiName, api, options) {
@@ -97,15 +97,15 @@ var RestApi = Ember.Deferred.extend({
 
         var href = this._replaceParameters(api, options);
 
-        return Ember.Deferred.promise(function(deferred) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
             options.success = function(data) {
-                deferred.resolve(data);
+                resolve(data);
             };
 
             Ember.$.ajax(href, options).fail(function(request, textStatus, errorThrown) {
-                deferred.reject({ request: request, textStatus: textStatus, errorThrown: errorThrown });
+                reject({ request: request, textStatus: textStatus, errorThrown: errorThrown });
             });
-        });
+        }, describePromise(this, '_invokeAjaxApi', [apiName]));
     },
 
     _lookupApi: function(apiName, method) {

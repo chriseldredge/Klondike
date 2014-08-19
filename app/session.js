@@ -1,7 +1,15 @@
 import Ember from 'ember';
 import config from './config';
+import describePromise from '/klondike/util/describe-promise';
 
-export default Ember.Deferred.extend({
+function promiseAlias(name) {
+  return function () {
+    var promise = this.get('_promise');
+    return promise[name].apply(promise, arguments);
+  };
+}
+
+export default Ember.Object.extend({
     users: null,
     fixedKey: config.apiKey,
 
@@ -10,6 +18,8 @@ export default Ember.Deferred.extend({
     keyBinding: 'user.key',
     rolesBinding: 'user.roles',
     isInitialized: false,
+
+    _promise: null,
 
     isLoggedIn: function () {
         return !Ember.isEmpty(this.get('username'));
@@ -28,16 +38,20 @@ export default Ember.Deferred.extend({
             };
         }
 
-        self._invokeLogin('users.getAuthenticationInfo', settings)
-            .then(function() {
-                self.set('isInitialized', true);
-                self.resolve(self);
-            })
-            .catch(function() {
-                self.set('isInitialized', true);
-                self.resolve(self);
-            });
+        var initPromise = self._invokeLogin('users.getAuthenticationInfo', settings).then(function() {
+            self.set('isInitialized', true);
+            return true;
+        }, function() {
+            self.set('isInitialized', true);
+            return true;
+        }, describePromise(this, 'init'));
+
+        self.set('_promise', initPromise);
     },
+
+    'then': promiseAlias('then'),
+    'catch': promiseAlias('catch'),
+    'finally': promiseAlias('finally'),
 
     isAllowed: function(apiName, method) {
         var self = this;
@@ -57,7 +71,7 @@ export default Ember.Deferred.extend({
             });
 
             return !any;
-        });
+        }, null, describePromise(this, 'isAllowed', arguments));
     },
 
     logOut: function() {
@@ -94,34 +108,28 @@ export default Ember.Deferred.extend({
 
         var call = this.get('restClient').ajax('users.changeApiKey', settings);
 
-        return call
-            .then(function(data) {
-                self.set('key', data.key);
-                sessionStorage.setItem('key', self.get('key'));
-                return data.key;
-            });
+        return call.then(function(data) {
+            self.set('key', data.key);
+            sessionStorage.setItem('key', self.get('key'));
+            return data.key;
+        }, null, describePromise(this, 'changeKey'));
     },
 
     _invokeLogin: function (apiName, settings) {
         var self = this;
 
-        return Ember.Deferred.promise(function(deferred) {
-            return self.get('restClient').ajax(apiName, settings)
-                .catch(function(error) {
-                    self.set('user', null);
-                    deferred.reject(error);
-                })
-                .then(function(json) {
-                    json = json || {};
-                    json.roles = Ember.A(json.roles || []);
+        return self.get('restClient').ajax(apiName, settings).then(function(json) {
+            json = json || {};
+            json.roles = Ember.A(json.roles || []);
 
-                    var user = self.get('store').createModel('user', json);
+            var user = self.get('store').createModel('user', json);
 
-                    self.set('user', user);
+            self.set('user', user);
 
-                    deferred.resolve(user);
-                });
-        });
+            return user;
+        }, function() {
+            self.set('user', null);
+        }, describePromise(this, '_invokeLogin'));
     },
 
     _keyDidChange: function() {

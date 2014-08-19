@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import ProgressIndicator from 'Klondike/progress-indicator';
 import ProgressIndicatorRoute from 'Klondike/mixins/progress-indicator-route';
+import describePromise from '/klondike/util/describe-promise';
 
 export default Ember.Route.extend(ProgressIndicatorRoute, {
     model: function(params) {
@@ -21,7 +22,7 @@ export default Ember.Route.extend(ProgressIndicatorRoute, {
             fullModel.then(function(m) {
                 model.setProperties(m);
                 ProgressIndicator.done();
-            }, null, 'route:packages:view.setupController:map-json');
+            }, null, describePromise(this, 'setupController'));
         } else {
             model.setProperties(fullModel);
         }
