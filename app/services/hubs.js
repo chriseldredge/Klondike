@@ -24,7 +24,7 @@ export default Ember.Object.extend({
                 dataType: 'script',
                 async: false
             }).fail(function(xhr, status) {
-              deferred.reject('Failed to load SignalR hubs at ' + hubUrl + ': ' + status + ' (' + xhr.status + ')');
+              throw new ApplicationException('Failed to load SignalR hubs at ' + hubUrl + ': ' + status + ' (' + xhr.status + ')');
             });
         }, null, describePromise(this, 'init') + ': Load SignalR/hubs.js');
 
