@@ -1,30 +1,22 @@
 import Ember from 'ember';
-import SearchResults from '../models/search-results';
 import Package from '../models/package';
+import SearchResults from '../models/search-results';
 
 export default Ember.Object.extend({
     defaultPageSize: 10,
 
     find: function (packageId, packageVersion) {
-        console.log('get package info for ', packageId, packageVersion);
+        var self = this;
         return this.get('restClient').ajax('packages.getPackageInfo', {
             data: {
                 id: packageId,
                 version: packageVersion
             }
         }).then(function(json) {
-            // TODO: move this into Package.init() or lazy-load it
-            if (json && json.versionHistory) {
-                for (var i=0; i<json.versionHistory.length; i++) {
-                    var model = Package.create(json.versionHistory[i]);
-                    model.set('active', model.get('version') === json.version);
-                    json.versionHistory[i] = model;
-                }
-                json.versionHistory = json.versionHistory.sortBy('semanticVersion').reverse();
-            }
-            return Package.create(json);
-        });
+            return self._createPackageModel(json);
+        }, null, 'adapter:package.find:map-json');
     },
+
     search: function (query, page, pageSize, sort) {
         page = page || 0;
         pageSize = pageSize || this.get('defaultPageSize');
@@ -43,42 +35,40 @@ export default Ember.Object.extend({
                 json.query = '';
             }
 
-            self.convert(json.hits);
+            var hits = json.hits || [];
+            hits = hits.map(function(hit) { return self._createPackageModel(hit); });
+            delete json.hits;
 
-            var results = SearchResults.create(json, {
-                loaded: true,
-                loading: false,
+            return SearchResults.create(json, {
+                hits: hits,
                 page: page,
                 pageSize: pageSize
             });
+        }, null, 'adapters:package.search:map-json');
+    },
 
-            results.resolve(results);
-            return results;
+    _createPackageModel: function(json) {
+        var versions = json.versionHistory || [];
+        var thisVersion = json.version;
+
+        versions = versions.map(function(v) {
+            return Package.create(v, {
+                active: v.version === thisVersion
+            });
         });
-    },
-    convert: function (hits) {
-        for (var i = 0; i < hits.length; i++) {
-            var model = Package.create(hits[i]);
-            hits[i] = this.convertTags(model);
-        }
-    },
-    convertTags: function(hit) {
-        var tags = hit.get('tags');
-        if (Ember.isEmpty(tags)) {
-            return hit;
+
+        versions = versions.sortBy('semanticVersion').reverse();
+
+        var tags = json.tags || [];
+        if (typeof tags === 'string') {
+            tags = tags.split(' ')
+                .map(function(tag) { return tag.trim(); })
+                .filter(function(tag) { return tag !== ''; });
         }
 
-        var split = tags.split(' ');
-        tags = [];
-
-        for (var i = 0; i < split.length; i++) {
-            if (split[i] !== '') {
-                tags.push(split[i]);
-            }
-        }
-
-        hit.set('tags', tags);
-
-        return hit;
+        return Package.create(json, {
+            versionHistory: versions,
+            tags: tags
+        });
     }
 });
