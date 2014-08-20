@@ -2,6 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Settings">
     <Configuration>Debug</Configuration>
+    <IncludeRuntime>True</IncludeRuntime>
     <RuntimeVersion>KRE-svr50-x64.1.0.0-alpha3</RuntimeVersion>
   </PropertyGroup>
 
@@ -22,8 +23,14 @@
   </PropertyGroup>
 
   <Target Name="CompileTargets" Condition=" '$(DistDir)' != '' ">
+    <PropertyGroup>
+      <PackArgs>--appfolder wwwroot --overwrite --no-source --configuration $(Configuration)</PackArgs>
+      <PackArgs Condition=" '$(IncludeRuntime)' == 'True' ">$(PackArgs) --runtime $(RuntimeVersion)</PackArgs>
+    </PropertyGroup>
+
     <MakeDir Directories="$(DistDir)"/>
-    <Exec Command="kpm pack -o &quot;$(StagingDir)&quot; --appfolder wwwroot --overwrite --configuration $(Configuration) --runtime $(RuntimeVersion) --no-source"
+
+    <Exec Command="kpm pack -o &quot;$(StagingDir)&quot; $(PackArgs)"
           WorkingDirectory="$(KlondikeAppDir)"/>
   </Target>
 
