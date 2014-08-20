@@ -2,6 +2,7 @@
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var pickFiles = require('broccoli-static-compiler');
+var mergeTrees = require('broccoli-merge-trees');
 var gitDescribe = require('./broccoli-git-describe.js');
 
 var app = new EmberApp();
@@ -37,6 +38,13 @@ function assetTree() {
   });
 }
 
+function appTree() {
+  return pickFiles(app.toTree([assetTree()]), {
+    srcDir: '/',
+    destDir: '/public'
+  });
+}
+
 function msbuildTree() {
   var msbuild = require('broccoli-msbuild');
   var select = require('broccoli-select');
@@ -64,4 +72,4 @@ function msbuildTree() {
   });
 }
 
-module.exports = app.toTree([msbuildTree(), assetTree()]);
+module.exports = mergeTrees([appTree(), msbuildTree()]);

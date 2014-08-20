@@ -1,0 +1,2 @@
+* Figure out how to make nowin run from dist/approot/src/Klondike and serve content from dist/public
+* Use edge in dev mode to run broccoli-watch
