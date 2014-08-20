@@ -41,7 +41,7 @@ function assetTree() {
 function appTree() {
   return pickFiles(app.toTree([assetTree()]), {
     srcDir: '/',
-    destDir: '/public'
+    destDir: '/wwwroot'
   });
 }
 
