@@ -8,7 +8,7 @@
   <PropertyGroup Label="Paths">
     <KlondikeAppDir>$([System.IO.Path]::Combine('$(ProjectDirectory)', 'src', 'Klondike'))$([System.IO.Path]::DirectorySeparatorChar)</KlondikeAppDir>
 
-    <StagingDir Condition=" '$(DistDir)' != '' ">$([System.IO.Path]::Combine('$(ProjectDirectory)', '$(DistDir)').Trim($([System.IO.Path]::DirectorySeparatorChar)))</StagingDir>
+    <StagingDir Condition=" '$(DistDir)' != '' ">$([System.IO.Path]::Combine('$(ProjectDirectory)', '$(DistDir)').TrimEnd($([System.IO.Path]::DirectorySeparatorChar)))</StagingDir>
   </PropertyGroup>
 
   <PropertyGroup Label="Target Dependencies">
