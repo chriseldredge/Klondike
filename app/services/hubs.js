@@ -13,11 +13,10 @@ export default Ember.Object.extend({
             throw new ApplicationException('Must set restClient property on hub');
         }
 
+        var url;
         var loadHubs = restClient.getApi('Indexing.Hub').then(function (hubApi) {
-            var url = hubApi.href;
+            url = hubApi.href;
             var hubUrl = url + '/hubs';
-
-            signalR.hub.url = url;
 
             return Ember.$.ajax({
                 url: hubUrl,
@@ -37,6 +36,8 @@ export default Ember.Object.extend({
                     hubs[prop.hubName] = prop;
                 }
             }
+
+            signalR.hub.url = url;
 
             return hubs;
         }, null, describePromise(this, 'init') + ': Resolve Hubs');
