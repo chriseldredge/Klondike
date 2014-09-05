@@ -72,31 +72,31 @@ Install dependencies:
 
 Finally, build:
 
-    grunt build
+    ember build
 
 This puts the built app into `./dist`.
 
-_Note_: `grunt build` will call msbuild if available to build the .NET components. Use
-`grunt build --force` to ignore the warning.
+_Note_: if you do not have the .NET 4.5 SDK or Mono 3.6 MDK installed you can
+skip building the .net assets by using the `ember-only` environment:
+
+    ember build --environment=ember-only
 
 ### .NET Back End
 
-The c# project requires Windows, Visual Studio 2013 and the Microsoft.NET Framework 4.5.1 SDK.
+The c# projects can be build on Windows or OS X / Linux. On Windows,
+install Visual Studio 2013 and the Microsoft.NET Framework 4.5 SDK.
+On OS X / Linux, install the [Mono MDK](http://www.mono-project.com/download/)
 
-Make sure you use the MSBuild.exe included in Visual Studio 2013:
-
-    C:\Program Files (x86)\MSBuild\12.0\Bin\MSBuild.exe
-
-This puts the .NET assets into `./dist`.
+Mono can also be installed by homebrew on OS X.
 
 ## Front End development without .NET
 
 You can develop the front end without needing to build or host the .net code.
 
-Edit [app/js/config.js](app/js/config.js) to point to an external Klondike API endpoint,
+Edit [app/config.js](app/config.js) to point to an external Klondike API endpoint,
 then run
 
-    grunt serve --force
+    ember serve --environment=ember-only
 
 The force flag is necessary to ignore the warning about MSBuild not being available.
 
