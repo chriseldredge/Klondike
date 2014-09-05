@@ -3,6 +3,7 @@
 module.exports = function(environment) {
   var ENV = {
     environment: environment,
+    configuration: 'Debug',
     baseURL: '/',
     locationType: 'hash',
     EmberENV: {
@@ -18,30 +19,19 @@ module.exports = function(environment) {
     }
   };
 
-  var execSync = require('exec-sync');
-
-  var gitStatus = execSync('git describe --long --abbrev=10 --all --always --dirty');
-
-  var parts = gitStatus.split('-');
-  var hash = parts[parts.length-1];
-
-  if (parts[parts.length-1] == 'dirty') {
-    hash = parts[parts.length-2] + '-dirty';
-  }
-
-  ENV.APP.version = require('../package.json').version + ' (' + hash + ')';
+  ENV.APP.version = require('../package.json').version;
 
   if (environment === 'development') {
-    ENV.APP.LOG_RESOLVER = true;
-    ENV.APP.LOG_ACTIVE_GENERATION = true;
-    ENV.APP.LOG_MODULE_RESOLVER = true;
-    // ENV.APP.LOG_TRANSITIONS = true;
-    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-    ENV.APP.LOG_VIEW_LOOKUPS = true;
+    //ENV.APP.LOG_RESOLVER = true;
+    //ENV.APP.LOG_ACTIVE_GENERATION = true;
+    //ENV.APP.LOG_MODULE_RESOLVER = true;
+    //ENV.APP.LOG_TRANSITIONS = true;
+    //ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
+    //ENV.APP.LOG_VIEW_LOOKUPS = true;
   }
 
   if (environment === 'production') {
-
+    ENV.configuration = 'Release';
   }
 
   return ENV;

@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import ProgressIndicator from 'Klondike/progress-indicator';
 import ProgressIndicatorRoute from 'Klondike/mixins/progress-indicator-route';
+import describePromise from '/klondike/util/describe-promise';
 
 export default Ember.Route.extend(ProgressIndicatorRoute, {
     model: function(params) {
@@ -10,13 +11,20 @@ export default Ember.Route.extend(ProgressIndicatorRoute, {
     setupController: function(controller, model) {
         this._super(controller, model);
 
-        if (Ember.isEmpty(model.versionHistory)) {
+        if (!Ember.isEmpty(model.get('versionHistory'))) {
+            return;
+        }
+
+        var fullModel = this.findModel('package', model.id, model.version);
+
+        if (fullModel.then) {
             ProgressIndicator.start();
-            var fullModel = this.findModel('package', model.id, model.version);
             fullModel.then(function(m) {
                 model.setProperties(m);
                 ProgressIndicator.done();
-            });
+            }, null, describePromise(this, 'setupController'));
+        } else {
+            model.setProperties(fullModel);
         }
     }
 });

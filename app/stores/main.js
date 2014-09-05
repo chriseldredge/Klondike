@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ApplicationException from 'Klondike/application-exception';
+import describePromise from '/klondike/util/describe-promise';
 
 var cache = {};
 
@@ -7,8 +8,6 @@ function createHandler(funcName) {
     return function() {
         var name = arguments[0];
         var args = Array.prototype.slice.call(arguments, 1);
-
-        console.log('adapter:' + name + '.' + funcName, args);
 
         var adapter = this.container.lookup('adapter:' + name);
         if (!adapter) {
@@ -30,8 +29,6 @@ export default Ember.Object.extend({
         var args = Array.prototype.slice.call(arguments, 1);
         var id = args.join('::');
 
-        console.log('store:main find', arguments);
-
         if (cache[name] && cache[name][id]) {
             return cache[name][id];
         }
@@ -41,7 +38,7 @@ export default Ember.Object.extend({
             cache[name] = cache[name] || {};
             cache[name][id] = record;
             return record;
-        });
+        }, null, describePromise(this, 'find', arguments) + ': Cache Result');
     },
 
     list: createHandler('list'),

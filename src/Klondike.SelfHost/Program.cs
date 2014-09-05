@@ -42,12 +42,14 @@ namespace Klondike.SelfHost
                 Port = port
             };
 
-            using (WebApp.Start<Startup>(options))
+            var startup = new Startup();
+            using (WebApp.Start(options, startup.Configuration))
             {
                 Console.WriteLine("Base directory:" + BaseDirectory);
                 Console.WriteLine("Running a http server on port {0}. Press enter to quit.", port);
                 Console.ReadLine();
             }
+            startup.WaitForShutdown(TimeSpan.FromSeconds(30));
         }
 
         internal static string MapPath(string virtualPath)

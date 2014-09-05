@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import UserPermissionObserver from 'Klondike/mixins/user-permission-observer';
 import signalR from './signalR';
+import describePromise from '/klondike/util/describe-promise';
 
 export default Ember.Object.extend(UserPermissionObserver, {
     hubs: null,
@@ -14,10 +15,9 @@ export default Ember.Object.extend(UserPermissionObserver, {
         this._super();
         var self = this;
 
-        var hubs = this.get('hubs');
-        hubs.then(function() {
-            self.set('statusHub', hubs.getHub('status'));
-        });
+        this.get('hubs').getHub('status').then(function(statusHub) {
+            self.set('statusHub', statusHub);
+        }, null, describePromise(this, 'init'));
 
         this.observeUserPermission('canSynchronize', 'indexing.synchronize');
     },
@@ -29,8 +29,6 @@ export default Ember.Object.extend(UserPermissionObserver, {
         };
 
         var hub = this.get('statusHub');
-
-        console.log('Connecting to SignalR indexing status hub', signalR.version, signalR.hub.url);
 
         hub.client.updateStatus = setStatusCallback;
 

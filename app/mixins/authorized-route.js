@@ -8,14 +8,13 @@ export default Ember.Mixin.create({
             var message = 'must set authorizedApiName property when using AuthorizedRoute mixin';
             console.error(message);
             transition.abort();
-            return Ember.Deferred.promise(function(deferred) {
-                deferred.reject(message);
-            });
+            return;
         }
 
         var self = this;
 
-        return this.get('session').then(function(session) {
+        var session = this.get('session');
+        return session.then(function() {
             if (!session.get('isLoggedIn')) {
                 var loginController = self.controllerFor('login');
                 loginController.set('previousTransition', transition);
@@ -41,7 +40,7 @@ export default Ember.Mixin.create({
         var observer = function() {
             Ember.run.once(function() {
                 if (!session.get('isLoggedIn')) {
-                    self.transitionTo(self.get('index'));
+                    self.transitionTo('index');
                 } else {
                     session.isAllowed(self.get('authorizedApiName')).then(function(result) {
                         if (!result) {

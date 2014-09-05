@@ -1,8 +1,47 @@
 $icon-font-path: "/assets/bootstrap-sass-official/assets/fonts/bootstrap";
 $fa-font-path: "/assets/font-awesome/fonts";
+$footer-height: 3em;
 
 @import 'vendor/font-awesome/scss/font-awesome';
 @import 'vendor/bootstrap-sass-official/assets/stylesheets/bootstrap';
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: $footer-height;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: $footer-height;
+  background-color: #f5f5f5;
+  color: #999;
+
+  dl {
+    margin: 1em;
+    margin-bottom: 0;
+    border: 0;
+    background-color: inherit;
+  }
+
+  dt, dd {
+    display: inline;
+    font-weight: normal;
+  }
+
+  dd:after {
+    content: ' | ';
+  }
+
+  dd:last-child:after {
+    content: '';
+  }
+}
 
 img.package-icon {
     width: 50px;
@@ -22,6 +61,9 @@ div.code-snippet {
 
 div.code-snippet button {
     margin-right: 1em;
+    color: #555;
+    width: 30px;
+    height: 28px;
 }
 
 div.code-snippet input {
@@ -30,7 +72,8 @@ div.code-snippet input {
     color: #e2e2e2;
 
     border:  0;
-    width: 60em;
+    width: 90%;
+    width: calc(100% - 30px - 2em);
 }
 
 div.code-snippet div.message {
@@ -80,37 +123,12 @@ label {
     display: block;
 }
 
-nav.user-info {
-    float: right;
+.navbar-nav > li > input {
+    margin-top: 12px;
 }
 
 main {
     margin-top: 2em;
-}
-
-footer {
-    margin-top: 2em;
-    color: #999;
-
-
-    dl {
-        margin-bottom: 0;
-        border: 0;
-        background-color: inherit;
-    }
-
-    dt, dd {
-        display: inline;
-        font-weight: normal;
-    }
-
-    dd:after {
-        content: ' | ';
-    }
-
-    dd:last-child:after {
-        content: '';
-    }
 }
 
 #status-code {

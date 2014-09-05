@@ -1,8 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Klondike", "app\Klondike.csproj", "{07760DFA-72C3-45CD-8FC0-AA8D3274FCA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Klondike.WebHost", "src\Klondike.WebHost\Klondike.WebHost.csproj", "{07760DFA-72C3-45CD-8FC0-AA8D3274FCA5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6D8C35E9-01DB-49E3-973C-E7F9107BBA72}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,6 +16,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ciao", "Ciao", "{62F71436-4
 		Ciao.proj = Ciao.proj
 		Ciao.props = Ciao.props
 		Ciao.targets = Ciao.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A120D6C6-71E5-439B-B01E-2908551335D4}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		appveyor.yml = appveyor.yml
+		bower.json = bower.json
+		Brocfile.js = Brocfile.js
+		NuGet.config = NuGet.config
+		package.json = package.json
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
