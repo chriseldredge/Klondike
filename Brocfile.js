@@ -6,18 +6,18 @@ var gitDescribe = require('./broccoli-git-describe.js');
 
 var app = new EmberApp();
 
-app.import('vendor/momentjs/moment.js');
-app.import('vendor/nprogress/nprogress.js');
-app.import('vendor/nprogress/nprogress.css');
+app.import('bower_components/momentjs/moment.js');
+app.import('bower_components/nprogress/nprogress.js');
+app.import('bower_components/nprogress/nprogress.css');
 
 app.import({
-    development: 'vendor/jquery-signalr/jquery.signalR.js',
-    production: 'vendor/jquery-signalr/jquery.signalR.min.js'
+    development: 'bower_components/jquery-signalr/jquery.signalR.js',
+    production: 'bower_components/jquery-signalr/jquery.signalR.min.js'
 });
 
 app.import({
-    development: 'vendor/zeroclipboard/ZeroClipboard.js',
-    production: 'vendor/zeroclipboard/ZeroClipboard.min.js'
+    development: 'bower_components/zeroclipboard/ZeroClipboard.js',
+    production: 'bower_components/zeroclipboard/ZeroClipboard.min.js'
 });
 
 app.index = function() {
@@ -26,7 +26,7 @@ app.index = function() {
 }
 
 function assetTree() {
-  return pickFiles('vendor', {
+  return pickFiles('bower_components', {
     srcDir: '/',
     files: [
     	'bootstrap-sass-official/assets/fonts/bootstrap/*',

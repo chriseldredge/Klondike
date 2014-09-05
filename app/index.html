@@ -12,14 +12,13 @@
         <link rel="stylesheet" href="assets/klondike.css">
     </head>
     <body>
-        <script>
-            window.KlondikeENV = {{ENV}};
-            window.KlondikeENV.APP['git-status'] = {{GIT_REVISION}};
-            window.EmberENV = window.KlondikeENV.EmberENV;
-        </script>
         <script src="assets/vendor.js"></script>
         <script src="assets/klondike.js"></script>
         <script>
+            window.KlondikeENV = require('klondike/config/environment')['default'];
+            window.KlondikeENV.APP['version'] = {{VERSION}};
+            window.KlondikeENV.APP['git-status'] = {{GIT_REVISION}};
+            window.EmberENV = window.KlondikeENV.EmberENV;
             window.Klondike = require('klondike/app')['default'].create(KlondikeENV.APP);
         </script>
   </body>

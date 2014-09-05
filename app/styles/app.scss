@@ -2,8 +2,8 @@ $icon-font-path: "/assets/bootstrap-sass-official/assets/fonts/bootstrap";
 $fa-font-path: "/assets/font-awesome/fonts";
 $footer-height: 3em;
 
-@import 'vendor/font-awesome/scss/font-awesome';
-@import 'vendor/bootstrap-sass-official/assets/stylesheets/bootstrap';
+@import 'bower_components/font-awesome/scss/font-awesome';
+@import 'bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap';
 
 html {
   position: relative;

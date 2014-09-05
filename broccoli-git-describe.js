@@ -41,11 +41,16 @@ GitDescribe.prototype.write = function (readTree, destDir) {
       output += data;
     });
   }).then(function(status) {
+    var version = require('./package.json').version;
     var replacement = replace(self.inputTree, {
         files: ['index.html'],
         patterns: [{
           match: /\{\{GIT_REVISION\}\}/g,
           replacement: status
+        },
+        {
+          match: /\{\{VERSION\}\}/g,
+          replacement: "'" + version + "'"
         }]
       });
 
