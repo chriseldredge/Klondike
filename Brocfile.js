@@ -52,6 +52,10 @@ function msbuildTree() {
 
   var config = require('./config/environment')(app.env);
 
+  if (config.disableMSBuild) {
+    return null;
+  }
+
   return msbuild(msbuildInputTree, {
     project: require('path').join(__dirname, 'Ciao.proj'),
     toolsVersion: '4.0',
@@ -63,4 +67,14 @@ function msbuildTree() {
     }
   });
 }
-module.exports = app.toTree([msbuildTree(), assetTree()]);
+
+function buildTrees() {
+    var trees = [assetTree()];
+    var msbuild = msbuildTree();
+    if (msbuild !== null) {
+        trees.push(msbuild);
+    }
+    return trees;
+}
+
+module.exports = app.toTree(buildTrees());

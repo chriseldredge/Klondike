@@ -34,5 +34,9 @@ module.exports = function(environment) {
     ENV.configuration = 'Release';
   }
 
+  if (environment === 'ember-only') {
+    ENV.disableMSBuild = true;
+  }
+
   return ENV;
 };
