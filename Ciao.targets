@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-        <TransformExe>$(SolutionDirectory)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe</TransformExe>
+        <TransformExe>$(SolutionDirectory)packages\WebConfigTransformRunner.1.1.16\Tools\WebConfigTransformRunner.exe</TransformExe>
         <TransformCommand Condition=" '$(OS)' == 'Windows_NT' ">"$(TransformExe)"</TransformCommand>
         <TransformCommand Condition=" '$(OS)' != 'Windows_NT' ">mono --runtime=v4.0.30319 $(TransformExe)</TransformCommand>
     </PropertyGroup>
