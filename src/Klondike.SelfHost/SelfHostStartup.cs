@@ -33,6 +33,8 @@ namespace Klondike.SelfHost
 
         protected override void Start(IAppBuilder app, IContainer container)
         {
+            base.Start(app, container);
+
             var fileServerOptions = new FileServerOptions
             {
                 FileSystem = new PhysicalFileSystem(selfHostSettings.BaseDirectory),
@@ -40,8 +42,6 @@ namespace Klondike.SelfHost
             };
             fileServerOptions.DefaultFilesOptions.DefaultFileNames = new[] {"index.html"};
             app.UseFileServer(fileServerOptions);
-
-            base.Start(app, container);
         }
     }
 }
