@@ -9,9 +9,6 @@ var proxyServer = null;
 var proxyReady;
 
 // TODO: shadow copy on win32
-// TODO: change Settings.config to put lucene index outside of dist so it doesn't get nuked
-// TODO: change Settings.config to point to Klondike/packages for some test data
-// TODO: change Settings.config to synchronize on start up
 function start() {
   var binDir = path.join(__dirname, '..', 'dist', 'bin');
   var exe = path.join(binDir, 'Klondike.SelfHost.exe');
@@ -25,6 +22,7 @@ function start() {
 
   args.push('--port=' + port);
   args.push('--packagesPath=' + path.normalize(path.join(__dirname, '..', 'packages')));
+  // TODO: make a real broccoli tree with proper cleanup:
   args.push('--lucenePath=' + path.normalize(path.join(__dirname, '..', 'tmp', 'lucene')));
   args.push('--synchronizeOnStart');
 
