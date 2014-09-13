@@ -9,6 +9,7 @@ using Microsoft.Owin.StaticFiles;
 using NuGet.Lucene.Web;
 using NuGet.Lucene.Web.Formatters;
 using Owin;
+using System.Threading;
 
 namespace Klondike.SelfHost
 {
@@ -46,8 +47,19 @@ namespace Klondike.SelfHost
             using (WebApp.Start(options, startup.Configuration))
             {
                 Console.WriteLine("Base directory:" + BaseDirectory);
-                Console.WriteLine("Running a http server on port {0}. Press enter to quit.", port);
-                Console.ReadLine();
+
+				//Under mono if you deamonize a process a Console.ReadLine will cause an EOF 
+				//so we need to block another way
+				if (args.Any(s => s.Equals("-d", StringComparison.CurrentCultureIgnoreCase)))
+				{
+					Console.WriteLine("Running a http server on port {0}", port);
+					Thread.Sleep(Timeout.Infinite);
+				}
+				else
+				{
+					Console.WriteLine("Running a http server on port {0}. Press enter to quit.", port);
+					Console.ReadKey();
+				}
             }
             startup.WaitForShutdown(TimeSpan.FromSeconds(30));
         }
