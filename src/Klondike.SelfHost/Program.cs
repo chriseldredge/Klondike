@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using Autofac;
-using Lucene.Net.Documents;
 using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.Hosting;
 using Microsoft.Owin.StaticFiles;
@@ -48,18 +47,18 @@ namespace Klondike.SelfHost
             {
                 Console.WriteLine("Base directory:" + BaseDirectory);
 
-				//Under mono if you deamonize a process a Console.ReadLine will cause an EOF 
-				//so we need to block another way
-				if (args.Any(s => s.Equals("-d", StringComparison.CurrentCultureIgnoreCase)))
-				{
-					Console.WriteLine("Running a http server on port {0}", port);
-					Thread.Sleep(Timeout.Infinite);
-				}
-				else
-				{
-					Console.WriteLine("Running a http server on port {0}. Press enter to quit.", port);
-					Console.ReadKey();
-				}
+                //Under mono if you deamonize a process a Console.ReadLine will cause an EOF 
+                //so we need to block another way
+                if (args.Any(s => s.Equals("-d", StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    Console.WriteLine("Running a http server on port {0}", port);
+                    Thread.Sleep(Timeout.Infinite);
+                }
+                else
+                {
+                    Console.WriteLine("Running a http server on port {0}. Press enter to quit.", port);
+                    Console.ReadKey();
+                }
             }
             startup.WaitForShutdown(TimeSpan.FromSeconds(30));
         }
