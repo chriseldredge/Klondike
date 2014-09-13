@@ -42,13 +42,14 @@ the Lucene index files. Adjust your application pool accordingly:
 The binary release also includes Klondike.SelfHost.exe in the bin directory.
 It can be run from the console using mono or the .net framework:
 
-    Klondike.SelfHost.exe 8080
+    Klondike.SelfHost.exe --port=8080
 
 Or
 
-    mono ./Klondike.SelfHost.exe 8080
+    mono ./Klondike.SelfHost.exe --port=8080
 
-If no port is specified, 8080 is used as a default.
+If no port is specified, 8080 is used as a default. See the [Klondike.SelfHost README](src/Klondike.SelfHost/README.md)
+for more information.
 
 ## Building Locally
 
@@ -98,20 +99,11 @@ then run
 
     ember serve --environment=ember-only
 
-The force flag is necessary to ignore the warning about MSBuild not being available.
-
 ## Previewing debug/release builds
 
-IIS Express can be used to preview the contents of `./dist` including .NET back end:
+You can serve production builds with:
 
-    grunt serve:dist:iisexpress
-
-You can also preview the debug version of the site by running
-
-    grunt serve::iisexpress
-
-When using the latter target, live reloading will take place whenever you rebuild the
-c# project, e.g. from Visual Studio, or whenever you modify a js or scss file.
+    ember serve --environment=production
 
 ## Integration Tests
 
