@@ -23,7 +23,10 @@ function start() {
     exe = 'mono';
   }
 
-  args.push(port);
+  args.push('--port=' + port);
+  args.push('--packagesPath=' + path.normalize(path.join(__dirname, '..', 'packages')));
+  args.push('--lucenePath=' + path.normalize(path.join(__dirname, '..', 'tmp', 'lucene')));
+  args.push('--synchronizeOnStart');
 
   proxyReady = new Promise(function(resolve, reject) {
     var doStart = function() {
