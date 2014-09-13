@@ -14,7 +14,7 @@ namespace Klondike
     {
         protected override INuGetWebApiSettings CreateSettings()
         {
-            return new NuGetWebApiWebHostSettings();
+            return new NuGetWebApiWebHostSettings(prefix:"");
         }
 
         protected virtual bool IsRunningOnMono

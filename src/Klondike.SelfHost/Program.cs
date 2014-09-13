@@ -97,6 +97,11 @@ namespace Klondike.SelfHost
 
     class SelfHostSettings : NuGetWebApiSettings
     {
+
+        public SelfHostSettings()
+            :base(prefix:"")
+        {
+        }
         protected override string MapPathFromAppSetting(string key, string defaultValue)
         {
             var path = GetAppSetting(key, defaultValue);
