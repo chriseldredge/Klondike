@@ -152,13 +152,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NuGet.Core.2.8.2\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Lucene, Version=3.0.0.75, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NuGet.Lucene, Version=3.0.0.78, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NuGet.Lucene.3.0.0-beta-build75\lib\net45\NuGet.Lucene.dll</HintPath>
+      <HintPath>..\..\packages\NuGet.Lucene.3.0.0-beta-build78\lib\net45\NuGet.Lucene.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Lucene.Web, Version=3.0.0.75, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NuGet.Lucene.Web, Version=3.0.0.78, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NuGet.Lucene.Web.3.0.0-beta-build75\lib\net45\NuGet.Lucene.Web.dll</HintPath>
+      <HintPath>..\..\packages\NuGet.Lucene.Web.3.0.0-beta-build78\lib\net45\NuGet.Lucene.Web.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
