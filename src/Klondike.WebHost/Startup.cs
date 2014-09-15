@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
@@ -25,9 +25,28 @@ namespace Klondike
             }
         }
 
+        /// <summary>
+        /// See https://bugzilla.xamarin.com/show_bug.cgi?id=21571
+        /// </summary>
+        protected virtual bool MonoCantEven
+        {
+            get
+            {
+                try
+                {
+                    new Uri("/example", UriKind.Relative).GetComponents(UriComponents.SerializationInfoString, UriFormat.UriEscaped);
+                    return false;
+                }
+                catch (InvalidOperationException)
+                {
+                    return true;
+                }
+            }
+        }
+
         protected override void RegisterServices(IContainer container, IAppBuilder app, HttpConfiguration config)
         {
-            if (IsRunningOnMono)
+            if (IsRunningOnMono && MonoCantEven)
             {
                 var apiMapper = container.Resolve<NuGetWebApiRouteMapper>();
 
