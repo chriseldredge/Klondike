@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using NUnit.Framework;
 
 namespace Klondike.SelfHost.Tests
@@ -53,7 +53,7 @@ namespace Klondike.SelfHost.Tests
 
             TestDelegate call = () => settings.Get<string>("stuff");
 
-            Assert.That(call, Throws.InstanceOf<KeyNotFoundException>());
+            Assert.That(call, Throws.InstanceOf<InvalidOperationException>());
         }
 
         [Test]
@@ -70,6 +70,14 @@ namespace Klondike.SelfHost.Tests
             var settings = CommandLineSettings.Parse(new string[0]);
 
             Assert.That(settings.GetValueOrDefault("stuff", 157), Is.EqualTo(157), "stuff");
+        }
+
+        [Test]
+        public void MultipleValuesForKey()
+        {
+            var settings = CommandLineSettings.Parse(new[] {"--thing=a", "--thing=b"});
+
+            Assert.That(settings.GetValues<string>("thing"), Is.EqualTo(new[] {"a", "b"}));
         }
     }
 }

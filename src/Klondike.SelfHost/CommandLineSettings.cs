@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Klondike.SelfHost
 {
     public class CommandLineSettings
     {
-        private readonly IDictionary<string, string> values;
+        private readonly ILookup<string, string> values;
 
-        public CommandLineSettings(IDictionary<string, string> values)
+        public CommandLineSettings(ILookup<string, string> values)
         {
             this.values = values;
         }
 
         public static CommandLineSettings Parse(string[] args)
         {
-            var values = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            var values = new List<KeyValuePair<string, string>>();
 
             foreach (var arg in args)
             {
@@ -37,31 +38,36 @@ namespace Klondike.SelfHost
 
                 if (keyEnd > 0)
                 {
-                    values.Add(arg.Substring(keyBegin, keyEnd - keyBegin), arg.Substring(keyEnd + 1));
+                    values.Add(new KeyValuePair<string, string>(arg.Substring(keyBegin, keyEnd - keyBegin), arg.Substring(keyEnd + 1)));
                 }
                 else
                 {
-                    values.Add(arg.Substring(keyBegin), "true");
+                    values.Add(new KeyValuePair<string, string>(arg.Substring(keyBegin), "true"));
                 }
                 
             }
 
-            return new CommandLineSettings(values);
+            return new CommandLineSettings(values.ToLookup(k => k.Key, k => k.Value, StringComparer.InvariantCultureIgnoreCase));
         }
 
         public T Get<T>(string key)
         {
-            return (T) Convert.ChangeType(values[key], typeof (T));
+            return (T) Convert.ChangeType(values[key].First(), typeof (T));
         }
 
         public T GetValueOrDefault<T>(string key, T defaultValue)
         {
-            string value;
-            if (values.TryGetValue(key, out value))
+            var value = values[key].FirstOrDefault();
+            if (value != null)
             {
                 return (T) Convert.ChangeType(value, typeof (T));
             }
             return defaultValue;
+        }
+
+        public IEnumerable<T> GetValues<T>(string key)
+        {
+            return values[key].Select(k => (T) Convert.ChangeType(k, typeof(T)));
         }
     }
 }
