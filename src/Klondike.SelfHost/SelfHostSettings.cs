@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NuGet.Lucene.Web;
 
 namespace Klondike.SelfHost
@@ -29,9 +31,33 @@ namespace Klondike.SelfHost
             get { return Convert.ToInt32(GetAppSetting("port", "8080")); }
         }
 
+        public IEnumerable<string> Urls
+        {
+            get
+            {
+                var urls = commandLineSettings.GetValues<string>("url").ToArray();
+                if (urls.Any())
+                {
+                    return urls;
+                }
+
+                return base.GetAppSetting("url", "").Split(',').Select(s => s.Trim()).Where(s => !string.IsNullOrWhiteSpace(s));
+            }
+        }
+
+        public string ServerFactory
+        {
+            get { return GetAppSetting("serverFactory", "Nowin"); }
+        }
+
         public string BaseDirectory
         {
             get { return GetAppSetting("baseDirectory", DefaultBaseDirectory); }
+        }
+
+        public bool EnableIntegratedWindowsAuthentication
+        {
+            get { return GetFlagFromAppSetting("enableIntegratedWindowsAuthentication", false); }
         }
 
         public string MapPath(string path)

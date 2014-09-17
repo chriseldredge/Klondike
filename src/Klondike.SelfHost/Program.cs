@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.Owin.Hosting;
+using System.ServiceProcess;
 
 namespace Klondike.SelfHost
 {
@@ -14,20 +14,17 @@ namespace Klondike.SelfHost
         static void Main(string[] args)
         {
             var settings = new SelfHostSettings(CommandLineSettings.Parse(args));
-            var startup = new SelfHostStartup(settings);
 
-            var options = new StartOptions
+            var service = new KlondikeService(settings);
+
+            if (Environment.UserInteractive)
             {
-                ServerFactory = "Nowin",
-                Port = settings.Port
-            };
-            
-            using (WebApp.Start(options, startup.Configuration))
-            {
-                Console.WriteLine("Running a http server on port {0}. Press enter to quit.", options.Port);
-                Console.ReadLine();
+                service.RunInteractivley();
             }
-            startup.WaitForShutdown(TimeSpan.FromSeconds(30));
+            else
+            {
+                ServiceBase.Run(service);
+            }
         }
     }
 }
