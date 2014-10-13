@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -58,6 +58,11 @@ namespace Klondike.SelfHost
         public bool EnableIntegratedWindowsAuthentication
         {
             get { return GetFlagFromAppSetting("enableIntegratedWindowsAuthentication", false); }
+        }
+
+        public bool Interactive
+        {
+            get { return GetFlagFromAppSetting("interactive", false); }
         }
 
         public string MapPath(string path)

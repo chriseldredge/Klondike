@@ -17,12 +17,14 @@ namespace Klondike.SelfHost
 
             var service = new KlondikeService(settings);
 
-            if (Environment.UserInteractive)
+            if (settings.Interactive || Environment.UserInteractive)
             {
+                Console.WriteLine("Running interactively");
                 service.RunInteractivley();
             }
             else
             {
+                Console.WriteLine("Running as service");
                 ServiceBase.Run(service);
             }
         }

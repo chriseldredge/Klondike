@@ -46,7 +46,7 @@ It can be run from the console using mono or the .net framework:
 
 Or
 
-    mono ./Klondike.SelfHost.exe --port=8080
+    mono ./Klondike.SelfHost.exe --interactive --port=8080
 
 If no port is specified, 8080 is used as a default. See the [Klondike.SelfHost README](src/Klondike.SelfHost/README.md)
 for more information.

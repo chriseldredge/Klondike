@@ -1,4 +1,4 @@
-﻿# Klondike.SelfHost
+# Klondike.SelfHost
 
 This app allows Klondike to run without IIS from the command line or as a service.
 
@@ -9,12 +9,13 @@ Settings are configured in Settings.config and can be overridden on the command 
 In addition to the options found in Settings.config, the following additional options are supported:
 
 Switch                                | Default    | Description
---------------------------------------|-------------------------
+------------------------------------- | ---------- | -----------
 port                                  | 8080       | When no url(s) are specified, listens on all interface on this tcp port.
 url                                   |            | URL to listen on, e.g. `http://example.com/` (may be repeated for multiple bindings).
 serverFactory                         | Nowin      | Selects OWIN server factory (may also use Microsoft.Owin.Host.HttpListener on Windows).
 enableIntegratedWindowsAuthentication | false      | When using Microsoft.Owin.Host.HttpListener, enables Windows authentication
 baseDirectory                         | (computed) | The directory where Klondike.SelfHost.exe resides, or the parent of `bin` when in a bin folder
+interactive                           | (computed) | When set to true, don't run as a service, block on Console.ReadLine. When unspecified, uses Environment.UserInteractive.
 
 ## Running as a Service
 
@@ -26,4 +27,8 @@ C:\Windows\system32\sc.exe create Klondike \
     binpath= "c:\path\to\klondike\bin\Klondike.SelfHost.exe --args --go --here"
 ```
 
-You can also run the service using `mono-service2` on Unix hosts.
+You can also run the service using `mono-service` on Unix hosts:
+
+```
+mono /Library/Frameworks/Mono.framework/Versions/3.8.0/lib/mono/4.5/mono-service.exe Klondike.SelfHost.exe
+```

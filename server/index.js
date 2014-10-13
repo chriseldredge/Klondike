@@ -20,6 +20,7 @@ function start() {
     exe = 'mono';
   }
 
+  args.push('--interactive');
   args.push('--port=' + port);
   args.push('--packagesPath=' + path.normalize(path.join(__dirname, '..', 'packages')));
   // TODO: make a real broccoli tree with proper cleanup:
@@ -31,7 +32,7 @@ function start() {
       proc = childProcess.spawn(exe, args, { cwd: binDir });
 
       proc.stdout.on('data', function(data) {
-        if (data.toString().match(/enter to quit/i)) {
+        if (data.toString().match(/Listening for HTTP requests/i)) {
           proxyServer = new httpProxy.createProxyServer({
             target: {
               host: 'localhost',
