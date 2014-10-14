@@ -18,6 +18,10 @@ namespace Klondike.SelfHost
 
         protected override string GetAppSetting(string key, string defaultValue)
         {
+            if (string.Equals(key, "routePathPrefix", StringComparison.InvariantCultureIgnoreCase))
+            {
+                defaultValue = (VirtualPathRoot.TrimEnd('/') + '/' + defaultValue).TrimStart('/');
+            }
             return commandLineSettings.GetValueOrDefault(key, base.GetAppSetting(key, defaultValue));
         }
 
@@ -53,6 +57,11 @@ namespace Klondike.SelfHost
         public string BaseDirectory
         {
             get { return GetAppSetting("baseDirectory", DefaultBaseDirectory); }
+        }
+
+        public string VirtualPathRoot
+        {
+            get { return GetAppSetting("virtualPathRoot", "/"); }
         }
 
         public bool EnableIntegratedWindowsAuthentication

@@ -9,7 +9,7 @@ var proxyServer = null;
 var proxyReady;
 
 // TODO: shadow copy on win32
-function start() {
+function start(virtualPathRoot) {
   var binDir = path.join(__dirname, '..', 'dist', 'bin');
   var exe = path.join(binDir, 'Klondike.SelfHost.exe');
   var args = [];
@@ -22,6 +22,7 @@ function start() {
 
   args.push('--interactive');
   args.push('--port=' + port);
+  args.push('--virtualPathRoot=' + virtualPathRoot);
   args.push('--packagesPath=' + path.normalize(path.join(__dirname, '..', 'packages')));
   // TODO: make a real broccoli tree with proper cleanup:
   args.push('--lucenePath=' + path.normalize(path.join(__dirname, '..', 'tmp', 'lucene')));
@@ -62,14 +63,23 @@ function start() {
 }
 
 module.exports = function(app, options) {
+  if (options.environment === 'ember-only') {
+    return;
+  }
+
   if (!options || !options.watcher) {
     console.warn('Watcher is not available. Not proxying requests to Klondike.SelfHost.');
     return;
   }
 
-  options.watcher.on('change', start)
+  var baseURL = options.baseURL;
+  if (baseURL[baseURL.length-1] !== '/') {
+    baseURL += '/';
+  }
 
-  app.all('/api/*', function(req, res, next) {
+  options.watcher.on('change', function() { start(baseURL); });
+
+  app.all(baseURL + 'api/*', function(req, res, next) {
     if (proxyReady == null) {
       res.status(502).send('Bad Gateway');
       return;

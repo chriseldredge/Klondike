@@ -46,18 +46,19 @@ namespace Klondike
 
         protected override void RegisterServices(IContainer container, IAppBuilder app, HttpConfiguration config)
         {
+            var apiMapper = container.Resolve<NuGetWebApiRouteMapper>();
+
             if (IsRunningOnMono && MonoCantEven)
             {
-                var apiMapper = container.Resolve<NuGetWebApiRouteMapper>();
-
-                config.Routes.MapHttpRoute("Mono Hard-Coded OData Workspace Handler", apiMapper.ODataRoutePath,
+                config.Routes.MapHttpRoute("Mono Hard-Coded OData Workspace Handler",
+                    apiMapper.ODataRoutePath,
                     new object(),
                     new object(),
                     new MonoHardCodedODataWorkspaceHandler());
             }
 
             base.RegisterServices(container, app, config);
-            config.Routes.MapHttpRoute("Version", "api/version", new { controller = "Meta" });
+            config.Routes.MapHttpRoute("Version", apiMapper.PathPrefix + "version", new { controller = "Meta" });
         }
 
         protected override NuGetHtmlMicrodataFormatter CreateMicrodataFormatter()

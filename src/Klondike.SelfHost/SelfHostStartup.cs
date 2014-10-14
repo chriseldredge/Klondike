@@ -46,6 +46,7 @@ namespace Klondike.SelfHost
             var fileServerOptions = new FileServerOptions
             {
                 FileSystem = new PhysicalFileSystem(selfHostSettings.BaseDirectory),
+                RequestPath = new PathString(selfHostSettings.VirtualPathRoot.TrimEnd('/')),
                 EnableDefaultFiles = true
             };
             fileServerOptions.DefaultFilesOptions.DefaultFileNames = new[] {"index.html"};
