@@ -10,5 +10,13 @@ export default Ember.Controller.extend(BaseControllerMixin, {
             return model.request.status || 0;
         }
         return 0;
+    }.property('model'),
+
+    message: function() {
+      if (this.get('statusCode') === 404) {
+        return 'The requested resource was not found.';
+      }
+
+      return 'Looks like something went wrong. Check the javascript console for more details.';
     }.property('model')
 });

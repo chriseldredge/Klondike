@@ -7,6 +7,7 @@ using Autofac;
 using NuGet.Lucene.Web;
 using NuGet.Lucene.Web.Formatters;
 using Owin;
+using Microsoft.Owin;
 
 namespace Klondike
 {
@@ -14,7 +15,7 @@ namespace Klondike
     {
         protected override INuGetWebApiSettings CreateSettings()
         {
-            return new NuGetWebApiWebHostSettings(prefix:"");
+            return new NuGetWebApiWebHostSettings(prefix: "");
         }
 
         protected virtual bool IsRunningOnMono
@@ -42,6 +43,13 @@ namespace Klondike
                     return true;
                 }
             }
+        }
+
+        protected override void Start(IAppBuilder app, IContainer container)
+        {
+            app.UseFallbackFile(MapPath("/index.html"), new PathString("/api"), new PathString("/assets"));
+
+            base.Start(app, container);
         }
 
         protected override void RegisterServices(IContainer container, IAppBuilder app, HttpConfiguration config)

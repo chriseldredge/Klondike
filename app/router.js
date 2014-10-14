@@ -22,6 +22,7 @@ Router.map(function() {
         this.route('add', { path: '/add' });
         this.route('edit', { path: '/edit/*user_id' });
     });
+    this.route('not_found', { path: '/*not_found' });
 });
 
 export default Router;
