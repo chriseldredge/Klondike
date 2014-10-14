@@ -1,8 +1,7 @@
 /* global require, module */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
-var pickFiles = require('broccoli-static-compiler');
-var gitDescribe = require('./broccoli-git-describe.js');
+var select = require('broccoli-select');
 
 var app = new EmberApp();
 
@@ -20,26 +19,19 @@ app.import({
     production: 'bower_components/zeroclipboard/ZeroClipboard.min.js'
 });
 
-app.index = function() {
-    var defaultIndexTree = EmberApp.prototype.index.apply(app);
-    return gitDescribe(defaultIndexTree);
-}
-
 function assetTree() {
-  return pickFiles('bower_components', {
-    srcDir: '/',
-    files: [
+  return select('bower_components', {
+    acceptFiles: [
     	'bootstrap-sass-official/assets/fonts/bootstrap/*',
     	'font-awesome/fonts/*',
     	'zeroclipboard/ZeroClipboard.swf'
     ],
-    destDir: '/assets'
+    outputDir: '/assets'
   });
 }
 
 function msbuildTree() {
   var msbuild = require('broccoli-msbuild');
-  var select = require('broccoli-select');
 
   var msbuildInputTree = select('src', {
     acceptFiles: [ '**/*.csproj', '**/*.cs', '**/*.config' ],
