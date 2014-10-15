@@ -4,7 +4,7 @@ This app allows Klondike to run without IIS from the command line or as a servic
 
 ## Settings
 
-Settings are configured in Settings.config and can be overridden on the command line.
+Settings are configured in [Settings.config](../Klondike.WebHost/Settings.config) and can be overridden on the command line.
 
 In addition to the options found in Settings.config, the following additional options are supported:
 
@@ -14,9 +14,9 @@ port                                  | 8080       | When no url(s) are specifie
 url                                   |            | URL to listen on, e.g. `http://example.com/` (may be repeated for multiple bindings).
 virtualPathRoot                       | /          | Virtual path root to prefix all routes with.
 serverFactory                         | Nowin      | Selects OWIN server factory (may also use Microsoft.Owin.Host.HttpListener on Windows).
-enableIntegratedWindowsAuthentication | false      | When using Microsoft.Owin.Host.HttpListener, enables Windows authentication
-baseDirectory                         | (computed) | The directory where Klondike.SelfHost.exe resides, or the parent of `bin` when in a bin folder
-interactive                           | (computed) | When set to true, don't run as a service, block on Console.ReadLine. When unspecified, uses Environment.UserInteractive.
+enableIntegratedWindowsAuthentication | false      | When using Microsoft.Owin.Host.HttpListener, enables Windows authentication.
+baseDirectory                         | (computed) | The directory where Klondike.SelfHost.exe resides, or the parent of `bin` when in a bin folder.
+interactive                           | (computed) | When set to true, don't run as a service, block on Console.ReadLine. When unspecified, uses `Environment.UserInteractive`.
 
 ## Running as a Service
 

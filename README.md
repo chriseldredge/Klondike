@@ -18,9 +18,9 @@ such as the nuget.org public feed, to keep your build server humming even when n
 is unavailable.
 
 Klondike performs dramatically better than the standard NuGet.Server provider and adds lots
-of extra features you can't get anywhere else. Klondikes use of Lucene.Net means that the
-install footprint is light. Simply grab the binaries, stand up an IIS site and you're done.
-Much easier than deploying your own NuGet Gallery.
+of extra features you can't get anywhere else. Klondike uses Lucene.Net meaning that the
+install footprint is light. Simply grab the binaries, stand up an IIS site (or run the self-hosted
+exe) and you're done. Much easier than deploying your own NuGet Gallery.
 
 ## How to Deploy Klondike
 
@@ -84,11 +84,11 @@ skip building the .net assets by using the `ember-only` environment:
 
 ### .NET Back End
 
-The c# projects can be build on Windows or OS X / Linux. On Windows,
+The c# projects can be built on Windows or OS X / Linux. On Windows,
 install Visual Studio 2013 and the Microsoft.NET Framework 4.5 SDK.
 On OS X / Linux, install the [Mono MDK](http://www.mono-project.com/download/)
 
-Mono can also be installed by homebrew on OS X.
+Mono can also be installed by [homebrew](http://brew.sh/) on OS X.
 
 ## Front End development without .NET
 
