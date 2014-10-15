@@ -1,15 +1,18 @@
-<dl>
-{{#with view.content}}
-    <dt>Total Packages</dt>
-    <dd>{{totalPackages}}</dd>
-    <dt>Synchronizer State</dt>
-    <dd>
-        {{synchronizationState}}
-        {{#if packagesToIndex}}
-            {{completedPackages}} / {{packagesToIndex}}
-        {{/if}}
-    </dd>
-{{/with}}
-<dt>Version</dt>
-<dd>{{view.version}}</dd>
-</dl>
+<footer>
+  <dl>
+    {{#with view.content}}
+      <dt>Total Packages</dt>
+      <dd>{{totalPackages}}</dd>
+      <dt>Synchronizer State</dt>
+      <dd>
+          {{synchronizationState}}
+          {{#if packagesToIndex}}
+              {{completedPackages}} / {{packagesToIndex}}
+          {{/if}}
+      </dd>
+    {{/with}}
+
+    <dt>Klondike</dt>
+    <dd>{{view.version}}</dd>
+  </dl>
+</footer>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using Microsoft.Framework.ConfigurationModel;
 using NuGet.Lucene.Web;
@@ -9,9 +8,9 @@ namespace Klondike
 {
     public class KlondikeSettings : NuGetWebApiSettings
     {
-        private readonly string applicationBase;
         private static readonly IConfiguration config;
         private static readonly NameValueCollection roleMappings;
+        private readonly IPathMappingHelper pathMappingHelper;
 
         static KlondikeSettings()
         {
@@ -19,10 +18,10 @@ namespace Klondike
             roleMappings = config.GetSubKeys("roleMappings").Aggregate(new NameValueCollection(), (c, kv) => { c[kv.Key] = kv.Value.Get(null); return c; });
         }
 
-        public KlondikeSettings()
+        public KlondikeSettings(IPathMappingHelper pathMappingHelper)
             : base("", new NameValueCollection(), roleMappings)
         {
-            applicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase ?? Directory.GetCurrentDirectory();
+            this.pathMappingHelper = pathMappingHelper;
         }
 
         protected override string GetAppSetting(string key, string defaultValue)
@@ -35,16 +34,7 @@ namespace Klondike
         {
             var path = GetAppSetting(key, defaultValue);
 
-            if (path.StartsWith("~/"))
-            {
-                path = path.Replace("~/", "");
-            }
-
-            if (!Path.IsPathRooted(path))
-            {
-                path = Path.Combine(applicationBase, path);
-            }
-            return path;
+            return pathMappingHelper.MapPath(path);
         }
     }
 }

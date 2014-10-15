@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Klondike - NuGet Package Repository</title>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Klondike - NuGet Package Repository</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        {{BASE_TAG}}
+    {{content-for 'head'}}
 
-        <link rel="stylesheet" href="assets/vendor.css">
-        <link rel="stylesheet" href="assets/klondike.css">
-    </head>
-    <body>
-        <script>
-            window.KlondikeENV = {{ENV}};
-            window.KlondikeENV.APP['git-status'] = {{GIT_REVISION}};
-            window.EmberENV = window.KlondikeENV.EmberENV;
-        </script>
-        <script src="assets/vendor.js"></script>
-        <script src="assets/klondike.js"></script>
-        <script>
-            window.Klondike = require('klondike/app')['default'].create(KlondikeENV.APP);
-        </script>
+    <link rel="stylesheet" href="assets/vendor.css">
+    <link rel="stylesheet" href="assets/klondike.css">
+  </head>
+  <body>
+    <script src="assets/vendor.js"></script>
+    <script src="assets/klondike.js"></script>
   </body>
 </html>

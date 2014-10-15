@@ -7,11 +7,11 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {{BASE_TAG}}
+    {{content-for 'head'}}
 
     <link rel="stylesheet" href="assets/vendor.css">
     <link rel="stylesheet" href="assets/klondike.css">
-    <link rel="stylesheet" href="assets/qunit.css">
+    <link rel="stylesheet" href="assets/test-support.css">
     <style>
       #ember-testing-container {
         position: absolute;
@@ -33,18 +33,10 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
 
-    <script>
-      window.KlondikeENV = {{ENV}};
-      window.EmberENV = window.KlondikeENV.EmberENV;
-    </script>
-    <script src="assets/qunit.js"></script>
-    <script src="assets/qunit-notifications.js"></script>
     <script src="assets/vendor.js"></script>
+    <script src="assets/test-support.js"></script>
     <script src="assets/klondike.js"></script>
     <script src="testem.js"></script>
-    <script>
-      require('klondike/tests/test-helper');
-    </script>
     <script src="assets/test-loader.js"></script>
   </body>
 </html>

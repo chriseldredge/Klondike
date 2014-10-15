@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 var ZeroClipboard = window.ZeroClipboard;
 
-ZeroClipboard.config({moviePath: '/assets/zeroclipboard/ZeroClipboard.swf'});
+ZeroClipboard.config({moviePath: 'assets/zeroclipboard/ZeroClipboard.swf'});
 
 export default Ember.View.extend({
     tagName: 'div',

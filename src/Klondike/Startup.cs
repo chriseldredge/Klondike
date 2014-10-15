@@ -4,19 +4,28 @@ using Common.Logging.Configuration;
 using Common.Logging.Simple;
 using Klondike.Extensions;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Http;
 using NuGet.Lucene.Web;
 using NuGet.Lucene.Web.Formatters;
 using Owin;
 using System;
-using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace Klondike
 {
     public class Startup : NuGet.Lucene.Web.Startup
     {
+        private IPathMappingHelper pathMappingHelper;
+
         public void Configure(IBuilder app)
         {
+            app.UseServices(services =>
+            {
+                services.AddSingleton(typeof(IPathMappingHelper), typeof(PathMappingHelper));
+            });
+
+            pathMappingHelper = (IPathMappingHelper)app.ApplicationServices.GetService(typeof(IPathMappingHelper));
+
             // create properties
             var properties = new NameValueCollection();
             properties["showDateTime"] = "true";
@@ -37,6 +46,16 @@ namespace Klondike
                         context.Response.StatusCode));
                 });
 
+            app.UseMiddleware<StaticFileFallbackMiddleware>(new StaticFileFallbackOptions
+            {
+                File = "index.html",
+                BlacklistedPaths = new[]
+                {
+                    new PathString("/api"),
+                    new PathString("/assets")
+                }
+            });
+
             app.UseStaticFiles();
 
             app.UseOwinAppBuilder(Configuration);
@@ -44,7 +63,7 @@ namespace Klondike
 
         protected override INuGetWebApiSettings CreateSettings()
         {
-            return new KlondikeSettings();
+            return new KlondikeSettings(pathMappingHelper);
         }
 
         protected virtual bool IsRunningOnMono
@@ -55,39 +74,45 @@ namespace Klondike
             }
         }
 
+        /// <summary>
+        /// See https://bugzilla.xamarin.com/show_bug.cgi?id=21571
+        /// </summary>
+        protected virtual bool MonoCantEven
+        {
+            get
+            {
+                try
+                {
+                    new Uri("/example", UriKind.Relative).GetComponents(UriComponents.SerializationInfoString, UriFormat.UriEscaped);
+                    return false;
+                }
+                catch (InvalidOperationException)
+                {
+                    return true;
+                }
+            }
+        }
+
         protected override void RegisterServices(IContainer container, IAppBuilder app, HttpConfiguration config)
         {
-            if (IsRunningOnMono)
-            {
-                var apiMapper = container.Resolve<NuGetWebApiRouteMapper>();
+            var apiMapper = container.Resolve<NuGetWebApiRouteMapper>();
 
-                config.Routes.MapHttpRoute("Mono Hard-Coded OData Workspace Handler", apiMapper.ODataRoutePath,
+            if (IsRunningOnMono && MonoCantEven)
+            {
+                config.Routes.MapHttpRoute("Mono Hard-Coded OData Workspace Handler",
+                    apiMapper.ODataRoutePath,
                     new object(),
                     new object(),
                     new MonoHardCodedODataWorkspaceHandler());
             }
 
             base.RegisterServices(container, app, config);
-            config.Routes.MapHttpRoute("Version", "api/version", new { controller = "Meta" });
+            config.Routes.MapHttpRoute("Version", apiMapper.PathPrefix + "version", new { controller = "Meta" });
         }
 
         protected override NuGetHtmlMicrodataFormatter CreateMicrodataFormatter()
         {
-            var formatter = new KlondikeHtmlMicrodataFormatter();
-
-            formatter.SupportedMediaTypes.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
-            formatter.SupportedMediaTypes.Add(new MediaTypeWithQualityHeaderValue("text/xml"));
-
-            formatter.Settings.Indent = true;
-
-            formatter.Title = "Klondike API";
-            /*
-            formatter.AddHeadContent(
-                new XElement("script",
-                    new XAttribute("src", MapPath("~/js/formtemplate.min.js")),
-                    new XText("")));
-            */
-            return formatter;
+            return new KlondikeHtmlMicrodataFormatter(pathMappingHelper);
         }
     }
 }

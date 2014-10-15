@@ -1,6 +1,6 @@
 ## Klondike
 
-Ember front-end that builds on NuGet.Lucene for private package hosting.
+Ember front-end that builds on NuGet.Lucene for private [NuGet](https://www.nuget.org/) package hosting.
 
 ## Binaries
 
@@ -18,28 +18,53 @@ such as the nuget.org public feed, to keep your build server humming even when n
 is unavailable.
 
 Klondike performs dramatically better than the standard NuGet.Server provider and adds lots
-of extra features you can't get anywhere else. Klondikes use of Lucene.Net means that the
-install footprint is light. Simply grab the binaries, stand up an IIS site and you're done.
-Much easier than deploying your own NuGet Gallery.
+of extra features you can't get anywhere else. Klondike uses Lucene.Net meaning that the
+install footprint is light. Simply grab the binaries, stand up an IIS site (or run the self-hosted
+exe) and you're done. Much easier than deploying your own NuGet Gallery.
+
+## How to Deploy Klondike
+
+1. Grab a binary zip from the Releases tab or clone
+[Klondike-Release](https://github.com/themotleyfool/Klondike-Release)
+1. Customize [Settings.config](src/Klondike.WebHost/Settings.config)
+1. Create a site in IIS using a .NET v4.0 Integrated Pipeline application pool
+
+## App Pool Advanced Configuration
+
+Klondike is designed to run as a single process to avoid conflicting writes on
+the Lucene index files. Adjust your application pool accordingly:
+
+* Make sure `Maximum Worker Processes` is set to `1`
+* Make sure `Disable Overlapped Recycle` is set to `true`
+
+## Self-Hosted Klondike
+
+The binary release also includes Klondike.SelfHost.exe in the bin directory.
+It can be run from the console using mono or the .net framework:
+
+    Klondike.SelfHost.exe --port=8080
+
+Or
+
+    mono ./Klondike.SelfHost.exe --interactive --port=8080
+
+If no port is specified, 8080 is used as a default. See the [Klondike.SelfHost README](src/Klondike.SelfHost/README.md)
+for more information.
 
 ## Building Locally
 
 This repository consists of two components:
 
-1. Emberjs front-end built and packaged by Grunt
-1. c# project built by MSBuild
+1. Ember front-end built and packaged by [ember-cli](http://www.ember-cli.com/)
+1. c# project built by MSBuild or xbuild
 
 ### Front End
 
-Prerequisites: nodejs, ruby. `node`, `npm` and `gem` should be on your PATH.
+Prerequisites: node (`node` and `npm` should be on your PATH).
 
-Install compass if you haven't already:
+Install ember-cli and bower if you haven't already:
 
-    gem install compass
-
-Install grunt and bower if you haven't already:
-
-    npm install -g grunt-cli bower
+    npm install -g ember-cli bower
 
 Install dependencies:
 
@@ -48,76 +73,38 @@ Install dependencies:
 
 Finally, build:
 
-    grunt build
+    ember build
 
 This puts the built app into `./dist`.
 
-_Note_: `grunt build` will call msbuild if available to build the .NET components. Use
-`grunt build --force` to ignore the warning.
+_Note_: if you do not have the .NET 4.5 SDK or Mono 3.6 MDK installed you can
+skip building the .net assets by using the `ember-only` environment:
+
+    ember build --environment=ember-only
 
 ### .NET Back End
 
-The c# project requires Windows, Visual Studio 2013 and the Microsoft.NET Framework 4.5.1 SDK.
+The c# projects can be built on Windows or OS X / Linux. On Windows,
+install Visual Studio 2013 and the Microsoft.NET Framework 4.5 SDK.
+On OS X / Linux, install the [Mono MDK](http://www.mono-project.com/download/)
 
-Make sure you use the MSBuild.exe included in Visual Studio 2013:
-
-    C:\Program Files (x86)\MSBuild\12.0\Bin\MSBuild.exe
-
-This puts the .NET assets into `./dist`.
+Mono can also be installed by [homebrew](http://brew.sh/) on OS X.
 
 ## Front End development without .NET
 
 You can develop the front end without needing to build or host the .net code.
 
-Edit [app/js/config.js](app/js/config.js) to point to an external Klondike API endpoint,
+Edit [app/config.js](app/config.js) to point to an external Klondike API endpoint,
 then run
 
-    grunt serve --force
-
-The force flag is necessary to ignore the warning about MSBuild not being available.
+    ember serve --environment=ember-only
 
 ## Previewing debug/release builds
 
-IIS Express can be used to preview the contents of `./dist` including .NET back end:
+You can serve production builds with:
 
-    grunt serve:dist:iisexpress
-
-You can also preview the debug version of the site by running
-
-    grunt serve::iisexpress
-
-When using the latter target, live reloading will take place whenever you rebuild the
-c# project, e.g. from Visual Studio, or whenever you modify a js or scss file.
+    ember serve --environment=production
 
 ## Integration Tests
 
-Integration Tests use either curl or the nuget command line client and are invoked from MSBuild targets
-in [integration-tests/test.proj](integration-tests/test.proj).
-
-To enable running integration tests, run msbuild from the top level directory (so it builds IntegratedBuild.proj):
-
-    msbuild
-
-To execute tests without building first:
-
-    msbuild /t:IntegrationTest
-
-To execute a specific test case:
-
-    msbuild /t:IntegrationTest /p:TestsEnabled=true /p:TestCase=Test_PutPackage
-
-To run the tests against a different endpoint and avoid starting and stopping IIS Express, use the `HttpUrl` property:
-
-    msbuild /t:IntegrationTest /p:HttpUrl=http://localhost:40221/
-
-## Building without Integration Tests
-
-If you simply want to build (and perhaps stage) the c# project without running tests, set `TestsEnabled=false`:
-
-    msbuild /p:TestsEnabled=False
-
-or
-
-    msbuild /t:Stage /p:DistDir=dist /p:TestsEnabled=False /p:Configuration=Release
-
-This is basically the same as what `grunt exec` will do.
+Coming Real Soon Now.

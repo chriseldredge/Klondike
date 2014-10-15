@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import config from './config/environment';
 
 var Router = Ember.Router.extend({
-  location: KlondikeENV.locationType
+  location: config.locationType
 });
 
 Router.map(function() {
@@ -21,6 +22,7 @@ Router.map(function() {
         this.route('add', { path: '/add' });
         this.route('edit', { path: '/edit/*user_id' });
     });
+    this.route('not_found', { path: '/*not_found' });
 });
 
 export default Router;

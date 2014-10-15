@@ -1,40 +1,32 @@
 /* global require, module */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
-var pickFiles = require('broccoli-static-compiler');
-var mergeTrees = require('broccoli-merge-trees');
-var gitDescribe = require('./broccoli-git-describe.js');
+var select = require('broccoli-select');
 
 var app = new EmberApp();
 
-app.import('vendor/momentjs/moment.js');
-app.import('vendor/nprogress/nprogress.js');
-app.import('vendor/nprogress/nprogress.css');
+app.import('bower_components/momentjs/moment.js');
+app.import('bower_components/nprogress/nprogress.js');
+app.import('bower_components/nprogress/nprogress.css');
 
 app.import({
-    development: 'vendor/jquery-signalr/jquery.signalR.js',
-    production: 'vendor/jquery-signalr/jquery.signalR.min.js'
+    development: 'bower_components/jquery-signalr/jquery.signalR.js',
+    production: 'bower_components/jquery-signalr/jquery.signalR.min.js'
 });
 
 app.import({
-    development: 'vendor/zeroclipboard/ZeroClipboard.js',
-    production: 'vendor/zeroclipboard/ZeroClipboard.min.js'
+    development: 'bower_components/zeroclipboard/ZeroClipboard.js',
+    production: 'bower_components/zeroclipboard/ZeroClipboard.min.js'
 });
-
-app.index = function() {
-    var defaultIndexTree = EmberApp.prototype.index.apply(app);
-    return gitDescribe(defaultIndexTree);
-}
 
 function assetTree() {
-  return pickFiles('vendor', {
-    srcDir: '/',
-    files: [
+  return select('bower_components', {
+    acceptFiles: [
     	'bootstrap-sass-official/assets/fonts/bootstrap/*',
     	'font-awesome/fonts/*',
     	'zeroclipboard/ZeroClipboard.swf'
     ],
-    destDir: '/assets'
+    outputDir: '/assets'
   });
 }
 
@@ -47,7 +39,6 @@ function appTree() {
 
 function msbuildTree() {
   var msbuild = require('broccoli-msbuild');
-  var select = require('broccoli-select');
 
   var msbuildInputTree = select('src', {
     acceptFiles: [ '**/*.kproj', '**/*.cs', '**/*.json' ],
@@ -59,6 +50,10 @@ function msbuildTree() {
   var versionSuffix = versionParts.length > 1 ? versionParts[1] : '';
 
   var config = require('./config/environment')(app.env);
+
+  if (config.disableMSBuild) {
+    return null;
+  }
 
   return msbuild(msbuildInputTree, {
     project: require('path').join(__dirname, 'Ciao.proj'),
@@ -72,4 +67,13 @@ function msbuildTree() {
   });
 }
 
-module.exports = mergeTrees([appTree(), msbuildTree()]);
+function buildTrees() {
+    var trees = [assetTree()];
+    var msbuild = msbuildTree();
+    if (msbuild !== null) {
+        trees.push(msbuild);
+    }
+    return trees;
+}
+
+module.exports = app.toTree(buildTrees());
