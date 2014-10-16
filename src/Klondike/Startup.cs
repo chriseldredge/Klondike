@@ -17,7 +17,7 @@ namespace Klondike
     {
         private IPathMappingHelper pathMappingHelper;
 
-        public void Configure(IBuilder app)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseServices(services =>
             {

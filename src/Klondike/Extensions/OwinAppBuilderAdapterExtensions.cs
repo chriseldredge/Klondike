@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Http;
 using Microsoft.Owin.Builder;
 using Owin;
 
@@ -16,7 +17,7 @@ namespace Klondike.Extensions
 
     public static class OwinAppBuilderAdapterExtensions
     {
-        public static void UseOwinAppBuilder(this IBuilder builder, Action<IAppBuilder> action)
+        public static void UseOwinAppBuilder(this IApplicationBuilder builder, Action<IAppBuilder> action)
         {
             var appBuilder = new AppBuilder();
             var applicationLifetime = (IApplicationLifetime) builder.ApplicationServices.GetService(typeof(IApplicationLifetime));
