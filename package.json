@@ -26,6 +26,7 @@
     "broccoli-merge-trees": "~0.2.1",
     "broccoli-sass": "^0.2.2",
     "broccoli-select": "^0.1.0",
+    "broccoli-static-compiler": "^0.2.1",
     "ember-cli": "0.1.1",
     "ember-cli-content-security-policy": "0.2.0",
     "ember-cli-ic-ajax": "0.1.1",

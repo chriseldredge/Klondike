@@ -4,6 +4,7 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var exec = require('broccoli-exec');
 var mergeTrees = require('broccoli-merge-trees');
 var select = require('broccoli-select');
+var pick = require('broccoli-static-compiler');
 
 var app = new EmberApp();
 
@@ -32,40 +33,39 @@ function assetTree() {
   });
 }
 
-function aspnetTree() {
+var emberAppTree = app.toTree([assetTree()]);
+var wwwrootTree = pick(emberAppTree, {
+  srcDir: '/',
+  destDir: '/wwwroot'
+});
+
+
+function aspnetSourceTree() {
   return select('src/Klondike', {
-    acceptFiles: [ '**/*.cs', '**/*.json' ],
+    acceptFiles: [ '**/*', '**/.gitkeep' ],
     outputDir: '/Klondike'
   });
 }
 
-function buildTrees() {
-    var trees = [assetTree(), aspnetTree()];
-}
-
-var emberAppTree = app.toTree([assetTree()]);
-var publicTree = select(emberAppTree, {
-  outputDir: '/Klondike/wwwroot'
-});
-
-var packTree = exec(mergeTrees([publicTree, aspnetTree()]), {
-  command: 'kpm.cmd',
+var aspnetPackTree = exec(aspnetSourceTree(), {
+  command: 'kpm',
   args: [
     'pack',
     '--no-source',
-    '--runtime',
-    'KRE-CLR-amd64.1.0.0-alpha4',
     '--out',
     '{destDir}'
   ]
 });
 
-packTree.prepare = function(srcDir, destDir) {
+aspnetPackTree.prepare = function(srcDir, destDir) {
   var result = exec.prototype.prepare.apply(this, [srcDir, destDir]);
   return result.then(function(settings) {
+    if (process.platform === 'win32') {
+      settings.command = 'kpm.cmd';
+    }
     settings.options.cwd = require('path').join(settings.options.cwd, 'Klondike');
     return settings;
   });
 }
 
-module.exports = packTree;
+module.exports = mergeTrees([wwwrootTree, aspnetPackTree]);
