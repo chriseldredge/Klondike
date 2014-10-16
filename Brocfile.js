@@ -1,6 +1,8 @@
 /* global require, module */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+var exec = require('broccoli-exec');
+var mergeTrees = require('broccoli-merge-trees');
 var select = require('broccoli-select');
 
 var app = new EmberApp();
@@ -30,50 +32,40 @@ function assetTree() {
   });
 }
 
-function appTree() {
-  return pickFiles(app.toTree([assetTree()]), {
-    srcDir: '/',
-    destDir: '/wwwroot'
-  });
-}
-
-function msbuildTree() {
-  var msbuild = require('broccoli-msbuild');
-
-  var msbuildInputTree = select('src', {
-    acceptFiles: [ '**/*.kproj', '**/*.cs', '**/*.json' ],
-    outputDir: '/build'
-  });
-
-  var versionParts = app.project.pkg.version.split('-');
-  var versionPrefix = versionParts[0];
-  var versionSuffix = versionParts.length > 1 ? versionParts[1] : '';
-
-  var config = require('./config/environment')(app.env);
-
-  if (config.disableMSBuild) {
-    return null;
-  }
-
-  return msbuild(msbuildInputTree, {
-    project: require('path').join(__dirname, 'Ciao.proj'),
-    toolsVersion: '4.0',
-    configuration: config.configuration,
-    properties: {
-      VersionPrefix: versionPrefix,
-      VersionSuffix:  versionSuffix,
-      DistDir: '{destDir}'
-    }
+function aspnetTree() {
+  return select('src/Klondike', {
+    acceptFiles: [ '**/*.cs', '**/*.json' ],
+    outputDir: '/Klondike'
   });
 }
 
 function buildTrees() {
-    var trees = [assetTree()];
-    var msbuild = msbuildTree();
-    if (msbuild !== null) {
-        trees.push(msbuild);
-    }
-    return trees;
+    var trees = [assetTree(), aspnetTree()];
 }
 
-module.exports = app.toTree(buildTrees());
+var emberAppTree = app.toTree([assetTree()]);
+var publicTree = select(emberAppTree, {
+  outputDir: '/Klondike/wwwroot'
+});
+
+var packTree = exec(mergeTrees([publicTree, aspnetTree()]), {
+  command: 'kpm.cmd',
+  args: [
+    'pack',
+    '--no-source',
+    '--runtime',
+    'KRE-CLR-amd64.1.0.0-alpha4',
+    '--out',
+    '{destDir}'
+  ]
+});
+
+packTree.prepare = function(srcDir, destDir) {
+  var result = exec.prototype.prepare.apply(this, [srcDir, destDir]);
+  return result.then(function(settings) {
+    settings.options.cwd = require('path').join(settings.options.cwd, 'Klondike');
+    return settings;
+  });
+}
+
+module.exports = packTree;

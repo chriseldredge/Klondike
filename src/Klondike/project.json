@@ -1,4 +1,5 @@
 {
+    "webroot": "wwwroot",
     "dependencies": {
         "AspNet.WebApi.HtmlMicrodataFormatter": "2.4.5",
         "Common.Logging": "2.2.0",
