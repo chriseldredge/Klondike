@@ -3,6 +3,7 @@ using Common.Logging;
 using Common.Logging.Configuration;
 using Common.Logging.Simple;
 using Klondike.Extensions;
+using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
 using NuGet.Lucene.Web;
@@ -25,6 +26,11 @@ namespace Klondike
             });
 
             pathMappingHelper = (IPathMappingHelper)app.ApplicationServices.GetService(typeof(IPathMappingHelper));
+            
+            if (CreateSettings().ShowExceptionDetails)
+            {
+                app.UseErrorPage(ErrorPageOptions.ShowAll);
+            }
 
             // create properties
             var properties = new NameValueCollection();

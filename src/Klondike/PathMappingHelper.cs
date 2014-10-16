@@ -1,4 +1,4 @@
-﻿using Microsoft.Framework.Runtime;
+﻿using Microsoft.AspNet.Hosting;
 using System.IO;
 
 namespace Klondike
@@ -11,9 +11,9 @@ namespace Klondike
 
     public class PathMappingHelper : IPathMappingHelper
     {
-        private readonly IApplicationEnvironment applicationEnvironment;
+        private readonly IHostingEnvironment applicationEnvironment;
 
-        public PathMappingHelper(IApplicationEnvironment applicationEnvironment)
+        public PathMappingHelper(IHostingEnvironment applicationEnvironment)
         {
             this.applicationEnvironment = applicationEnvironment;
         }
@@ -25,7 +25,7 @@ namespace Klondike
                 virtualPath = virtualPath.Substring(2);
             }
 
-            return Path.Combine(applicationEnvironment.ApplicationBasePath, virtualPath);
+            return Path.Combine(applicationEnvironment.WebRoot, virtualPath);
         }
 
         public string ToAbsolute(string virtualPath)

@@ -23,13 +23,13 @@ namespace Klondike
     public class StaticFileFallbackMiddleware
     {
         private readonly RequestDelegate next;
-        private readonly IApplicationEnvironment applicationEnvironment;
+        private readonly IPathMappingHelper pathMappingHelper;
         private readonly StaticFileFallbackOptions options;
 
-        public StaticFileFallbackMiddleware(RequestDelegate next, IApplicationEnvironment applicationEnvironment, StaticFileFallbackOptions options)
+        public StaticFileFallbackMiddleware(RequestDelegate next, IPathMappingHelper pathMappingHelper, StaticFileFallbackOptions options)
         {
             this.next = next;
-            this.applicationEnvironment = applicationEnvironment;
+            this.pathMappingHelper = pathMappingHelper;
             this.options = options;
         }
 
@@ -44,8 +44,13 @@ namespace Klondike
                 return;
             }
 
+            var filePath = pathMappingHelper.MapPath(options.File);
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+
             context.Response.StatusCode = 200;
-            var filePath = Path.Combine(applicationEnvironment.ApplicationBasePath, options.File);
             await context.Response.SendFileAsync(filePath);
         }
     }

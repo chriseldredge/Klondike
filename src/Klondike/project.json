@@ -2,6 +2,7 @@
     "dependencies": {
         "AspNet.WebApi.HtmlMicrodataFormatter": "2.4.5",
         "Common.Logging": "2.2.0",
+        "Microsoft.AspNet.Diagnostics": "1.0.0-*",
         "Microsoft.AspNet.FileSystems": "1.0.0-beta1-*",
         "Microsoft.AspNet.Hosting": "1.0.0-beta1-*",
         "Microsoft.AspNet.Http": "1.0.0-beta1-*",
@@ -27,7 +28,7 @@
         "nowin": "Microsoft.AspNet.Hosting --server Nowin.vNext",
         "kestrel": "Microsoft.AspNet.Hosting --server Kestrel"
     },
-    "configurations": {
+    "frameworks": {
         "aspnet50": { }
     }
 }

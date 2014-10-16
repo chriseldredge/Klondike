@@ -19,6 +19,11 @@ namespace Klondike
         {
             const string stylePath = "~/assets/";
             var cssDir = pathMappingHelper.MapPath(stylePath);
+            if (!Directory.Exists(cssDir))
+            {
+                return new string[0];
+            }
+
             var vendorCss = Directory.GetFiles(cssDir, "vendor*.css").FirstOrDefault();
             var appCss = Directory.GetFiles(cssDir, "klondike*.css").FirstOrDefault();
             return new[] {vendorCss, appCss}

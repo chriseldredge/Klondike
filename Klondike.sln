@@ -32,17 +32,11 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		k10|Any CPU = k10|Any CPU
-		net451|Any CPU = net451|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5AC23F67-AC36-4F64-8D94-645D9BCF4F80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5AC23F67-AC36-4F64-8D94-645D9BCF4F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5AC23F67-AC36-4F64-8D94-645D9BCF4F80}.k10|Any CPU.ActiveCfg = k10|Any CPU
-		{5AC23F67-AC36-4F64-8D94-645D9BCF4F80}.k10|Any CPU.Build.0 = k10|Any CPU
-		{5AC23F67-AC36-4F64-8D94-645D9BCF4F80}.net451|Any CPU.ActiveCfg = net451|Any CPU
-		{5AC23F67-AC36-4F64-8D94-645D9BCF4F80}.net451|Any CPU.Build.0 = net451|Any CPU
 		{5AC23F67-AC36-4F64-8D94-645D9BCF4F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AC23F67-AC36-4F64-8D94-645D9BCF4F80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
