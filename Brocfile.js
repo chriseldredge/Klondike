@@ -68,4 +68,6 @@ aspnetPackTree.prepare = function(srcDir, destDir) {
   });
 }
 
-module.exports = mergeTrees([wwwrootTree, aspnetPackTree]);
+module.exports = mergeTrees([wwwrootTree, aspnetPackTree], {
+  overwrite: true
+});
