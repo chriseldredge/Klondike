@@ -6,6 +6,7 @@ using Klondike.Extensions;
 using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.StaticFiles;
 using NuGet.Lucene.Web;
 using NuGet.Lucene.Web.Formatters;
 using Owin;
@@ -51,6 +52,8 @@ namespace Klondike
                         context.Request.Path,
                         context.Response.StatusCode));
                 });
+
+            app.UseSendFileFallback();
 
             app.UseMiddleware<StaticFileFallbackMiddleware>(new StaticFileFallbackOptions
             {
