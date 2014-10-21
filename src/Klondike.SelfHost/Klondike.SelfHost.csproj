@@ -218,6 +218,7 @@
     </Compile>
     <Compile Include="SelfHostSettings.cs" />
     <Compile Include="SelfHostStartup.cs" />
+    <Compile Include="SelfHostVirtualPathUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Klondike.WebHost\Klondike.WebHost.csproj">

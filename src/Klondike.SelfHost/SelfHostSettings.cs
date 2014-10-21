@@ -9,11 +9,13 @@ namespace Klondike.SelfHost
     class SelfHostSettings : NuGetWebApiSettings
     {
         private readonly CommandLineSettings commandLineSettings;
+        private readonly IVirtualPathUtility virtualPathUtility;
 
         public SelfHostSettings(CommandLineSettings commandLineSettings)
             :base(prefix:"")
         {
             this.commandLineSettings = commandLineSettings;
+            this.virtualPathUtility = new SelfHostVirtualPathUtility(BaseDirectory, VirtualPathRoot);
         }
 
         protected override string GetAppSetting(string key, string defaultValue)
@@ -64,6 +66,11 @@ namespace Klondike.SelfHost
             get { return GetAppSetting("virtualPathRoot", "/"); }
         }
 
+        public IVirtualPathUtility VirtualPathUtility
+        {
+            get { return virtualPathUtility; }
+        }
+
         public bool EnableIntegratedWindowsAuthentication
         {
             get { return GetFlagFromAppSetting("enableIntegratedWindowsAuthentication", false); }
@@ -76,13 +83,7 @@ namespace Klondike.SelfHost
 
         public string MapPath(string path)
         {
-            string virtualPath = path;
-            if (virtualPath.StartsWith("~/"))
-            {
-                virtualPath = virtualPath.Substring(2);
-            }
-
-            return Path.Combine(BaseDirectory, virtualPath);
+            return virtualPathUtility.MapPath(path);
         }
 
         private static readonly string DefaultBaseDirectory = ResolveBaseDirectory();

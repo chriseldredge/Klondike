@@ -19,19 +19,18 @@ namespace Klondike.SelfHost
             this.selfHostSettings = selfHostSettings;
         }
 
-        protected override string MapPath(string virtualPath)
+        protected override IContainer CreateContainer(IAppBuilder app)
         {
-            return selfHostSettings.MapPath(virtualPath);
+            var builder = new ContainerBuilder();
+            builder.RegisterInstance(selfHostSettings.VirtualPathUtility).As<IVirtualPathUtility>();
+            var container = base.CreateContainer(app);
+            builder.Update(container);
+            return container;
         }
 
         protected override INuGetWebApiSettings CreateSettings()
         {
             return selfHostSettings;
-        }
-
-        protected override NuGetHtmlMicrodataFormatter CreateMicrodataFormatter()
-        {
-            return new NuGetHtmlMicrodataFormatter();
         }
 
         protected override void Start(IAppBuilder app, IContainer container)

@@ -1,5 +1,4 @@
 using System;
-using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Xml.Linq;
@@ -13,6 +12,8 @@ namespace Klondike
 {
     public class Startup : NuGet.Lucene.Web.Startup
     {
+        IContainer container;
+
         protected override INuGetWebApiSettings CreateSettings()
         {
             return new NuGetWebApiWebHostSettings(prefix: "");
@@ -47,9 +48,20 @@ namespace Klondike
 
         protected override void Start(IAppBuilder app, IContainer container)
         {
-            app.UseFallbackFile(MapPath("/index.html"), new PathString("/api"), new PathString("/assets"));
+            var pathUtility = container.Resolve<IVirtualPathUtility>();
+            app.UseFallbackFile(pathUtility.MapPath("/index.html"), new PathString("/api"), new PathString("/assets"));
 
             base.Start(app, container);
+        }
+
+        protected override IContainer CreateContainer(IAppBuilder app)
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterType<WebHostVirtualPathUtility>().As<IVirtualPathUtility>();
+            builder.RegisterType<KlondikeHtmlMicrodataFormatter>().As<NuGetHtmlMicrodataFormatter>();
+            container = base.CreateContainer(app);
+            builder.Update(container);
+            return container;
         }
 
         protected override void RegisterServices(IContainer container, IAppBuilder app, HttpConfiguration config)
@@ -71,26 +83,7 @@ namespace Klondike
 
         protected override NuGetHtmlMicrodataFormatter CreateMicrodataFormatter()
         {
-            var formatter = new KlondikeHtmlMicrodataFormatter();
-
-            formatter.SupportedMediaTypes.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
-            formatter.SupportedMediaTypes.Add(new MediaTypeWithQualityHeaderValue("text/xml"));
-
-            formatter.Settings.Indent = true;
-
-            formatter.Title = "Klondike API";
-
-            formatter.AddHeadContent(
-                new XElement("script",
-                    new XAttribute("src", MapPath("~/js/formtemplate.min.js")),
-                    new XText("")));
-
-            return formatter;
-        }
-
-        protected virtual string MapPath(string virtualPath)
-        {
-            return VirtualPathUtility.ToAbsolute(virtualPath);
+            return container.Resolve<NuGetHtmlMicrodataFormatter>();
         }
     }
 }
