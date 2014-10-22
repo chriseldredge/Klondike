@@ -66,7 +66,7 @@ namespace Klondike.SelfHost
 
             var relativePath = physicalPath.Substring(webRoot.Length);
 
-            return virtualPathRoot + relativePath;
+            return virtualPathRoot + relativePath.Replace('\\', '/');
         }
     }
 }
