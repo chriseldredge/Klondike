@@ -102,7 +102,8 @@ Mono can also be installed by [homebrew](http://brew.sh/) on OS X.
 
 You can develop the front end without needing to build or host the .net code.
 
-Edit [app/config.js](app/config.js) to point to an external Klondike API endpoint,
+Edit [config/environment.js](config/environment.js) and set the `apiURL`
+and (optionally) `apiKey` properties to point to an external Klondike API endpoint,
 then run
 
     ember serve --environment=ember-only

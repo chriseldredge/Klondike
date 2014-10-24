@@ -40,6 +40,8 @@ export default {
         app.inject('controller:users.edit', 'users', 'adapter:user');
 
         // application
+        app.inject('service:rest-client', 'application', 'application:main');
+        app.inject('session:main', 'application', 'application:main');
         app.inject('view:footer', 'application', 'application:main');
     }
 };

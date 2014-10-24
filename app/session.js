@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import config from './config';
 import describePromise from '/klondike/util/describe-promise';
 
 function promiseAlias(name) {
@@ -11,7 +10,7 @@ function promiseAlias(name) {
 
 export default Ember.Object.extend({
     users: null,
-    fixedKey: config.apiKey,
+    fixedKeyBinding: 'application.apiKey',
 
     user: null,
     usernameBinding: 'user.username',

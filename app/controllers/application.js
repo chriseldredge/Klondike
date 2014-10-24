@@ -9,7 +9,7 @@ export default Ember.Controller.extend(BaseControllerMixin, {
     usernameBinding: Ember.Binding.oneWay('session.username'),
     isSessionInitializedBinding: Ember.Binding.oneWay('session.isInitialized'),
 
-    apiUrlBinding: Ember.Binding.oneWay('restClient.apiUrl'),
+    apiURLBinding: Ember.Binding.oneWay('restClient.apiURL'),
 
     actions: {
         search: function () {
