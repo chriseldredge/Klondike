@@ -126,8 +126,9 @@ export default Ember.Object.extend({
             self.set('user', user);
 
             return user;
-        }, function() {
+        }, function(err) {
             self.set('user', null);
+            throw err;
         }, describePromise(this, '_invokeLogin'));
     },
 
