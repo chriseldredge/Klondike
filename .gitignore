@@ -15,6 +15,7 @@
 /libpeerconnection.log
 .DS_Store
 Thumbs.db
+.ember-cli
 
 # .net
 App_Data/
