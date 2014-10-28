@@ -33,6 +33,7 @@ export default {
         // package adapter
         app.inject('route:packages.list', 'packages', 'adapter:package');
         app.inject('route:packages.search', 'packages', 'adapter:package');
+        app.inject('route:packages.advanced-search', 'packages', 'adapter:package');
         app.inject('route:packages.view', 'packages', 'adapter:package');
 
         // user adapter
