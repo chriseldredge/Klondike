@@ -13,5 +13,6 @@
   </metadata>
   <files>
     <file src="dist\**\*.*" target="" />
+    <file src="PreDeploy.ps1" target="" />
   </files>
 </package>
