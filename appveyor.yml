@@ -1,5 +1,8 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
+# Set build version format here instead of in the admin panel.
+version: "1.6.{build}"
+
 # Fix line endings in Windows. (runs before repo cloning)
 init:
   - git config --global core.autocrlf input
@@ -23,13 +26,8 @@ install:
   - cmd: bower install
   - cmd: grunt build
 
-# Don't actually build.
-build: off
-
-# Set build version format here instead of in the admin panel.
-version: "{build}"
+build_script:
+  - cmd: nuget pack Mvno.Klondike.Nuget.Server.nuspec -Version %APPVEYOR_BUILD_VERSION% -NoPackageAnalysis -NoDefaultExcludes
 
 artifacts:
-  - path: .\dist
-    name: Klondike
-    type: zip
+  - path: Mvno.Klondike.Nuget.Server.*.nupkg
