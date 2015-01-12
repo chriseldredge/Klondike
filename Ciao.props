@@ -4,8 +4,13 @@
         <SolutionFile>Klondike.sln</SolutionFile>
         <VersionPrefix>0.0.1</VersionPrefix>
     </PropertyGroup>
-    
+
     <PropertyGroup Label="FeatureFlags">
         <GenerateVersionInfoEnabled>true</GenerateVersionInfoEnabled>
+        <NUnitEnabled>true</NUnitEnabled>
     </PropertyGroup>
+
+    <ItemGroup>
+        <NUnitTestAssembly Include="build\Klondike.SelfHost.Tests\bin\Debug\Klondike.SelfHost.Tests.dll"/>
+    </ItemGroup>
 </Project>
