@@ -16,8 +16,8 @@ install:
   - cmd: node --version
   - cmd: npm --version
   - cmd: npm install -g bower
-  - cmd: npm install
-  - cmd: bower install --config.interactive=false
+  - cmd: npm install || true
+  - cmd: bower install --config.interactive=false || true
   - cmd: npm run-script release
 
 # Don't actually build.
