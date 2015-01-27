@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import describePromise from '/klondike/util/describe-promise';
+import describePromise from 'klondike/util/describe-promise';
 
 function promiseAlias(name) {
   return function () {

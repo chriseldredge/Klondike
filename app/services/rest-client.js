@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import ApplicationException from 'Klondike/application-exception';
-import describePromise from '/klondike/util/describe-promise';
+import ApplicationException from 'klondike/application-exception';
+import describePromise from 'klondike/util/describe-promise';
 
 var RestApi = Ember.Object.extend({
     apiKeyRequestHeaderName: 'X-NuGet-ApiKey',

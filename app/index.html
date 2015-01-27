@@ -11,6 +11,8 @@
 
     <link rel="stylesheet" href="assets/vendor.css">
     <link rel="stylesheet" href="assets/klondike.css">
+
+    {{content-for 'head-footer'}}
   </head>
   <body>
     {{content-for 'body'}}
@@ -62,5 +64,6 @@
         </p>
       </div>
     </div>
+    {{content-for 'body-footer'}}
   </body>
 </html>

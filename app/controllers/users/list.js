@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import BaseControllerMixin from 'Klondike/mixins/base-controller';
-import UserPermissionObserver from 'Klondike/mixins/user-permission-observer';
+import BaseControllerMixin from 'klondike/mixins/base-controller';
+import UserPermissionObserver from 'klondike/mixins/user-permission-observer';
 
 export default Ember.Controller.extend(BaseControllerMixin, UserPermissionObserver, {
     canEdit: false,

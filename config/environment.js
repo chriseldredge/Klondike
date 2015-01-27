@@ -46,21 +46,21 @@ module.exports = function(environment) {
     'style-src': "'self'",
     'object-src': "'self'",
     'media-src': "'self'"
-  }
+    }
 
   if (environment === 'development' || environment === 'ember-only') {
-    //ENV.APP.LOG_RESOLVER = true;
-    //ENV.APP.LOG_ACTIVE_GENERATION = true;
-    //ENV.APP.LOG_TRANSITIONS = true;
-    //ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-    //ENV.APP.LOG_VIEW_LOOKUPS = true;
+    // ENV.APP.LOG_RESOLVER = true;
+    // ENV.APP.LOG_ACTIVE_GENERATION = true;
+    // ENV.APP.LOG_TRANSITIONS = true;
+    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
+    // ENV.APP.LOG_VIEW_LOOKUPS = true;
     ENV.contentSecurityPolicy['script-src'] = ENV.contentSecurityPolicy['script-src'] + " 'unsafe-eval'";
   }
 
   if (environment === 'test') {
     // Testem prefers this...
     ENV.baseURL = '/';
-    ENV.locationType = 'auto';
+    ENV.locationType = 'none';
 
     // keep test console output quieter
     ENV.APP.LOG_ACTIVE_GENERATION = false;

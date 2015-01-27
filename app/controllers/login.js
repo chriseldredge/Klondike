@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import BaseControllerMixin from 'Klondike/mixins/base-controller';
+import BaseControllerMixin from 'klondike/mixins/base-controller';
 
 export default Ember.Controller.extend(BaseControllerMixin, {
     username: '',

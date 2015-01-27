@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import ApplicationException from 'Klondike/application-exception';
+import ApplicationException from 'klondike/application-exception';
 import signalR from './signalR';
-import describePromise from '/klondike/util/describe-promise';
+import describePromise from 'klondike/util/describe-promise';
 
 export default Ember.Object.extend({
     _hubs: null,

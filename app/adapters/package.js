@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Package from '../models/package';
 import SearchResults from '../models/search-results';
-import describePromise from '/klondike/util/describe-promise';
+import describePromise from 'klondike/util/describe-promise';
 
 export default Ember.Object.extend({
     defaultPageSize: 10,

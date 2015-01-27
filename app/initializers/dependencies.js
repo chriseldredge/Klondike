@@ -1,4 +1,4 @@
-import Session from 'Klondike/session';
+import Session from 'klondike/session';
 
 export default {
     name: 'inject-dependencies',

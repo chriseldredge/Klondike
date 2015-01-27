@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import ProgressIndicator from 'Klondike/progress-indicator';
+import ProgressIndicator from 'klondike/progress-indicator';
 
 export default Ember.Mixin.create({
     actions: {

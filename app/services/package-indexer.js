@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import UserPermissionObserver from 'Klondike/mixins/user-permission-observer';
+import UserPermissionObserver from 'klondike/mixins/user-permission-observer';
 import signalR from './signalR';
-import describePromise from '/klondike/util/describe-promise';
+import describePromise from 'klondike/util/describe-promise';
 
 export default Ember.Object.extend(UserPermissionObserver, {
     hubs: null,
