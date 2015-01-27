@@ -14,6 +14,7 @@ namespace Klondike.SelfHost
         private readonly SelfHostSettings settings;
         private SelfHostStartup startup;
         private IDisposable server;
+        private bool interactive;
 
         public KlondikeService(SelfHostSettings settings)
         {
@@ -31,6 +32,7 @@ namespace Klondike.SelfHost
             if (!string.IsNullOrWhiteSpace(settings.ServerFactory))
             {
                 options.ServerFactory = settings.ServerFactory;
+                Log.Info(m => m("Using ServerFactory {0}", options.ServerFactory));
             };
 
             var urls = settings.Urls.ToArray();
@@ -56,12 +58,21 @@ namespace Klondike.SelfHost
             Log.Info("Waiting for background tasks to complete.");
             while (!startup.WaitForShutdown(TimeSpan.FromSeconds(1)))
             {
-                RequestAdditionalTime(milliseconds:2000);
+                RequestAdditionalTime(TimeSpan.FromSeconds(2));
             }
+        }
+
+        protected virtual void RequestAdditionalTime(TimeSpan time)
+        {
+            if (interactive) return;
+
+            RequestAdditionalTime((int)time.TotalMilliseconds);
         }
 
         public void RunInteractivley()
         {
+            interactive = true;
+
             OnStart(new string[0]);
 
             Console.WriteLine("Press <enter> to stop.");
