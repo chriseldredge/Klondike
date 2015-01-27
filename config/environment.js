@@ -8,7 +8,6 @@ module.exports = function(environment) {
   };
 
   var ENV = {
-    version: require('../package').version,
     modulePrefix: 'klondike',
     environment: environment,
     configuration: 'Debug',
