@@ -4,7 +4,7 @@ import signalR from './signalR';
 import describePromise from 'klondike/util/describe-promise';
 
 export default Ember.Object.extend({
-    _hubs: null,
+    _resolveHubs: null,
 
     init: function() {
         var restClient = this.get('restClient');
@@ -18,11 +18,7 @@ export default Ember.Object.extend({
             url = hubApi.href;
             var hubUrl = url + '/hubs';
 
-            return Ember.$.ajax({
-                url: hubUrl,
-                dataType: 'script',
-                async: false
-            }).fail(function(xhr, status) {
+            return Ember.$.ajax(hubUrl).fail(function(xhr, status) {
               throw new ApplicationException('Failed to load SignalR hubs at ' + hubUrl + ': ' + status + ' (' + xhr.status + ')');
             });
         }, null, describePromise(this, 'init') + ': Load SignalR/hubs.js');
@@ -42,11 +38,11 @@ export default Ember.Object.extend({
             return hubs;
         }, null, describePromise(this, 'init') + ': Resolve Hubs');
 
-        this.set('_hubs', resolveHubs);
+        this.set('_resolveHubs', resolveHubs);
     },
 
     getHub: function(hubName) {
-        return this.get('_hubs').then(function(hubs) {
+        return this.get('_resolveHubs').then(function(hubs) {
             var hub = hubs[hubName];
 
             if (!hub) {
