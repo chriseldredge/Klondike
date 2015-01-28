@@ -1,3 +1,3 @@
-{{#each view.content}}
-  {{checkbox-group-item content=this}}
+{{#each item in view.content}}
+  {{checkbox-group-item content=item}}
 {{/each}}

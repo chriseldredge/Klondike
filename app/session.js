@@ -29,7 +29,7 @@ export default Ember.Object.extend({
 
         var self = this;
         var settings = {};
-        var sessionKey = sessionStorage.getItem('key') || this.get('fixedKey');
+        var sessionKey = window.sessionStorage.getItem('key') || this.get('fixedKey');
 
         if (!Ember.isEmpty(sessionKey)) {
             settings.beforeSend = function(xhr) {
@@ -90,7 +90,7 @@ export default Ember.Object.extend({
 
         if (!Ember.isEmpty(username)) {
             settings.beforeSend = function(xhr) {
-                xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username + ':' + password));
+                xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(username + ':' + password));
             };
         }
 
@@ -109,7 +109,7 @@ export default Ember.Object.extend({
 
         return call.then(function(data) {
             self.set('key', data.key);
-            sessionStorage.setItem('key', self.get('key'));
+            window.sessionStorage.setItem('key', self.get('key'));
             return data.key;
         }, null, describePromise(this, 'changeKey'));
     },
@@ -135,9 +135,9 @@ export default Ember.Object.extend({
     _keyDidChange: function() {
         var key = this.get('key');
         if (key) {
-            sessionStorage.setItem('key', key);
+            window.sessionStorage.setItem('key', key);
         } else {
-            sessionStorage.removeItem('key');
+            window.sessionStorage.removeItem('key');
         }
         this.get('restClient').set('apiKey', key);
     }.observes('key'),

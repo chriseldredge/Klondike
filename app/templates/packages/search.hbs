@@ -17,30 +17,30 @@
     {{/if}}
 
     <ol {{bind-attr start=first}}>
-        {{#each hits}}
+        {{#each hit in hits}}
         <li>
             <div>
-                {{package-icon url=iconUrl}}
-                {{#link-to 'packages.view' this}}
-                {{#if title}}
-                    {{title}}
+                {{package-icon url=hit.iconUrl}}
+                {{#link-to 'packages.view' hit}}
+                {{#if hit.title}}
+                    {{hit.title}}
                 {{else}}
-                    {{id}}
+                    {{hit.id}}
                 {{/if}}
                 {{/link-to}}
             </div>
             <div>
                 By:
-                {{#each author in authors}}
+                {{#each author in hit.authors}}
                     {{#link-to 'packages.search' (query-params query=author page=0) rel="nofollow"}}{{author}}{{/link-to}}
                 {{/each}}
             </div>
             <div>
-                {{description}}
+                {{hit.description}}
             </div>
             <div>
                 Tags:
-                {{#each tag in tags}}
+                {{#each tag in hit.tags}}
                     {{#link-to 'packages.search' (query-params query=tag page=0) rel="nofollow"}}{{tag}}{{/link-to}}
                 {{/each}}
             </div>
