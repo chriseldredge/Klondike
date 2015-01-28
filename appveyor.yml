@@ -15,9 +15,8 @@ install:
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
   - cmd: node --version
   - cmd: npm --version
-  - cmd: npm install -g bower
-  - cmd: npm install || true
-  - cmd: bower install --config.interactive=false || true
+  - cmd: npm install -g ember-cli
+  - cmd: ember install
   - cmd: npm run-script release
 
 # Don't actually build.
