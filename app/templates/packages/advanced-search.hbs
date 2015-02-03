@@ -1,0 +1,32 @@
+{{#if error}}
+  <div class="error">
+    An error occurred processing the query: {{errorMessage}}
+  </div>
+{{/if}}
+
+<div>
+Tip: hit <code>ctrl+space</code> to see all search fields.
+</div>
+
+{{auto-complete-text-input value=query terms=model action="search"}}
+
+<button {{action "search"}}>Search</button>
+
+<h2>Sample Queries</h2>
+
+<table>
+  <thead>
+    <th>Query</th>
+    <th>Description</th>
+    <th/>
+  </thead>
+  <tbody>
+    {{#each examples}}
+    <tr>
+      <td><code>{{query}}</code></td>
+      <td>{{description}}</td>
+      <td><a href="#" {{action "selectExample" query}}>Try it</a></td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

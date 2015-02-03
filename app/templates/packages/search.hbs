@@ -1,3 +1,31 @@
+<div>
+  {{view "select"
+    value=originFilter
+    content=originFilters
+    optionValuePath="content.value"
+    optionLabelPath="content.label"}}
+
+  {{view "select"
+    value=sortBy
+    content=sortByColumns
+    optionValuePath="content.value"
+    optionLabelPath="content.label"}}
+
+  {{view "select"
+    value=includePrerelease
+    content=versionFilters
+    optionValuePath="content.value"
+    optionLabelPath="content.label"}}
+
+  {{view "select"
+    value=latestOnly
+    content=latestOnlyFilters
+    optionValuePath="content.value"
+    optionLabelPath="content.label"}}
+
+  {{#link-to 'packages.advanced-search'}}advanced search{{/link-to}}
+</div>
+
 <h1>
     {{#if isEmptyQuery}}
         List of All Packages
@@ -22,11 +50,12 @@
             <div>
                 {{package-icon url=hit.iconUrl}}
                 {{#link-to 'packages.view' hit}}
-                {{#if hit.title}}
-                    {{hit.title}}
-                {{else}}
-                    {{hit.id}}
-                {{/if}}
+                  {{#if hit.title}}
+                      {{hit.title}}
+                  {{else}}
+                      {{hit.id}}
+                  {{/if}}
+                  {{hit.version}}
                 {{/link-to}}
             </div>
             <div>
@@ -43,6 +72,18 @@
                 {{#each tag in hit.tags}}
                     {{#link-to 'packages.search' (query-params query=tag page=0) rel="nofollow"}}{{tag}}{{/link-to}}
                 {{/each}}
+            </div>
+            <div>
+              Downloads:
+              {{#if hit.downloadCount}}
+                {{hit.downloadCount}}
+                {{#unless controller.latestOnly}}
+                  total,
+                  {{hit.versionDownloadCount}} of this version
+                {{/unless}}
+              {{else}}
+                0
+              {{/if}}
             </div>
         </li>
         {{/each}}

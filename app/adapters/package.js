@@ -18,18 +18,28 @@ export default Ember.Object.extend({
         }, null, describePromise(this, 'find', arguments));
     },
 
-    search: function (query, page, pageSize, sort) {
+    search: function (query, page, pageSize, sortBy, sortOrder, includePrerelease, originFilter, latestOnly) {
         page = page || 0;
         pageSize = pageSize || this.get('defaultPageSize');
+        if (includePrerelease === undefined || includePrerelease === null) {
+          includePrerelease = false;
+        }
+        if (latestOnly === undefined || latestOnly === null) {
+          latestOnly = true;
+        }
 
         var self = this;
 
         return this.get('restClient').ajax('packages.search', {
             data: {
                 query: query,
+                latestOnly: latestOnly,
                 offset: page * pageSize,
                 count: pageSize,
-                sort: sort || 'score'
+                sort: sortBy || 'score',
+                order: sortOrder || 'ascending',
+                includePrerelease: includePrerelease,
+                originFilter: originFilter || 'any'
             }
         }).then(function(json) {
             if (json.query === null) {
@@ -46,6 +56,15 @@ export default Ember.Object.extend({
                 pageSize: pageSize
             });
         }, null, describePromise(this, 'search', arguments));
+    },
+
+    getAvailableSearchFields: function() {
+      var result = this.get('_availableSearchFieldNames');
+      if (!result) {
+        result = this.get('restClient').ajax('packages.getAvailableSearchFieldNames');
+        this.set('_availableSearchFieldNames', result);
+      }
+      return result;
     },
 
     _createPackageModel: function(json) {

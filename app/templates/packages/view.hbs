@@ -1,7 +1,14 @@
 <h1>{{package-icon url=iconUrl}} {{displayTitle}} {{version}}</h1>
 
 <p>{{summary}}</p>
+
+{{#if hasAdditionalDescription}}
 <p>{{description}}</p>
+{{/if}}
+
+{{#if isMirrored}}
+<p>Mirrored from <a {{bind-attr href=origin}}>{{origin}}</a></p>
+{{/if}}
 
 <p>To install {{id}} run this command in the Package Manager Console</p>
 {{code-snippet content=installCommandWithPrompt data=installCommand}}

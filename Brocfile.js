@@ -5,6 +5,7 @@ var select = require('broccoli-select');
 
 var app = new EmberApp();
 
+app.import('bower_components/jcaret/jquery.caret.js');
 app.import('bower_components/momentjs/moment.js');
 app.import('bower_components/nprogress/nprogress.js');
 app.import('bower_components/nprogress/nprogress.css');
