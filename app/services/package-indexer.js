@@ -46,6 +46,10 @@ export default Ember.Object.extend(UserPermissionObserver, {
         signalR.hub.start({ waitForPageLoad: false });
     }.observes('statusHub'),
 
+    rebuild: function () {
+        this.get('restClient').ajax('indexing.synchronize', { data: { mode: 'complete' } });
+    },
+
     synchronize: function () {
         this.get('restClient').ajax('indexing.synchronize');
     },
