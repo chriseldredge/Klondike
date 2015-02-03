@@ -102,7 +102,20 @@ var RestApi = Ember.Object.extend({
             };
 
             Ember.$.ajax(href, options).fail(function(request, textStatus, errorThrown) {
-                reject({ request: request, textStatus: textStatus, errorThrown: errorThrown });
+                var error = {
+                  request: request,
+                  textStatus: textStatus,
+                  errorThrown: errorThrown };
+
+                if (request && request.status) {
+                  error.status = request.status;
+                }
+
+                if (request && request.responseJSON) {
+                  error.response = request.responseJSON;
+                }
+
+                reject(error);
             });
         }, describePromise(this, '_invokeAjaxApi', [apiName]));
     },
