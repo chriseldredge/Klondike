@@ -1,4 +1,4 @@
-## Klondike
+## Klondike [![Build status](https://ci.appveyor.com/api/projects/status/vxqnth8eyerocfpm/branch/master?svg=true)](https://ci.appveyor.com/project/chriseldredge/klondike/branch/master)
 
 Ember front-end that builds on NuGet.Lucene for private [NuGet](https://www.nuget.org/) package hosting.
 
@@ -8,6 +8,8 @@ Available from the Releases tab on github.
 
 Alternatively, you can clone the [Klondike-Release](https://github.com/themotleyfool/Klondike-Release)
 git repo to make upgrading easier.
+
+_N.B._ The self-host version of Klondike is currently in beta. Binaries can be obtained from the `Artifacts` tab of a successful [AppVeyor build](https://ci.appveyor.com/project/chriseldredge/klondike/).
 
 ## What is Klondike
 
