@@ -11,6 +11,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <NUnitTestAssembly Include="build\Klondike.SelfHost.Tests\bin\Debug\Klondike.SelfHost.Tests.dll"/>
+        <NUnitTestAssembly Include="build\Klondike.SelfHost.Tests\bin\$(Configuration)\Klondike.SelfHost.Tests.dll"/>
     </ItemGroup>
 </Project>
