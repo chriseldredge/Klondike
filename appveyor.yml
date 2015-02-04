@@ -22,6 +22,9 @@ install:
 # Don't actually build.
 build: off
 
+# Tests are executed elsewhere
+test: off
+
 # Set build version format here instead of in the admin panel.
 version: "{build}"
 
