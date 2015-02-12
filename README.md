@@ -31,6 +31,10 @@ exe) and you're done. Much easier than deploying your own NuGet Gallery.
 1. Customize [Settings.config](src/Klondike.WebHost/Settings.config)
 1. Create a site in IIS using a .NET v4.0 Integrated Pipeline application pool
 
+_N.B._ Klondike works best deployed as a root application. There are known issues
+with NuGet clients when attempting to host Klondike as a child application on a
+virtual path.
+
 ## App Pool Advanced Configuration
 
 Klondike is designed to run as a single process to avoid conflicting writes on
