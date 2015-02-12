@@ -43,6 +43,39 @@ the Lucene index files. Adjust your application pool accordingly:
 * Make sure `Maximum Worker Processes` is set to `1`
 * Make sure `Disable Overlapped Recycle` is set to `true`
 
+## Authentication and Role-Based Security
+
+Klondike supports external authentication providers such as Windows (Active Directory),
+basic auth and NTLM. These are configured in IIS Manager and other tools.
+
+Disable anonymous authentication to require authentication even for read access to Klondike.
+
+In addition to standard authentication, Klondike supports authentication by using the
+`X-NuGet-ApiKey` HTTP Request header to be compatible with NuGet clients that push and delete
+packages.
+
+### Local Administrator
+
+Browsing or accessing the Klondike app from a local network interface on the same machine
+will implicitly grant access as `LocalAdministrator`. This account is allowed to create
+additional users, push and delete packages.
+
+You can disable this behavior by editing `handleLocalRequestsAsAdmin` in [Settings.config](src/Klondike.WebHost/Settings.config).
+
+### Mapping Active Directory Roles to Klondike
+
+Edit the `roleMappings` section in [Web.config](src/Klondike.WebHost/Web.config) to grant
+Klondike roles for user administration and package management to existing roles in your
+external security provider (such as Active Directory).
+
+### Creating Users and Passwords
+
+Any user who has the AccountAdministrator role may create, delete and modify accounts
+and API keys. This includes the LocalAdministrator account.
+
+To access this feature, browse to Klondike and select `Admin` in the top navigation,
+then `Manage Accounts`.
+
 ## Self-Hosted Klondike
 
 The binary release also includes Klondike.SelfHost.exe in the bin directory.
