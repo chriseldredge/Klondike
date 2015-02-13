@@ -3,7 +3,11 @@
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var select = require('broccoli-select');
 
-var app = new EmberApp();
+var app = new EmberApp({
+    vendorFiles: {
+      'handlebars.js': null
+    }
+});
 
 app.import('bower_components/jcaret/jquery.caret.js');
 app.import('bower_components/momentjs/moment.js');
