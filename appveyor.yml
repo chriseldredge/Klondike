@@ -14,7 +14,7 @@ install:
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
   - cmd: npm config set spin false
   - cmd: npm install -g npm@^2
-  - cmd: npm install -g ember-cli@0.1.11 bower
+  - cmd: npm install -g ember-cli bower
   - cmd: ember install
   - cmd: nuget restore Klondike.sln -NonInteractive
   - cmd: npm run-script release
