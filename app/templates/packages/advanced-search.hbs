@@ -21,11 +21,11 @@ Tip: hit <code>ctrl+space</code> to see all search fields.
     <th/>
   </thead>
   <tbody>
-    {{#each examples}}
+    {{#each example in examples}}
     <tr>
-      <td><code>{{query}}</code></td>
-      <td>{{description}}</td>
-      <td><a href="#" {{action "selectExample" query}}>Try it</a></td>
+      <td><code>{{example.query}}</code></td>
+      <td>{{example.description}}</td>
+      <td><a href="#" {{action "selectExample" example.query}}>Try it</a></td>
     </tr>
     {{/each}}
   </tbody>
