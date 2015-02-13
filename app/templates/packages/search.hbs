@@ -38,10 +38,10 @@
     Showing {{first}} to {{last}} of {{total}}.
 
     {{#if hasPrevious}}
-        <a href="#" {{action previousPage}} rel="nofollow">Previous Page</a>
+        <a href="#" {{action "previousPage"}} rel="nofollow">Previous Page</a>
     {{/if}}
     {{#if hasNext}}
-        <a href="#" {{action nextPage}}>Next Page</a>
+        <a href="#" {{action "nextPage"}}>Next Page</a>
     {{/if}}
 
     <ol {{bind-attr start=first}}>
@@ -90,10 +90,10 @@
     </ol>
 
     {{#if hasPrevious}}
-        <a href="#" {{action previousPage}} rel="nofollow">Previous Page</a>
+        <a href="#" {{action "previousPage"}} rel="nofollow">Previous Page</a>
     {{/if}}
     {{#if hasNext}}
-        <a href="#" {{action nextPage}} rel="nofollow">Next Page</a>
+        <a href="#" {{action "nextPage"}} rel="nofollow">Next Page</a>
     {{/if}}
 {{else}}
     No results :'(
