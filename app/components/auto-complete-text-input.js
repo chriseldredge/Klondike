@@ -151,7 +151,6 @@ export default Ember.Component.extend({
       }
 
       Ember.run.schedule('afterRender', function() {
-        console.log('blue: hide list');
         self.send('hideSuggestions');
       });
     });
