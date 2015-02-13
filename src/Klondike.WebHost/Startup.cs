@@ -1,7 +1,5 @@
 using System;
-using System.Web;
 using System.Web.Http;
-using System.Xml.Linq;
 using Autofac;
 using NuGet.Lucene.Web;
 using NuGet.Lucene.Web.Formatters;
