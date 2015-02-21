@@ -71,6 +71,11 @@ namespace Klondike.SelfHost
             get { return virtualPathUtility; }
         }
 
+        public bool EnableAnonymousAuthentication
+        {
+            get { return GetFlagFromAppSetting("enableAnonymousAuthentication", true); }
+        }
+
         public bool EnableIntegratedWindowsAuthentication
         {
             get { return GetFlagFromAppSetting("enableIntegratedWindowsAuthentication", false); }

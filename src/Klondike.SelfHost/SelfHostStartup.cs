@@ -35,10 +35,7 @@ namespace Klondike.SelfHost
 
         protected override void Start(IAppBuilder app, IContainer container)
         {
-            if (selfHostSettings.EnableIntegratedWindowsAuthentication)
-            {
-                ConfigureAuthentication(app);
-            }
+            ConfigureAuthentication(app);
 
             base.Start(app, container);
 
@@ -52,29 +49,50 @@ namespace Klondike.SelfHost
             app.UseFileServer(fileServerOptions);
         }
 
-        private static void ConfigureAuthentication(IAppBuilder app)
+        private void ConfigureAuthentication(IAppBuilder app)
         {
+            if (selfHostSettings.EnableAnonymousAuthentication && !selfHostSettings.EnableIntegratedWindowsAuthentication)
+            {
+                return;
+            }
+
+            var schemes = AuthenticationSchemes.None;
+
+            if (selfHostSettings.EnableAnonymousAuthentication)
+            {
+                schemes |= AuthenticationSchemes.Anonymous;
+            }
+
+            if (selfHostSettings.EnableIntegratedWindowsAuthentication)
+            {
+                schemes |= AuthenticationSchemes.IntegratedWindowsAuthentication;
+            }
+
             object listenerObj;
             if (!app.Properties.TryGetValue("System.Net.HttpListener", out listenerObj))
             {
                 throw new InvalidOperationException("Integrated Windows Authentication can only be enabled when using Microsoft.Owin.Host.HttpListener Server Factory.");
             }
-            
+
             var listener = (HttpListener) listenerObj;
 
-            listener.AuthenticationSchemeSelectorDelegate = req =>
-            {
-                var path = req.Url.GetComponents(UriComponents.Path, UriFormat.UriEscaped);
-                if (path.EndsWith("api/authenticate"))
-                {
-                    return AuthenticationSchemes.IntegratedWindowsAuthentication;
-                }
-                return AuthenticationSchemes.Anonymous;
-            };
+            var mixed = selfHostSettings.EnableAnonymousAuthentication &&
+                        selfHostSettings.EnableIntegratedWindowsAuthentication;
 
-            listener.AuthenticationSchemes =
-                AuthenticationSchemes.IntegratedWindowsAuthentication
-                | AuthenticationSchemes.Anonymous;
+            if (mixed)
+            {
+                listener.AuthenticationSchemeSelectorDelegate = req =>
+                {
+                    var path = req.Url.GetComponents(UriComponents.Path, UriFormat.UriEscaped);
+                    if (path.EndsWith("api/authenticate"))
+                    {
+                        return AuthenticationSchemes.IntegratedWindowsAuthentication;
+                    }
+                    return AuthenticationSchemes.Anonymous;
+                };
+            }
+
+            listener.AuthenticationSchemes = schemes;
         }
     }
 }

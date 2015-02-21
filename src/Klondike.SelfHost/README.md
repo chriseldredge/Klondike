@@ -14,7 +14,8 @@ port                                  | 8080       | When no url(s) are specifie
 url                                   |            | URL to listen on, e.g. `http://example.com/` (may be repeated for multiple bindings).
 virtualPathRoot                       | /          | Virtual path root to prefix all routes with.
 serverFactory                         | Nowin      | Selects OWIN server factory (may also use Microsoft.Owin.Host.HttpListener on Windows).
-enableIntegratedWindowsAuthentication | false      | When using Microsoft.Owin.Host.HttpListener, enables Windows authentication.
+enableAnonymousAuthentication         | true       | When using Microsoft.Owin.Host.HttpListener, enables / disables Anonymous authentication.
+enableIntegratedWindowsAuthentication | false      | When using Microsoft.Owin.Host.HttpListener, enables / disables Windows authentication.
 baseDirectory                         | (computed) | The directory where Klondike.SelfHost.exe resides, or the parent of `bin` when in a bin folder.
 interactive                           | (computed) | When set to true, don't run as a service, block on Console.ReadLine. When unspecified, uses `Environment.UserInteractive`.
 
