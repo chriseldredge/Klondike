@@ -49,10 +49,10 @@ namespace Klondike.SelfHost
         {
             if (virtualPath.StartsWith("~/"))
             {
-                virtualPath = virtualPath.Substring(1);
+                virtualPath = virtualPath.Substring(1).TrimStart('/');
             }
 
-            return Path.Combine(webRoot, virtualPath.TrimStart('/'));
+            return Path.Combine(webRoot, virtualPath);
         }
 
         public string ToAbsolute(string virtualPath)
