@@ -27,8 +27,6 @@ export default Ember.Object.extend(Ember.Comparable, {
         if (!Ember.isEmpty(ax) && Ember.isEmpty(bx)) { return -1; }
         if (Ember.isEmpty(ax) && !Ember.isEmpty(bx)) { return 1; }
 
-        console.log('compare', ax, 'to', bx);
-
         return Ember.compare(ax, bx);
     },
 
