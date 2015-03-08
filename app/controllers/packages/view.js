@@ -37,6 +37,13 @@ export default Ember.ObjectController.extend(BaseControllerMixin, {
       }
 
       this.set('model.versionHistory', arr);
+    },
+
+    goToDependency: function(dep) {
+      var includePrerelease = this.get('model.isPrerelease');
+      var query = 'PackageId:' + dep.id;
+
+      this.transitionToRoute('packages.search', {queryParams: {query: query, latestOnly:true, page: 0, includePrerelease: includePrerelease, originFilter: 'any' }});
     }
   }
 });

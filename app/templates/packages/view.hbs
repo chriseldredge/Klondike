@@ -26,6 +26,36 @@
     available for this package.
 </p>
 
+{{#if supportedFrameworks}}
+  <h2>Supported Frameworks</h2>
+  <ul>
+    {{#each framework in supportedFrameworks}}
+      <li>{{framework}}</li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if dependencySets}}
+  <table class="package-dependencies">
+    <caption>Dependencies</caption>
+    <tbody>
+      {{#each set in dependencySets}}
+        <tr>
+          <th colspan="2">{{set.targetFramework.fullName}}</th>
+        </tr>
+        {{#each dep in set.dependencies}}
+          <tr>
+            <td>
+              <a href="#" {{action 'goToDependency' dep}} rel="nofollow">{{dep.id}}</a>
+            </td>
+            <td>{{dep.versionSpec.minVersion}}</td>
+          </tr>
+        {{/each}}
+      {{/each}}
+    </tbody>
+  </table>
+{{/if}}
+
 <table class="sortable">
     <caption>Version History</caption>
     <thead>
