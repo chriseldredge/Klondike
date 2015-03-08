@@ -6,6 +6,10 @@
 <p>{{description}}</p>
 {{/if}}
 
+{{#if copyright}}
+<p>{{copyright}}</p>
+{{/if}}
+
 {{search-link-list header='Tags' items=tags}}
 
 {{#if isMirrored}}
@@ -30,6 +34,16 @@
 
 {{search-link-list header='Authors' items=authors}}
 {{search-link-list header='Owners' items=owners}}
+
+<h2>Links</h2>
+<ul>
+  {{#if projectUrl}}
+    <li><a {{bind-attr href=projectUrl}}>Project Site</a></li>
+  {{/if}}
+  {{#if licenseUrl}}
+    <li><a {{bind-attr href=licenseUrl}}>License</a></li>
+  {{/if}}
+</ul>
 
 {{#if supportedFrameworks}}
   <h2>Supported Frameworks</h2>
@@ -59,6 +73,15 @@
       {{/each}}
     </tbody>
   </table>
+{{/if}}
+
+{{#if files}}
+  <h2>Package Contents</h2>
+  <ul>
+    {{#each file in files}}
+      <li>{{file}}</li>
+    {{/each}}
+  </ul>
 {{/if}}
 
 <table class="sortable">
