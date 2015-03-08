@@ -6,6 +6,8 @@
 <p>{{description}}</p>
 {{/if}}
 
+{{search-link-list header='Tags' items=tags}}
+
 {{#if isMirrored}}
 <p>Mirrored from <a {{bind-attr href=origin}}>{{origin}}</a></p>
 {{/if}}
@@ -25,6 +27,9 @@
     {{#unless symbolsAvailable}}<strong>not</strong>{{/unless}}
     available for this package.
 </p>
+
+{{search-link-list header='Authors' items=authors}}
+{{search-link-list header='Owners' items=owners}}
 
 {{#if supportedFrameworks}}
   <h2>Supported Frameworks</h2>

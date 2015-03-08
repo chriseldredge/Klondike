@@ -16,6 +16,14 @@ body {
   margin-bottom: $footer-height;
 }
 
+h2, caption {
+  font-size: 14pt;
+}
+
+caption {
+    text-align: left;
+}
+
 footer {
   position: absolute;
   bottom: 0;
@@ -170,6 +178,12 @@ ol.auto-complete li:hover, ol.auto-complete li.selected, ol.auto-complete:hover 
 
 ol.auto-complete:hover li.selected {
     background-color: inherit;
+}
+
+h2.search-link-list,
+ul.search-link-list,
+ul.search-link-list li {
+    display: inline;
 }
 
 #status-code {

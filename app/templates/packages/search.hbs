@@ -58,21 +58,11 @@
                   {{hit.version}}
                 {{/link-to}}
             </div>
-            <div>
-                By:
-                {{#each author in hit.authors}}
-                    {{#link-to 'packages.search' (query-params query=author page=0) rel="nofollow"}}{{author}}{{/link-to}}
-                {{/each}}
-            </div>
+            {{search-link-list header='Authors' items=hit.authors}}
             <div>
                 {{hit.description}}
             </div>
-            <div>
-                Tags:
-                {{#each tag in hit.tags}}
-                    {{#link-to 'packages.search' (query-params query=tag page=0) rel="nofollow"}}{{tag}}{{/link-to}}
-                {{/each}}
-            </div>
+            {{search-link-list header='Tags' items=hit.tags}}
             <div>
               Downloads:
               {{#if hit.downloadCount}}
