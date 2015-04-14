@@ -52,6 +52,11 @@ namespace Klondike
             base.Start(app, container);
         }
 
+        protected override HttpConfiguration CreateHttpConfiguration()
+        {
+            return new HttpConfiguration(new HttpRouteCollection(GlobalConfiguration.Configuration.VirtualPathRoot));
+        }
+
         protected override IContainer CreateContainer(IAppBuilder app)
         {
             var builder = new ContainerBuilder();

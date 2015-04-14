@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Net;
+using System.Web.Http;
 using Autofac;
 using Microsoft.Owin;
 using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.StaticFiles;
 using NuGet.Lucene.Web;
-using NuGet.Lucene.Web.Formatters;
 using Owin;
 
 namespace Klondike.SelfHost
@@ -31,6 +31,11 @@ namespace Klondike.SelfHost
         protected override INuGetWebApiSettings CreateSettings()
         {
             return selfHostSettings;
+        }
+
+        protected override HttpConfiguration CreateHttpConfiguration()
+        {
+            return new HttpConfiguration();
         }
 
         protected override void Start(IAppBuilder app, IContainer container)
