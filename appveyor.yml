@@ -7,7 +7,7 @@ init:
 # Test against these versions of Node.js.
 environment:
   matrix:
-    - nodejs_version: "0.10"
+    - nodejs_version: "0.12"
 
 install:
   # Get the latest stable version of Node 0.STABLE.latest
@@ -15,7 +15,8 @@ install:
   - cmd: npm config set spin false
   - cmd: npm install -g npm@^2
   - cmd: npm install -g ember-cli bower
-  - cmd: ember install
+  - cmd: npm install
+  - cmd: bower install
   - cmd: nuget restore Klondike.sln -NonInteractive
   - cmd: npm run-script release
 
