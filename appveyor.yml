@@ -33,5 +33,3 @@ artifacts:
   - path: .\dist
     name: Klondike
     type: zip
-  - path: build\TestResult.xml
-    name: NUnit Report
