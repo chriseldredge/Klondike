@@ -66,7 +66,13 @@ You can disable this behavior by editing `handleLocalRequestsAsAdmin` in [Settin
 
 Edit the `roleMappings` section in [Web.config](src/Klondike.WebHost/Web.config) to grant
 Klondike roles for user administration and package management to existing roles in your
-external security provider (such as Active Directory).
+external security provider (such as Active Directory). Multiple groups can be specified 
+delimited by commas. Membership in any one role is sufficient to grant a Klondike role.
+
+The available roles and their permissions are:
+
+* PackageManager - Allowed to push and delete packages
+* AccountAdministrator - Allowed to administer accounts
 
 ### Creating Users and Passwords
 
