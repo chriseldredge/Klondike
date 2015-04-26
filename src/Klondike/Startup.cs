@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using Common.Logging;
 using Common.Logging.Configuration;
 using Common.Logging.Simple;
@@ -109,6 +109,7 @@ namespace Klondike
 
             if (IsRunningOnMono && MonoCantEven)
             {
+                LogManager.GetLogger<Startup>().Info("Using mono compatibility shim for OData.");
                 config.Routes.MapHttpRoute("Mono Hard-Coded OData Workspace Handler",
                     apiMapper.ODataRoutePath,
                     new object(),
