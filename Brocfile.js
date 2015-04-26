@@ -55,7 +55,8 @@ function aspnetSourceTree() {
 var aspnetPackTree = exec(aspnetSourceTree(), {
   command: 'dnu',
   args: [
-    'pack',
+    'publish',
+    '--no-source',
     '--out',
     '{destDir}'
   ]
