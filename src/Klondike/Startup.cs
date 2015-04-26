@@ -27,19 +27,19 @@ namespace Klondike
 
         public void Configure(IApplicationBuilder app)
         {
-            pathMappingHelper = (IPathMappingHelper)app.ApplicationServices.GetService(typeof(IPathMappingHelper));
-
-            if (CreateSettings().ShowExceptionDetails)
-            {
-                app.UseErrorPage(ErrorPageOptions.ShowAll);
-            }
-
             // create properties
             var properties = new NameValueCollection();
             properties["showDateTime"] = "true";
 
             // set Adapter
             LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter(properties) { Level = LogLevel.Info };
+
+            pathMappingHelper = (IPathMappingHelper)app.ApplicationServices.GetService(typeof(IPathMappingHelper));
+
+            if (CreateSettings().ShowExceptionDetails)
+            {
+                app.UseErrorPage(ErrorPageOptions.ShowAll);
+            }
 
             var requestLog = LogManager.GetLogger("RequestLog");
 

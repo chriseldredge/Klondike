@@ -2,6 +2,9 @@
 using System.Collections.Specialized;
 using System.Linq;
 using Microsoft.Framework.ConfigurationModel;
+using Microsoft.Framework.DependencyInjection;
+using Microsoft.Framework.Runtime;
+using Microsoft.Framework.Runtime.Infrastructure;
 using NuGet.Lucene.Web;
 
 namespace Klondike
@@ -14,7 +17,13 @@ namespace Klondike
 
         static KlondikeSettings()
         {
-            config = new Configuration(/* TODO: lol */ ".").AddJsonFile("Settings.json");
+            var appBase = CallContextServiceLocator
+                .Locator
+                .ServiceProvider
+                .GetRequiredService<IApplicationEnvironment>()
+                .ApplicationBasePath;
+            Common.Logging.LogManager.GetLogger<KlondikeSettings>().Info(m => m("Using appbase " + appBase));
+            config = new Configuration(appBase).AddJsonFile("Settings.json");
             roleMappings = config.GetSubKeys("roleMappings").Aggregate(new NameValueCollection(), (c, kv) => { c[kv.Key] = kv.Value.Get(null); return c; });
         }
 
