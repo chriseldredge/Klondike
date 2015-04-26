@@ -18,6 +18,7 @@ install:
   - cmd: npm install -g ember-cli bower
   - cmd: npm install
   - cmd: bower install
+  - cmd: dnvm upgrade
   - cmd: dnu restore
   - cmd: npm run-script release
 
