@@ -5,19 +5,14 @@
     "Common.Logging": "2.2.0",
     "Common.Logging.Core": "2.2.0",
     "Microsoft.AspNet.Diagnostics": "1.0.0-beta5-*",
-//    "Microsoft.AspNet.FileSystems": "1.0.0-beta3-*",
-//    "Microsoft.AspNet.Hosting": "1.0.0-beta3-*",
     "Microsoft.AspNet.Http": "1.0.0-beta5-*",
     "Microsoft.AspNet.Owin": "1.0.0-beta5-*",
-//    "Microsoft.AspNet.RequestContainer": "1.0.0-beta3-*",
     "Microsoft.AspNet.Server.IIS": "1.0.0-beta5-*",
     "Microsoft.AspNet.Server.WebListener": "1.0.0-beta5-*",
     "Microsoft.AspNet.SignalR.Core": "2.2.0",
     "Microsoft.AspNet.StaticFiles": "1.0.0-beta5-*",
     "Microsoft.Framework.ConfigurationModel.Json": "1.0.0-beta5-*",
     "Microsoft.Owin": "3.0.0",
-    //"Nowin": "0.11.0",
-    //"Nowin.vNext": "0.1-alpha-t140701111049",
     "Kestrel": "1.0.0-beta5-*",
     "NuGet.Core": "2.8.3",
     "NuGet.Lucene.Web": "3.0.0-beta-build107",
@@ -27,7 +22,6 @@
   },
   "commands": {
     "web": "Microsoft.AspNet.Hosting --server Microsoft.AspNet.Server.WebListener --server.urls http://localhost:8080",
-    "nowin": "Microsoft.AspNet.Hosting --server Nowin.vNext",
     "kestrel": "Microsoft.AspNet.Hosting --server Kestrel"
   },
   "frameworks": {
