@@ -21,6 +21,7 @@ App_Data/
 bin/
 obj/
 /build/
+.vs/
 _NCrunch*
 *.ncrunch*
 *.user

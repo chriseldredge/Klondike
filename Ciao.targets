@@ -3,7 +3,7 @@
   <PropertyGroup Label="Settings">
     <Configuration>Debug</Configuration>
     <IncludeRuntime>True</IncludeRuntime>
-    <RuntimeVersion>KRE-svr50-x64.1.0.0-alpha3</RuntimeVersion>
+    <Framework>dnx451</Framework>
   </PropertyGroup>
 
   <PropertyGroup Label="Paths">
@@ -24,13 +24,12 @@
 
   <Target Name="CompileTargets" Condition=" '$(DistDir)' != '' ">
     <PropertyGroup>
-      <PackArgs>--appfolder wwwroot --overwrite --no-source --configuration $(Configuration)</PackArgs>
-      <PackArgs Condition=" '$(IncludeRuntime)' == 'True' ">$(PackArgs) --runtime $(RuntimeVersion)</PackArgs>
+      <PackArgs>--configuration $(Configuration) --framework $(Framework) --dependencies</PackArgs>
     </PropertyGroup>
 
     <MakeDir Directories="$(DistDir)"/>
 
-    <Exec Command="kpm pack -o &quot;$(StagingDir)&quot; $(PackArgs)"
+    <Exec Command="dnu pack --out &quot;$(StagingDir)&quot; $(PackArgs)"
           WorkingDirectory="$(KlondikeAppDir)"/>
   </Target>
 

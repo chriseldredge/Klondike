@@ -22,7 +22,7 @@ namespace Klondike.Extensions
             var appBuilder = new AppBuilder();
             var applicationLifetime = (IApplicationLifetime) builder.ApplicationServices.GetService(typeof(IApplicationLifetime));
             var appProperties = new AppProperties(appBuilder.Properties);
-            appProperties.AppName = builder.Server.Name;
+            appProperties.AppName = "OWIN";
             appProperties.OnAppDisposing = applicationLifetime.ApplicationStopping;
 
             action(appBuilder);

@@ -5,8 +5,10 @@ using Common.Logging.Simple;
 using Klondike.Extensions;
 using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.StaticFiles;
+using Microsoft.Framework.DependencyInjection;
 using NuGet.Lucene.Web;
 using NuGet.Lucene.Web.Formatters;
 using Owin;
@@ -18,16 +20,15 @@ namespace Klondike
     public class Startup : NuGet.Lucene.Web.Startup
     {
         private IPathMappingHelper pathMappingHelper;
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IPathMappingHelper, PathMappingHelper>();
+        }
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseServices(services =>
-            {
-                services.AddSingleton(typeof(IPathMappingHelper), typeof(PathMappingHelper));
-            });
-
             pathMappingHelper = (IPathMappingHelper)app.ApplicationServices.GetService(typeof(IPathMappingHelper));
-            
+
             if (CreateSettings().ShowExceptionDetails)
             {
                 app.UseErrorPage(ErrorPageOptions.ShowAll);

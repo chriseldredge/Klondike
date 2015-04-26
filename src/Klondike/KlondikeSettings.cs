@@ -14,7 +14,7 @@ namespace Klondike
 
         static KlondikeSettings()
         {
-            config = new Configuration().AddJsonFile("Settings.json");
+            config = new Configuration(/* TODO: lol */ ".").AddJsonFile("Settings.json");
             roleMappings = config.GetSubKeys("roleMappings").Aggregate(new NameValueCollection(), (c, kv) => { c[kv.Key] = kv.Value.Get(null); return c; });
         }
 

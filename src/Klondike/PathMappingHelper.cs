@@ -25,7 +25,7 @@ namespace Klondike
                 virtualPath = virtualPath.Substring(2);
             }
 
-            return Path.Combine(applicationEnvironment.WebRoot, virtualPath);
+            return Path.Combine(applicationEnvironment.WebRootPath, virtualPath);
         }
 
         public string ToAbsolute(string virtualPath)
