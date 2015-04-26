@@ -1,0 +1,12 @@
+{{#if items}}
+  {{#if header}}
+    <h2 class="search-link-list">{{header}}</h2>
+  {{/if}}
+  <ul class="search-link-list">
+    {{#each item in items}}
+      <li>
+        {{#link-to 'packages.search' (query-params query=item page=0) rel="nofollow"}}{{item}}{{/link-to}}
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}

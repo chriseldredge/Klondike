@@ -9,19 +9,19 @@ export default Ember.Mixin.create({
 
     first: function () {
         return this.get('page') * this.get('pageSize') + 1;
-    }.property('page', 'pageSize').cacheable(),
+    }.property('page', 'pageSize'),
 
     last: function () {
         return Math.min((this.get('page') + 1) * this.get('pageSize'), this.get('total'));
-    }.property('page', 'pageSize', 'total').cacheable(),
+    }.property('page', 'pageSize', 'total'),
 
     hasPrevious: function () {
         return this.get('page') > 0;
-    }.property('page').cacheable(),
+    }.property('page'),
 
     hasNext: function () {
         return this.get('last') < this.get('total');
-    }.property('last', 'total').cacheable(),
+    }.property('last', 'total'),
 
     nextPage: function () {
         if (this.get('hasNext')) {
@@ -37,7 +37,7 @@ export default Ember.Mixin.create({
 
     totalPages: function () {
         return Math.ceil(this.get('total') / this.get('pageSize'));
-    }.property('total', 'pageSize').cacheable(),
+    }.property('total', 'pageSize'),
 
     pageDidChange: function () {
         this.didRequestPage(this.get('page'));

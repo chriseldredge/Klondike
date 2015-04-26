@@ -1,13 +1,13 @@
 <footer>
   <dl>
-    {{#with view.content}}
+    {{#with view.content as stats}}
       <dt>Total Packages</dt>
-      <dd>{{totalPackages}}</dd>
+      <dd>{{stats.totalPackages}}</dd>
       <dt>Synchronizer State</dt>
       <dd>
-          {{synchronizationState}}
-          {{#if packagesToIndex}}
-              {{completedPackages}} / {{packagesToIndex}}
+          {{stats.synchronizationState}}
+          {{#if stats.packagesToIndex}}
+              {{stats.completedPackages}} / {{stats.packagesToIndex}}
           {{/if}}
       </dd>
     {{/with}}

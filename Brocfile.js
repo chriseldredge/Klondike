@@ -6,8 +6,13 @@ var mergeTrees = require('broccoli-merge-trees');
 var select = require('broccoli-select');
 var pick = require('broccoli-static-compiler');
 
-var app = new EmberApp();
+var app = new EmberApp({
+    vendorFiles: {
+      'handlebars.js': null
+    }
+});
 
+app.import('bower_components/jcaret/jquery.caret.js');
 app.import('bower_components/momentjs/moment.js');
 app.import('bower_components/nprogress/nprogress.js');
 app.import('bower_components/nprogress/nprogress.css');
@@ -48,10 +53,9 @@ function aspnetSourceTree() {
 }
 
 var aspnetPackTree = exec(aspnetSourceTree(), {
-  command: 'kpm',
+  command: 'dnu',
   args: [
     'pack',
-    '--no-source',
     '--out',
     '{destDir}'
   ]
@@ -61,7 +65,7 @@ aspnetPackTree.prepare = function(srcDir, destDir) {
   var result = exec.prototype.prepare.apply(this, [srcDir, destDir]);
   return result.then(function(settings) {
     if (process.platform === 'win32') {
-      settings.command = 'kpm.cmd';
+      settings.command = 'dnu.cmd';
     }
     settings.options.cwd = require('path').join(settings.options.cwd, 'Klondike');
     return settings;

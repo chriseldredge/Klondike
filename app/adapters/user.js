@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import User from '../models/user';
-import describePromise from '/klondike/util/describe-promise';
+import describePromise from 'klondike/util/describe-promise';
 
 export default Ember.Object.extend({
     find: function(id) {

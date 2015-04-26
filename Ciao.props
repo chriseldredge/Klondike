@@ -4,7 +4,7 @@
         <SolutionFile>Klondike.sln</SolutionFile>
         <VersionPrefix>0.0.1</VersionPrefix>
     </PropertyGroup>
-    
+
     <PropertyGroup Label="FeatureFlags">
         <GenerateVersionInfoEnabled>true</GenerateVersionInfoEnabled>
     </PropertyGroup>

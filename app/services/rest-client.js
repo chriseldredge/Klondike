@@ -1,13 +1,12 @@
 import Ember from 'ember';
-import config from 'Klondike/config';
-import ApplicationException from 'Klondike/application-exception';
-import describePromise from '/klondike/util/describe-promise';
+import ApplicationException from 'klondike/application-exception';
+import describePromise from 'klondike/util/describe-promise';
 
 var RestApi = Ember.Object.extend({
     apiKeyRequestHeaderName: 'X-NuGet-ApiKey',
 
-    apiUrl: config.apiUrl,
-    apiKey: config.apiKey,
+    apiURLBinding: 'application.apiURL',
+    apiKeyBinding: 'application.apiKey',
 
     apiInfo: {},
     packageSourceUri: null,
@@ -17,7 +16,7 @@ var RestApi = Ember.Object.extend({
     _promise: null,
 
     init: function() {
-        var url = this.get('apiUrl') + '?nocache=' + new Date().getTime();
+        var url = this.get('apiURL') + '?nocache=' + new Date().getTime();
 
         var deferred = Ember.RSVP.defer(describePromise(this, 'init', [url]));
         this.set('_promise', deferred.promise);
@@ -103,7 +102,20 @@ var RestApi = Ember.Object.extend({
             };
 
             Ember.$.ajax(href, options).fail(function(request, textStatus, errorThrown) {
-                reject({ request: request, textStatus: textStatus, errorThrown: errorThrown });
+                var error = {
+                  request: request,
+                  textStatus: textStatus,
+                  errorThrown: errorThrown };
+
+                if (request && request.status) {
+                  error.status = request.status;
+                }
+
+                if (request && request.responseJSON) {
+                  error.response = request.responseJSON;
+                }
+
+                reject(error);
             });
         }, describePromise(this, '_invokeAjaxApi', [apiName]));
     },
@@ -151,7 +163,7 @@ var RestApi = Ember.Object.extend({
     },
 
     _setPackageSource: function () {
-        var href = this.get('apiUrl');
+        var href = this.get('apiURL');
 
         if (href[href.length - 1] !== '/') {
             href += '/';
@@ -179,7 +191,7 @@ var RestApi = Ember.Object.extend({
     },
 
     _fullBaseDataUrl: function() {
-        var base = this.get('apiUrl');
+        var base = this.get('apiURL');
 
         if (base.indexOf('://') === -1) {
             base = window.location.protocol + '//' + window.location.host + base;
@@ -190,7 +202,7 @@ var RestApi = Ember.Object.extend({
         }
 
         return base;
-    }.property('apiUrl'),
+    }.property('apiURL'),
 
     _buildApiDictionary: function(data) {
         var apiInfo = {};

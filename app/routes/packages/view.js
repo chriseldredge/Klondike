@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import ProgressIndicator from 'Klondike/progress-indicator';
-import ProgressIndicatorRoute from 'Klondike/mixins/progress-indicator-route';
-import describePromise from '/klondike/util/describe-promise';
+import ProgressIndicator from 'klondike/progress-indicator';
+import ProgressIndicatorRoute from 'klondike/mixins/progress-indicator-route';
+import describePromise from 'klondike/util/describe-promise';
 
 export default Ember.Route.extend(ProgressIndicatorRoute, {
     model: function(params) {

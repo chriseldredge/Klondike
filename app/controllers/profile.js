@@ -1,10 +1,15 @@
 import Ember from 'ember';
-import BaseControllerMixin from 'Klondike/mixins/base-controller';
+import BaseControllerMixin from 'klondike/mixins/base-controller';
 
 export default Ember.ObjectController.extend(BaseControllerMixin, {
     pushApiName: 'packages.putPackage',
     pushUriBinding: 'restClient.packageSourceUri',
     canPushPackages: false,
+    keyHidden: true,
+
+    key: function() {
+      return this.get('keyHidden') ? '(hidden)' : this.get('model.key');
+    }.property('keyHidden', 'model.key'),
 
     setApiKeyCommand: function() {
         return 'nuget setApiKey ' + this.get('key') + ' -Source ' + this.get('pushUri');
@@ -37,6 +42,10 @@ export default Ember.ObjectController.extend(BaseControllerMixin, {
     actions: {
         changeKey: function() {
             this.get('session').changeKey();
+        },
+
+        revealKey: function() {
+            this.set('keyHidden', false);
         }
     }
 });

@@ -1,4 +1,4 @@
-## Klondike
+## Klondike [![Build status](https://ci.appveyor.com/api/projects/status/vxqnth8eyerocfpm/branch/master?svg=true)](https://ci.appveyor.com/project/chriseldredge/klondike/branch/master)
 
 Ember front-end that builds on NuGet.Lucene for private [NuGet](https://www.nuget.org/) package hosting.
 
@@ -8,6 +8,8 @@ Available from the Releases tab on github.
 
 Alternatively, you can clone the [Klondike-Release](https://github.com/themotleyfool/Klondike-Release)
 git repo to make upgrading easier.
+
+_N.B._ The self-host version of Klondike is currently in beta. Binaries can be obtained from the `Artifacts` tab of a successful [AppVeyor build](https://ci.appveyor.com/project/chriseldredge/klondike/).
 
 ## What is Klondike
 
@@ -29,6 +31,10 @@ exe) and you're done. Much easier than deploying your own NuGet Gallery.
 1. Customize [Settings.config](src/Klondike.WebHost/Settings.config)
 1. Create a site in IIS using a .NET v4.0 Integrated Pipeline application pool
 
+_N.B._ Klondike works best deployed as a root application. There are known issues
+with NuGet clients when attempting to host Klondike as a child application on a
+virtual path.
+
 ## App Pool Advanced Configuration
 
 Klondike is designed to run as a single process to avoid conflicting writes on
@@ -36,6 +42,45 @@ the Lucene index files. Adjust your application pool accordingly:
 
 * Make sure `Maximum Worker Processes` is set to `1`
 * Make sure `Disable Overlapped Recycle` is set to `true`
+
+## Authentication and Role-Based Security
+
+Klondike supports external authentication providers such as Windows (Active Directory),
+basic auth and NTLM. These are configured in IIS Manager and other tools.
+
+Disable anonymous authentication to require authentication even for read access to Klondike.
+
+In addition to standard authentication, Klondike supports authentication by using the
+`X-NuGet-ApiKey` HTTP Request header to be compatible with NuGet clients that push and delete
+packages.
+
+### Local Administrator
+
+Browsing or accessing the Klondike app from a local network interface on the same machine
+will implicitly grant access as `LocalAdministrator`. This account is allowed to create
+additional users, push and delete packages.
+
+You can disable this behavior by editing `handleLocalRequestsAsAdmin` in [Settings.config](src/Klondike.WebHost/Settings.config).
+
+### Mapping Active Directory Roles to Klondike
+
+Edit the `roleMappings` section in [Web.config](src/Klondike.WebHost/Web.config) to grant
+Klondike roles for user administration and package management to existing roles in your
+external security provider (such as Active Directory). Multiple groups can be specified 
+delimited by commas. Membership in any one role is sufficient to grant a Klondike role.
+
+The available roles and their permissions are:
+
+* PackageManager - Allowed to push and delete packages
+* AccountAdministrator - Allowed to administer accounts
+
+### Creating Users and Passwords
+
+Any user who has the AccountAdministrator role may create, delete and modify accounts
+and API keys. This includes the LocalAdministrator account.
+
+To access this feature, browse to Klondike and select `Admin` in the top navigation,
+then `Manage Accounts`.
 
 ## Self-Hosted Klondike
 
@@ -51,6 +96,14 @@ Or
 If no port is specified, 8080 is used as a default. See the [Klondike.SelfHost README](src/Klondike.SelfHost/README.md)
 for more information.
 
+## Customizing the Home Page
+
+Open [index.html](app/index.html) in a text editor and replace the contents in
+the `<div id="index-content">` element.
+
+The suggested package feed name in the sample command for adding a package source
+can be changed by replacing the `data-package-source-name` attribute value.
+
 ## Building Locally
 
 This repository consists of two components:
@@ -64,12 +117,11 @@ Prerequisites: node (`node` and `npm` should be on your PATH).
 
 Install ember-cli and bower if you haven't already:
 
-    npm install -g ember-cli bower
+    npm install -g ember-cli
 
 Install dependencies:
 
-    npm install
-    bower install
+    ember install
 
 Finally, build:
 
@@ -94,7 +146,8 @@ Mono can also be installed by [homebrew](http://brew.sh/) on OS X.
 
 You can develop the front end without needing to build or host the .net code.
 
-Edit [app/config.js](app/config.js) to point to an external Klondike API endpoint,
+Edit [config/environment.js](config/environment.js) and set the `apiURL`
+and (optionally) `apiKey` properties to point to an external Klondike API endpoint,
 then run
 
     ember serve --environment=ember-only

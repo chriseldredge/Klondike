@@ -7,21 +7,24 @@ init:
 # Test against these versions of Node.js.
 environment:
   matrix:
-    - nodejs_version: "0.10"
+    - nodejs_version: "0.12"
 
-# Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node 0.STABLE.latest
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
-  - cmd: node --version
-  - cmd: npm --version
-  - cmd: npm install -g bower
+  - cmd: npm config set spin false
+  - cmd: npm install -g npm@^2
+  - cmd: npm install -g ember-cli bower
   - cmd: npm install
-  - cmd: bower install --config.interactive=false
+  - cmd: bower install
+  - cmd: nuget restore Klondike.sln -NonInteractive
   - cmd: npm run-script release
 
 # Don't actually build.
 build: off
+
+# Tests are executed elsewhere
+test: off
 
 # Set build version format here instead of in the admin panel.
 version: "{build}"

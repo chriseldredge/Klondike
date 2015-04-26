@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import UserPermissionObserver from 'Klondike/mixins/user-permission-observer';
+import UserPermissionObserver from 'klondike/mixins/user-permission-observer';
 import signalR from './signalR';
-import describePromise from '/klondike/util/describe-promise';
+import describePromise from 'klondike/util/describe-promise';
 
 export default Ember.Object.extend(UserPermissionObserver, {
     hubs: null,
@@ -45,6 +45,10 @@ export default Ember.Object.extend(UserPermissionObserver, {
 
         signalR.hub.start({ waitForPageLoad: false });
     }.observes('statusHub'),
+
+    rebuild: function () {
+        this.get('restClient').ajax('indexing.synchronize', { data: { mode: 'complete' } });
+    },
 
     synchronize: function () {
         this.get('restClient').ajax('indexing.synchronize');

@@ -1,6 +1,5 @@
 import Ember from 'ember';
-import config from './config';
-import describePromise from '/klondike/util/describe-promise';
+import describePromise from 'klondike/util/describe-promise';
 
 function promiseAlias(name) {
   return function () {
@@ -11,7 +10,7 @@ function promiseAlias(name) {
 
 export default Ember.Object.extend({
     users: null,
-    fixedKey: config.apiKey,
+    fixedKeyBinding: 'application.apiKey',
 
     user: null,
     usernameBinding: 'user.username',
@@ -30,7 +29,7 @@ export default Ember.Object.extend({
 
         var self = this;
         var settings = {};
-        var sessionKey = sessionStorage.getItem('key') || this.get('fixedKey');
+        var sessionKey = window.sessionStorage.getItem('key') || this.get('fixedKey');
 
         if (!Ember.isEmpty(sessionKey)) {
             settings.beforeSend = function(xhr) {
@@ -91,7 +90,7 @@ export default Ember.Object.extend({
 
         if (!Ember.isEmpty(username)) {
             settings.beforeSend = function(xhr) {
-                xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username + ':' + password));
+                xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(username + ':' + password));
             };
         }
 
@@ -110,7 +109,7 @@ export default Ember.Object.extend({
 
         return call.then(function(data) {
             self.set('key', data.key);
-            sessionStorage.setItem('key', self.get('key'));
+            window.sessionStorage.setItem('key', self.get('key'));
             return data.key;
         }, null, describePromise(this, 'changeKey'));
     },
@@ -127,17 +126,18 @@ export default Ember.Object.extend({
             self.set('user', user);
 
             return user;
-        }, function() {
+        }, function(err) {
             self.set('user', null);
+            throw err;
         }, describePromise(this, '_invokeLogin'));
     },
 
     _keyDidChange: function() {
         var key = this.get('key');
         if (key) {
-            sessionStorage.setItem('key', key);
+            window.sessionStorage.setItem('key', key);
         } else {
-            sessionStorage.removeItem('key');
+            window.sessionStorage.removeItem('key');
         }
         this.get('restClient').set('apiKey', key);
     }.observes('key'),

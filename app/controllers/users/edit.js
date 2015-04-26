@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import BaseControllerMixin from 'Klondike/mixins/base-controller';
-import UserPermissionObserver from 'Klondike/mixins/user-permission-observer';
-import ProgressIndicator from 'Klondike/progress-indicator';
+import BaseControllerMixin from 'klondike/mixins/base-controller';
+import UserPermissionObserver from 'klondike/mixins/user-permission-observer';
+import ProgressIndicator from 'klondike/progress-indicator';
 
 export default Ember.ObjectController.extend(BaseControllerMixin, UserPermissionObserver, {
     errorMessage: '',

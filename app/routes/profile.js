@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import AuthorizedRoute from 'Klondike/mixins/authorized-route';
-import describePromise from '/klondike/util/describe-promise';
+import AuthorizedRoute from 'klondike/mixins/authorized-route';
+import describePromise from 'klondike/util/describe-promise';
 
 export default Ember.Route.extend(AuthorizedRoute, {
     authorizedApiName: 'users.getAuthenticationInfo',

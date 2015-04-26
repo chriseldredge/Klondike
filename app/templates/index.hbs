@@ -1,39 +1,3 @@
-<p>
-    Welcome to Klondike, the <a href="http://nuget.org/">NuGet</a> repository
-    for caching public packages and storing your private packages privately.
-</p>
-
-<h2>Getting Started</h2>
-
-<p>To use this repository from Visual Studio, add a new Package Source using this URL:</p>
 {{code-snippet content=packageSourceUri}}
 
-<p>Alternatively, you can add the package source from the command line as follows:</p>
 {{code-snippet content=packageSourceCommandWithPrompt data=packageSourceCommand}}
-
-<h2>Wait, What is this Thing?</h2>
-<p>
-    Do you know what the <a href="http://msdn.microsoft.com/en-us/vstudio/aa496123.aspx">.NET Framework</a> is?
-    Do you know what NuGet is? No? If not, you can probably stop reading now. Instead perhaps do some
-    research on <a href="https://www.youtube.com/results?safe=off&amp;q=monkey+riding+dog">
-    monkeys riding dogs</a>.
-</p>
-<p>
-    Klondike is similar to the <a href="http://nuget.org/packages/NuGet.Server/">NuGet.Server project</a>
-    that lets you host a package feed on your own private network. Klondike is different because it's
-    faster. Way faster. The problem with NuGet.Server is that it slows down to a crawl after you add around
-    100 packages. Klondike uses <a href="https://github.com/themotleyfool/Lucene.Net.Linq">Lucene.Net.Linq</a>
-    to index your projects to give you all the searchy goodness of Lucene along with super fast package
-    retrieval.
-</p>
-<h2>You Should Use Klondike if...</h2>
-<ul>
-    <li>You develop software with Microsoft.NET or the Mono Framework</li>
-    <li>You use NuGet</li>
-    <li>You don't want your build to break when <a href="http://nuget.org">nuget.org</a> goes down, or</li>
-    <li>You create packages for private consumption, or</li>
-    <li>You want a place to push packages to test them before releasing to nuget.org</li>
-</ul>
-<p>
-    You should not use Klondike if you are not awesome.
-</p>

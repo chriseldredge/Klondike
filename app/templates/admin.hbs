@@ -4,8 +4,15 @@
         If the package directory has been modified outside of Klondike,
         it can be synchronized with the Lucene index manually here.
     </p>
+    <p>
+        Use <tt>Rebuild Index</tt> to re-index all packages even if they
+        appear to be unchanged. This process is useful when upgrading Klondike.
+        All metadata will be recomputed except package download counters, which
+        will be preserved.
+    </p>
     {{#if canSynchronize}}
         <button {{action "synchronize"}} {{bind-attr disabled="isRunning"}}>Synchronize Packages</button>
+        <button {{action "rebuild"}} {{bind-attr disabled="isRunning"}}>Rebuild Index</button>
         <button {{action "cancel"}}>Cancel</button>
     {{else}}
         <p class="not-authorized">You are not allowed to synchronize packages.</p>

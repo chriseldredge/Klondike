@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import ProgressIndicatorRoute from 'Klondike/mixins/progress-indicator-route';
+import ProgressIndicatorRoute from 'klondike/mixins/progress-indicator-route';
 
 export default Ember.Route.extend(ProgressIndicatorRoute, {
     beforeModel: function() {

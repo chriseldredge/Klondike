@@ -1,6 +1,12 @@
 <h1>{{username}}</h1>
 
-{{#if canPushPackages}}
+{{#if keyHidden}}
+  <p>Your API Key is hidden for security.</p>
+  <button {{action "revealKey"}}>Reveal</button>
+{{else}}
+  {{#if canPushPackages}}
+    <p>Your API Key is:</p>
+    {{code-snippet content=key}}
     <p>To push packages, first set your API Key:</p>
 
     {{code-snippet content=setApiKeyCommandWithPrompt data=setApiKeyCommand}}
@@ -8,17 +14,18 @@
     <p>To push packages, run:</p>
 
     {{code-snippet content=pushPackageCommandWithPrompt data=pushPackageCommand}}
-{{else}}
+  {{else}}
     <p>Your NuGet API Key is {{key}}, but you are not allowed to push packages.</p>
+  {{/if}}
+
+  <button {{action "changeKey"}}>Change API Key</button>
 {{/if}}
 
-<button {{action "changeKey"}}>Change API Key</button>
-
 <p>
-    You have the following permissions:
-    {{#each role in roles}}
-        {{role}}
-    {{else}}
-        (none)
-    {{/each}}
+  You have the following permissions:
+  {{#each role in roles}}
+    {{role}}
+  {{else}}
+    (none)
+  {{/each}}
 </p>

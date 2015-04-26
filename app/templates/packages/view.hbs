@@ -1,7 +1,20 @@
 <h1>{{package-icon url=iconUrl}} {{displayTitle}} {{version}}</h1>
 
 <p>{{summary}}</p>
+
+{{#if hasAdditionalDescription}}
 <p>{{description}}</p>
+{{/if}}
+
+{{#if copyright}}
+<p>{{copyright}}</p>
+{{/if}}
+
+{{search-link-list header='Tags' items=tags}}
+
+{{#if isMirrored}}
+<p>Mirrored from <a {{bind-attr href=origin}}>{{origin}}</a></p>
+{{/if}}
 
 <p>To install {{id}} run this command in the Package Manager Console</p>
 {{code-snippet content=installCommandWithPrompt data=installCommand}}
@@ -18,6 +31,58 @@
     {{#unless symbolsAvailable}}<strong>not</strong>{{/unless}}
     available for this package.
 </p>
+
+{{search-link-list header='Authors' items=authors}}
+{{search-link-list header='Owners' items=owners}}
+
+<h2>Links</h2>
+<ul>
+  {{#if projectUrl}}
+    <li><a {{bind-attr href=projectUrl}}>Project Site</a></li>
+  {{/if}}
+  {{#if licenseUrl}}
+    <li><a {{bind-attr href=licenseUrl}}>License</a></li>
+  {{/if}}
+</ul>
+
+{{#if supportedFrameworks}}
+  <h2>Supported Frameworks</h2>
+  <ul>
+    {{#each framework in supportedFrameworks}}
+      <li>{{framework}}</li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if dependencySets}}
+  <table class="package-dependencies">
+    <caption>Dependencies</caption>
+    <tbody>
+      {{#each set in dependencySets}}
+        <tr>
+          <th colspan="2">{{set.targetFramework.fullName}}</th>
+        </tr>
+        {{#each dep in set.dependencies}}
+          <tr>
+            <td>
+              <a href="#" {{action 'goToDependency' dep}} rel="nofollow">{{dep.id}}</a>
+            </td>
+            <td>{{dep.versionSpec.minVersion}}</td>
+          </tr>
+        {{/each}}
+      {{/each}}
+    </tbody>
+  </table>
+{{/if}}
+
+{{#if files}}
+  <h2>Package Contents</h2>
+  <ul>
+    {{#each file in files}}
+      <li>{{file}}</li>
+    {{/each}}
+  </ul>
+{{/if}}
 
 <table class="sortable">
     <caption>Version History</caption>

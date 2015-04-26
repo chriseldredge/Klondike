@@ -1,0 +1,21 @@
+<div>
+    {{#link-to 'packages.view' package}}
+      {{package-icon package=package}}
+      {{package.displayTitle}}
+      {{package.version}}
+    {{/link-to}}
+</div>
+<div>
+    {{package.description}}
+</div>
+{{search-link-list header='Tags' items=package.tags}}
+{{search-link-list header='Authors' items=package.authors}}
+{{search-link-list header='Owners' items=package.owners}}
+<div>
+  {{package.downloadCount}} downloads
+  {{#if package.downloadCount}}
+    {{#unless hideVersionDownloadCount}}
+      ({{package.versionDownloadCount}} download of v{{package.version}})
+    {{/unless}}
+  {{/if}}
+</div>

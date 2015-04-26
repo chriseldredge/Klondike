@@ -1,11 +1,5 @@
 import Ember from 'ember';
-import config from './config/environment';
-
-var Router = Ember.Router.extend({
-  location: config.locationType
-});
-
-Router.map(function() {
+export default Ember.Router.map(function() {
     this.route('index', { path: '/' });
     this.route('login');
     this.route('denied');
@@ -14,6 +8,7 @@ Router.map(function() {
     this.route('admin');
     this.resource('packages', function() {
         this.route('search', { path: '/search' });
+        this.route('advanced-search', { path: '/advanced-search' });
         this.route('list', { path: '/list' });
         this.route('view', { path: '/:id/:version' });
     });
@@ -24,5 +19,3 @@ Router.map(function() {
     });
     this.route('not_found', { path: '/*not_found' });
 });
-
-export default Router;

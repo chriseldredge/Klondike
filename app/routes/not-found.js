@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import ApplicationException from 'Klondike/application-exception';
+import ApplicationException from 'klondike/application-exception';
 
 export default Ember.Route.extend({
   afterModel: function() {
