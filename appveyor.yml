@@ -12,12 +12,13 @@ environment:
 install:
   # Get the latest stable version of Node 0.STABLE.latest
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
+  - cmd: powershell -NoProfile -ExecutionPolicy unrestricted -Command "&{$Branch='dev';iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.ps1'))}"
   - cmd: npm config set spin false
   - cmd: npm install -g npm@^2
   - cmd: npm install -g ember-cli bower
   - cmd: npm install
   - cmd: bower install
-  - cmd: nuget restore Klondike.sln -NonInteractive
+  - cmd: dnu restore
   - cmd: npm run-script release
 
 # Don't actually build.
