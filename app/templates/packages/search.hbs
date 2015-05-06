@@ -45,7 +45,7 @@
     {{/if}}
 
     <ol {{bind-attr start=first}}>
-        {{#each hit in hits}}
+        {{#each model.hits as |hit|}}
         <li>
             <div>
                 {{package-icon url=hit.iconUrl}}

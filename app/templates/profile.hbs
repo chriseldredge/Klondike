@@ -1,4 +1,4 @@
-<h1>{{username}}</h1>
+<h1>{{model.username}}</h1>
 
 {{#if keyHidden}}
   <p>Your API Key is hidden for security.</p>
@@ -23,7 +23,7 @@
 
 <p>
   You have the following permissions:
-  {{#each role in roles}}
+  {{#each role in model.roles}}
     {{role}}
   {{else}}
     (none)

@@ -9,9 +9,9 @@ export default UsersEditController.extend({
             this.set('errorMessage', '');
 
             var user = {
-                username: this.get('username'),
-                key: this.get('key'),
-                roles: this.get('roles')
+                username: this.get('model.username'),
+                key: this.get('model.key'),
+                roles: this.get('model.roles')
             };
 
             var promise = this.get('users').add(user);

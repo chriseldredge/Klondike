@@ -1,15 +1,15 @@
 import Ember from 'ember';
 import BaseControllerMixin from 'klondike/mixins/base-controller';
 
-export default Ember.ObjectController.extend(BaseControllerMixin, {
+export default Ember.Controller.extend(BaseControllerMixin, {
   origin: function() {
-    var dataUrl = this.get('originUrl') || '';
+    var dataUrl = this.get('model.originUrl') || '';
     var index = dataUrl.indexOf('/api/');
     return index < 0 ? dataUrl : dataUrl.substring(0, index + 1);
   }.property('model.originUrl'),
 
   hasAdditionalDescription: function() {
-    return this.get('summary') !== this.get('description');
+    return this.get('model.summary') !== this.get('model.description');
   }.property('model.summary', 'model.description'),
 
   installCommand: function() {

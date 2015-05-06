@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import BaseControllerMixin from 'klondike/mixins/base-controller';
 
-export default Ember.ObjectController.extend(BaseControllerMixin, {
+export default Ember.Controller.extend(BaseControllerMixin, {
     canSynchronizeBinding: Ember.Binding.oneWay('indexer.canSynchronize'),
 
     actions: {

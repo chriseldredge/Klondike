@@ -3,7 +3,7 @@ import BaseControllerMixin from 'klondike/mixins/base-controller';
 import UserPermissionObserver from 'klondike/mixins/user-permission-observer';
 import ProgressIndicator from 'klondike/progress-indicator';
 
-export default Ember.ObjectController.extend(BaseControllerMixin, UserPermissionObserver, {
+export default Ember.Controller.extend(BaseControllerMixin, UserPermissionObserver, {
     errorMessage: '',
     originalUsername: '',
     actionLabel: 'Edit',
@@ -28,8 +28,8 @@ export default Ember.ObjectController.extend(BaseControllerMixin, UserPermission
         if (Ember.isEmpty(this.get('originalUsername'))) {
             return false;
         }
-        return this.get('originalUsername') !== this.get('username');
-    }.property('originalUsername', 'username'),
+        return this.get('originalUsername') !== this.get('model.username');
+    }.property('originalUsername', 'model.username'),
 
     reset: function() {
         this.set('errorMessage', '');
@@ -42,9 +42,9 @@ export default Ember.ObjectController.extend(BaseControllerMixin, UserPermission
             this.set('errorMessage', '');
 
             var user = {
-                username: this.get('username'),
-                key: this.get('key'),
-                roles: this.get('roles')
+                username: this.get('model.username'),
+                key: this.get('model.key'),
+                roles: this.get('model.roles')
             };
 
             if (this.get('isRenamed')) {

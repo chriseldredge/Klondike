@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import BaseControllerMixin from 'klondike/mixins/base-controller';
-import PaginationSupport from 'klondike/mixins/pagination-support';
+import PaginationSupportMixin from 'klondike/mixins/pagination-support';
 
-export default Ember.ObjectController.extend(BaseControllerMixin, PaginationSupport, {
+export default Ember.Controller.extend(BaseControllerMixin, PaginationSupportMixin, {
     queryParams: ['query', 'page', 'sortBy', 'sortOrder', 'includePrerelease', 'originFilter', 'latestOnly'],
 
     originFilters: [
