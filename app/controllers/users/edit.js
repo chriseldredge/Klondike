@@ -13,6 +13,8 @@ export default Ember.Controller.extend(BaseControllerMixin, UserPermissionObserv
 
     modelDidChange: function() {
         this.set('originalUsername', this.get('model.username'));
+        this.set('isSaving', false);
+        this.set('isSaveCompleted', false);
     }.observes('model'),
 
     init: function() {
@@ -85,11 +87,13 @@ export default Ember.Controller.extend(BaseControllerMixin, UserPermissionObserv
             self.transitionToRoute('users.list');
         }).catch(function(err) {
             finish();
-            if (err.request && err.request.status === 409) {
-                self.set('errorMessage', 'The account ' + self.get('username') + ' already exists.');
-            } else {
-                self.set('errorMessage', err.textStatus + '(' + err.errorThrown + ')');
+            var message = 'Unknown error occurred.';
+
+            if (err.response && err.response.message) {
+              message = err.response.message;
             }
+
+            self.set('errorMessage', message);
         });
     }
 });
