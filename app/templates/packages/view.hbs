@@ -13,16 +13,16 @@
 {{search-link-list header='Tags' items=model.tags}}
 
 {{#if model.isMirrored}}
-<p>Mirrored from <a {{bind-attr href=origin}}>{{origin}}</a></p>
+<p>Mirrored from <a href={{origin}}>{{origin}}</a></p>
 {{/if}}
 
 <p>To install {{id}} run this command in the Package Manager Console</p>
 {{code-snippet content=installCommandWithPrompt data=installCommand}}
 
 <p>
-    <span id="debug-icon" {{bind-attr class="symbolsAvailable :fa-stack :fa-2x"}}>
+    <span id="debug-icon" class="{{if model.symbolsAvailable 'symbols-available'}} fa-stack fa-2x">
         <i class="fa fa-bug fa-stack-1x"></i>
-        {{#unless symbolsAvailable}}
+        {{#unless model.symbolsAvailable}}
         <i class="fa fa-ban fa-stack-2x"></i>
         {{/unless}}
     </span>
@@ -38,10 +38,10 @@
 <h2>Links</h2>
 <ul>
   {{#if model.projectUrl}}
-    <li><a {{bind-attr href=model.projectUrl}}>Project Site</a></li>
+    <li><a href={{model.projectUrl}}>Project Site</a></li>
   {{/if}}
   {{#if model.licenseUrl}}
-    <li><a {{bind-attr href=model.licenseUrl}}>License</a></li>
+    <li><a href={{model.licenseUrl}}>License</a></li>
   {{/if}}
 </ul>
 

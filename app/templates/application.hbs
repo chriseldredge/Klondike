@@ -8,7 +8,7 @@
         <li>{{#link-to 'packages.list' (query-params page=0)}}Packages{{/link-to}}</li>
         <li>{{#link-to 'symbols'}}Symbols{{/link-to}}</li>
         <li>{{#link-to 'admin' rel="nofollow"}}Admin{{/link-to}}</li>
-        <li><a {{bind-attr href=apiURL}}>Api</a></li>
+        <li><a href={{apiURL}}>Api</a></li>
         <li>{{input type="text" value=searchBox action="search" placeholder="Search..."}}</li>
       </ul>
       {{#if isSessionInitialized}}

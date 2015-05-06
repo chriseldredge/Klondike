@@ -44,7 +44,7 @@
         <a href="#" {{action "nextPage"}}>Next Page</a>
     {{/if}}
 
-    <ol {{bind-attr start=first}}>
+    <ol start={{first}}>
         {{#each model.hits as |hit|}}
         <li>
             <div>
