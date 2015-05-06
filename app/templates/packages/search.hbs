@@ -27,10 +27,10 @@
 </div>
 
 <h1>
-    {{#if isEmptyQuery}}
-        List of All Packages
-    {{else}}
+    {{#if query}}
         Search results for "{{query}}"
+    {{else}}
+        List of All Packages
     {{/if}}
 </h1>
 

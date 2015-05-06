@@ -38,10 +38,6 @@ export default Ember.Controller.extend(BaseControllerMixin, PaginationSupportMix
 
     totalBinding: Ember.Binding.oneWay('model.totalHits'),
 
-    isEmptyQuery: function() {
-        return Ember.isEmpty(this.get('query'));
-    }.property('query'),
-
     actions: {
         'nextPage': function() {
             this.set('page', this.get('page') + 1);
