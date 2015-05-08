@@ -58,11 +58,11 @@
   <table class="package-dependencies">
     <caption>Dependencies</caption>
     <tbody>
-      {{#each set in dependencySets}}
+      {{#each dependencySets as |set|}}
         <tr>
           <th colspan="2">{{set.targetFramework.fullName}}</th>
         </tr>
-        {{#each dep in set.dependencies}}
+        {{#each set.dependencies as |dep|}}
           <tr>
             <td>
               <a href="#" {{action 'goToDependency' dep}} rel="nofollow">{{dep.id}}</a>

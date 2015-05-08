@@ -1,6 +1,6 @@
 <footer>
   <dl>
-    {{#with view.content as stats}}
+    {{#with view.content as |stats|}}
       <dt>Total Packages</dt>
       <dd>{{stats.totalPackages}}</dd>
       <dt>Synchronizer State</dt>

@@ -21,7 +21,7 @@ Tip: hit <code>ctrl+space</code> to see all search fields.
     <th/>
   </thead>
   <tbody>
-    {{#each example in examples}}
+    {{#each examples as |example|}}
     <tr>
       <td><code>{{example.query}}</code></td>
       <td>{{example.description}}</td>

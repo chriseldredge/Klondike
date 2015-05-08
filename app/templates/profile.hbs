@@ -23,7 +23,7 @@
 
 <p>
   You have the following permissions:
-  {{#each role in model.roles}}
+  {{#each model.roles as |role|}}
     {{role}}
   {{else}}
     (none)

@@ -1,7 +1,7 @@
 <h1>Accounts</h1>
 
 <ul>
-{{#each user in model}}
+{{#each model as |user|}}
     <li>
         {{#if canEdit}}
             {{#link-to 'users.edit' user}}{{user.username}}{{/link-to}}
