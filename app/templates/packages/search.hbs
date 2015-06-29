@@ -1,27 +1,8 @@
 <div>
-  {{view "select"
-    value=originFilter
-    content=originFilters
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
-
-  {{view "select"
-    value=sortBy
-    content=sortByColumns
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
-
-  {{view "select"
-    value=includePrerelease
-    content=versionFilters
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
-
-  {{view "select"
-    value=latestOnly
-    content=latestOnlyFilters
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
+  {{drop-down selectedValue=originFilter content=originFilters}}
+  {{drop-down selectedValue=sortBy content=sortByColumns}}
+  {{drop-down selectedValue=includePrerelease content=versionFilters}}
+  {{drop-down selectedValue=latestOnly content=latestOnlyFilters}}
 
   {{#link-to 'packages.advanced-search'}}advanced search{{/link-to}}
 </div>
