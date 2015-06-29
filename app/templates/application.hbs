@@ -29,4 +29,21 @@
   {{outlet}}
 </main>
 
-{{view "footer"}}
+<footer>
+  <dl>
+    {{#with indexer.status as |stats|}}
+      <dt>Total Packages</dt>
+      <dd>{{stats.totalPackages}}</dd>
+      <dt>Synchronizer State</dt>
+      <dd>
+          {{stats.synchronizationState}}
+          {{#if stats.packagesToIndex}}
+              {{stats.completedPackages}} / {{stats.packagesToIndex}}
+          {{/if}}
+      </dd>
+    {{/with}}
+
+    <dt>Klondike</dt>
+    <dd>{{application.version}}</dd>
+  </dl>
+</footer>

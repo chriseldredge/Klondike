@@ -43,6 +43,6 @@ export default {
         // application
         app.inject('service:rest-client', 'application', 'application:main');
         app.inject('session:main', 'application', 'application:main');
-        app.inject('view:footer', 'application', 'application:main');
+        app.inject('controller:application', 'application', 'application:main');
     }
 };
