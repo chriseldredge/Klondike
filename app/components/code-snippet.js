@@ -4,7 +4,7 @@ var ZeroClipboard = window.ZeroClipboard;
 
 ZeroClipboard.config({moviePath: 'assets/zeroclipboard/ZeroClipboard.swf'});
 
-export default Ember.View.extend({
+export default Ember.Component.extend({
     tagName: 'div',
 
     activateZeroClipboard: function() {
