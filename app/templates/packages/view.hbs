@@ -54,11 +54,11 @@
   </ul>
 {{/if}}
 
-{{#if dependencySets}}
+{{#if model.dependencySets}}
   <table class="package-dependencies">
     <caption>Dependencies</caption>
     <tbody>
-      {{#each dependencySets as |set|}}
+      {{#each model.dependencySets as |set|}}
         <tr>
           <th colspan="2">{{set.targetFramework.fullName}}</th>
         </tr>
