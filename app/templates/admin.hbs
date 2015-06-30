@@ -11,8 +11,8 @@
         will be preserved.
     </p>
     {{#if canSynchronize}}
-        <button {{action "synchronize"}} {{bind-attr disabled="isRunning"}}>Synchronize Packages</button>
-        <button {{action "rebuild"}} {{bind-attr disabled="isRunning"}}>Rebuild Index</button>
+        <button {{action "synchronize"}} disabled={{model.isRunning}}>Synchronize Packages</button>
+        <button {{action "rebuild"}} disabled={{model.isRunning}}>Rebuild Index</button>
         <button {{action "cancel"}}>Cancel</button>
     {{else}}
         <p class="not-authorized">You are not allowed to synchronize packages.</p>

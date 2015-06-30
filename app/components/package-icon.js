@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export default Ember.View.extend({
+export default Ember.Component.extend({
     DefaultIconUrl: 'assets/package-default-icon-50x50.png',
     tagName: 'img',
     classNames: ['package-icon'],

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import BaseControllerMixin from 'klondike/mixins/base-controller';
 
-export default Ember.ObjectController.extend(BaseControllerMixin, {
+export default Ember.Controller.extend(BaseControllerMixin, {
     pushApiName: 'packages.putPackage',
     pushUriBinding: 'restClient.packageSourceUri',
     canPushPackages: false,

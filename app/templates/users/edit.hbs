@@ -2,12 +2,12 @@
 
 <label>
     Username
-    {{focus-input type="text" value=username}}
+    {{focus-input type="text" value=model.username}}
 </label>
 
 <label>
     Api Key
-    {{input type="text" value=key placeholder="(Leave blank to generate)"}}
+    {{input type="text" value=model.key placeholder="(Leave blank to generate)"}}
 </label>
 
 <fieldset>
@@ -15,8 +15,8 @@
 
     {{checkbox-group
         name="roles"
-        selection=roles
-        content=allRoles
+        selection=model.roles
+        content=model.allRoles
         checkboxLabelPath="content.label"
         checkboxValuePath="content.name"}}
 </fieldset>

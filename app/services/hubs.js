@@ -3,7 +3,7 @@ import ApplicationException from 'klondike/application-exception';
 import signalR from './signalR';
 import describePromise from 'klondike/util/describe-promise';
 
-export default Ember.Object.extend({
+export default Ember.Service.extend({
     _resolveHubs: null,
 
     init: function() {

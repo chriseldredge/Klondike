@@ -1,68 +1,68 @@
-<h1>{{package-icon url=iconUrl}} {{displayTitle}} {{version}}</h1>
+<h1>{{package-icon url=model.iconUrl}} {{model.displayTitle}} {{model.version}}</h1>
 
 <p>{{summary}}</p>
 
 {{#if hasAdditionalDescription}}
-<p>{{description}}</p>
+<p>{{model.description}}</p>
 {{/if}}
 
-{{#if copyright}}
-<p>{{copyright}}</p>
+{{#if model.copyright}}
+<p>{{model.copyright}}</p>
 {{/if}}
 
-{{search-link-list header='Tags' items=tags}}
+{{search-link-list header='Tags' items=model.tags}}
 
-{{#if isMirrored}}
-<p>Mirrored from <a {{bind-attr href=origin}}>{{origin}}</a></p>
+{{#if model.isMirrored}}
+<p>Mirrored from <a href={{origin}}>{{origin}}</a></p>
 {{/if}}
 
 <p>To install {{id}} run this command in the Package Manager Console</p>
 {{code-snippet content=installCommandWithPrompt data=installCommand}}
 
 <p>
-    <span id="debug-icon" {{bind-attr class="symbolsAvailable :fa-stack :fa-2x"}}>
+    <span id="debug-icon" class="{{if model.symbolsAvailable 'symbols-available'}} fa-stack fa-2x">
         <i class="fa fa-bug fa-stack-1x"></i>
-        {{#unless symbolsAvailable}}
+        {{#unless model.symbolsAvailable}}
         <i class="fa fa-ban fa-stack-2x"></i>
         {{/unless}}
     </span>
 
     Symbols and source code are
-    {{#unless symbolsAvailable}}<strong>not</strong>{{/unless}}
+    {{#unless model.symbolsAvailable}}<strong>not</strong>{{/unless}}
     available for this package.
 </p>
 
-{{search-link-list header='Authors' items=authors}}
-{{search-link-list header='Owners' items=owners}}
+{{search-link-list header='Authors' items=model.authors}}
+{{search-link-list header='Owners' items=model.owners}}
 
 <h2>Links</h2>
 <ul>
-  {{#if projectUrl}}
-    <li><a {{bind-attr href=projectUrl}}>Project Site</a></li>
+  {{#if model.projectUrl}}
+    <li><a href={{model.projectUrl}}>Project Site</a></li>
   {{/if}}
-  {{#if licenseUrl}}
-    <li><a {{bind-attr href=licenseUrl}}>License</a></li>
+  {{#if model.licenseUrl}}
+    <li><a href={{model.licenseUrl}}>License</a></li>
   {{/if}}
 </ul>
 
-{{#if supportedFrameworks}}
+{{#if model.supportedFrameworks}}
   <h2>Supported Frameworks</h2>
   <ul>
-    {{#each framework in supportedFrameworks}}
+    {{#each model.supportedFrameworks as |framework|}}
       <li>{{framework}}</li>
     {{/each}}
   </ul>
 {{/if}}
 
-{{#if dependencySets}}
+{{#if model.dependencySets}}
   <table class="package-dependencies">
     <caption>Dependencies</caption>
     <tbody>
-      {{#each set in dependencySets}}
+      {{#each model.dependencySets as |set|}}
         <tr>
           <th colspan="2">{{set.targetFramework.fullName}}</th>
         </tr>
-        {{#each dep in set.dependencies}}
+        {{#each set.dependencies as |dep|}}
           <tr>
             <td>
               <a href="#" {{action 'goToDependency' dep}} rel="nofollow">{{dep.id}}</a>
@@ -75,10 +75,10 @@
   </table>
 {{/if}}
 
-{{#if files}}
+{{#if model.files}}
   <h2>Package Contents</h2>
   <ul>
-    {{#each file in files}}
+    {{#each model.files as |file|}}
       <li>{{file}}</li>
     {{/each}}
   </ul>
@@ -92,8 +92,8 @@
         <th {{action 'sortVersions' 'lastUpdated'}}>Last Update</th>
     </thead>
     <tbody>
-        {{#each item in versionHistory}}
-            <tr {{bind-attr class='item.active'}}>
+        {{#each model.versionHistory as |item|}}
+            <tr class="{{if item.active 'active' 'inactive'}}">
                 <td>{{#link-to 'packages.view' item}}{{item.version}}{{/link-to}}</td>
                 <td>{{item.versionDownloadCount}}</td>
                 <td>{{format-date item.lastUpdated}}</td>

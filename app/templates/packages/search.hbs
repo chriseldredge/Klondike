@@ -1,36 +1,17 @@
 <div>
-  {{view "select"
-    value=originFilter
-    content=originFilters
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
-
-  {{view "select"
-    value=sortBy
-    content=sortByColumns
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
-
-  {{view "select"
-    value=includePrerelease
-    content=versionFilters
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
-
-  {{view "select"
-    value=latestOnly
-    content=latestOnlyFilters
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
+  {{drop-down selectedValue=originFilter content=originFilters}}
+  {{drop-down selectedValue=sortBy content=sortByColumns}}
+  {{drop-down selectedValue=includePrerelease content=versionFilters}}
+  {{drop-down selectedValue=latestOnly content=latestOnlyFilters}}
 
   {{#link-to 'packages.advanced-search'}}advanced search{{/link-to}}
 </div>
 
 <h1>
-    {{#if isEmptyQuery}}
-        List of All Packages
-    {{else}}
+    {{#if query}}
         Search results for "{{query}}"
+    {{else}}
+        List of All Packages
     {{/if}}
 </h1>
 
@@ -44,8 +25,8 @@
         <a href="#" {{action "nextPage"}}>Next Page</a>
     {{/if}}
 
-    <ol {{bind-attr start=first}}>
-        {{#each hit in hits}}
+    <ol start={{first}}>
+        {{#each model.hits as |hit|}}
         <li>
             <div>
                 {{package-icon url=hit.iconUrl}}
@@ -67,7 +48,7 @@
               Downloads:
               {{#if hit.downloadCount}}
                 {{hit.downloadCount}}
-                {{#unless controller.latestOnly}}
+                {{#unless latestOnly}}
                   total,
                   {{hit.versionDownloadCount}} of this version
                 {{/unless}}

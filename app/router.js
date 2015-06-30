@@ -1,5 +1,11 @@
 import Ember from 'ember';
-export default Ember.Router.map(function() {
+import config from './config/environment';
+
+var Router = Ember.Router.extend({
+  location: config.locationType
+});
+
+Router.map(function() {
     this.route('index', { path: '/' });
     this.route('login');
     this.route('denied');
@@ -19,3 +25,5 @@ export default Ember.Router.map(function() {
     });
     this.route('not_found', { path: '/*not_found' });
 });
+
+export default Router;
