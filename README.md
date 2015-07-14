@@ -117,11 +117,11 @@ Prerequisites: node (`node` and `npm` should be on your PATH).
 
 Install ember-cli and bower if you haven't already:
 
-    npm install -g ember-cli
+    npm install -g ember-cli@0.2.7
 
 Install dependencies:
 
-    ember install
+    npm install && bower install
 
 Finally, build:
 
