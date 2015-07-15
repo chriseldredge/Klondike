@@ -1,18 +1,18 @@
 <div>
-  {{drop-down selectedValue=originFilter content=originFilters}}
-  {{drop-down selectedValue=sortBy content=sortByColumns}}
-  {{drop-down selectedValue=includePrerelease content=versionFilters}}
-  {{drop-down selectedValue=latestOnly content=latestOnlyFilters}}
+  {{drop-down selectedValue=originFilter content=originFilters classNames='field'}}
+  {{drop-down selectedValue=sortBy content=sortByColumns classNames='field'}}
+  {{drop-down selectedValue=includePrerelease content=versionFilters classNames='field'}}
+  {{drop-down selectedValue=latestOnly content=latestOnlyFilters classNames='field'}}
 
   {{#link-to 'packages.advanced-search'}}advanced search{{/link-to}}
 </div>
 
 <h1>
-    {{#if query}}
-        Search results for "{{query}}"
-    {{else}}
-        List of All Packages
-    {{/if}}
+  {{#if query}}
+      Search results for "{{query}}"
+  {{else}}
+      List of All Packages
+  {{/if}}
 </h1>
 
 {{#if total}}
@@ -34,39 +34,43 @@
     <span class="block center py1">Showing {{first}} to {{last}} of {{total}}</span>
   </div>
 
-    <ol start={{first}}>
-        {{#each model.hits as |hit|}}
-        <li>
-            <div>
-                {{package-icon url=hit.iconUrl}}
-                {{#link-to 'packages.view' hit}}
-                  {{#if hit.title}}
-                      {{hit.title}}
-                  {{else}}
-                      {{hit.id}}
-                  {{/if}}
-                  {{hit.version}}
-                {{/link-to}}
-            </div>
-            {{search-link-list header='Authors' items=hit.authors}}
-            <div>
+    <ol start={{first}} class="list-reset">
+      {{#each model.hits as |hit|}}
+        <li class="border-bottom py2">
+          <div class="flex">
+            <div class="flex-auto">
+              {{#link-to 'packages.view' hit classNames="inline-block bold h3"}}
+                {{#if hit.title}}
+                  {{hit.title}}
+                {{else}}
+                  {{hit.id}}
+                {{/if}}
+              {{/link-to}}
+              <span class="inline-block h3 gray">{{hit.version}}</span>
+
+              <div>
                 {{hit.description}}
+              </div>
+              {{search-link-list header='Authors' items=hit.authors}}
+              {{search-link-list header='Tags' items=hit.tags}}
             </div>
-            {{search-link-list header='Tags' items=hit.tags}}
-            <div>
-              Downloads:
-              {{#if hit.downloadCount}}
-                {{hit.downloadCount}}
-                {{#unless latestOnly}}
-                  total,
-                  {{hit.versionDownloadCount}} of this version
-                {{/unless}}
-              {{else}}
-                0
-              {{/if}}
+            <div class="flex-none ml4">
+              <strong class="block">Downloads:</strong>
+              <span class="block right-align h3">
+                {{#if hit.downloadCount}}
+                  {{hit.downloadCount}}
+                  {{#unless latestOnly}}
+                    total,
+                    <span class="block h5">{{hit.versionDownloadCount}} of this version</span>
+                  {{/unless}}
+                {{else}}
+                  0
+                {{/if}}
+              </span>
             </div>
+          </div>
         </li>
-        {{/each}}
+      {{/each}}
     </ol>
 
   <div class="clearfix mt2">
