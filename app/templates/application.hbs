@@ -30,21 +30,24 @@
   {{outlet}}
 </main>
 
-<footer>
-  <dl>
-    {{#with indexer.status as |stats|}}
-      <dt>Total Packages</dt>
-      <dd>{{stats.totalPackages}}</dd>
-      <dt>Synchronizer State</dt>
-      <dd>
+<footer class="bg-silver py1" role="footer">
+  <div class="container">
+    <ul class="list-reset m0">
+      {{#with indexer.status as |stats|}}
+        <li class="inline-block mr1 h5">
+          <strong>Total Packages:</strong> {{stats.totalPackages}}
+        </li>
+        <li class="inline-block mr1 h5">
+          <strong>Synchronizer State:</strong> 
           {{stats.synchronizationState}}
           {{#if stats.packagesToIndex}}
-              {{stats.completedPackages}} / {{stats.packagesToIndex}}
+            {{stats.completedPackages}} / {{stats.packagesToIndex}}
           {{/if}}
-      </dd>
-    {{/with}}
-
-    <dt>Klondike</dt>
-    <dd>{{application.version}}</dd>
-  </dl>
+        </li>
+      {{/with}}
+      <li class="inline-block h5">
+        <strong>Klondike:</strong> {{application.version}}
+      </li>
+    </ul>
+  </div>
 </footer>
