@@ -27,7 +27,6 @@ app.import({
 function assetTree() {
   return select('bower_components', {
     acceptFiles: [
-    	'bootstrap-sass-official/assets/fonts/bootstrap/*',
     	'font-awesome/fonts/*',
     	'zeroclipboard/ZeroClipboard.swf'
     ],
