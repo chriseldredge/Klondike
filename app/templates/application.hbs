@@ -1,53 +1,56 @@
-<header class="white bg-blue" role="navigation">
-  <div class="container clearfix">
-    <div class="left">
-      {{#link-to 'index' classNames='btn py2 m0'}}Klondike{{/link-to}}
-    </div>
-    <div class="left">
-      {{#link-to 'packages.list' (query-params page=0) classNames='btn py2 m0'}}Packages{{/link-to}}
-      {{#link-to 'symbols' classNames='btn py2 m0'}}Symbols{{/link-to}}
-      {{#link-to 'admin' classNames='btn py2 m0' rel="nofollow"}}Admin{{/link-to}}
-      <a href={{apiURL}} class="btn py2 m0">Api</a>
-    </div>
-    <div class="right">
-      {{#if isSessionInitialized}}
-        {{#if isLoggedIn}}
-          {{#link-to 'profile' classNames='btn py2 m0'}}{{username}}{{/link-to}}
-          <a href="#" class="btn py2 m0" {{action 'logOut'}}>Sign Out</a>
-        {{else}}
-          <a href="#" class="btn py2 m0" {{action 'logIn'}}>Sign In</a>
-        {{/if}}
-      {{/if}}
-    </div>
-    <div class="clearfix sm-hide"></div>
-    <div class="overflow-hidden px2 py1">
-      {{input type="text" value=searchBox enter="search" placeholder="Search..." class="field right fit"}}
-    </div>
-  </div>
-</header>
-
-<main class="container">
-  {{outlet}}
-</main>
-
-<footer class="bg-silver py1" role="footer">
-  <div class="container">
-    <ul class="list-reset m0">
-      {{#with indexer.status as |stats|}}
-        <li class="inline-block mr1 h5">
-          <strong>Total Packages:</strong> {{stats.totalPackages}}
-        </li>
-        <li class="inline-block mr1 h5">
-          <strong>Synchronizer State:</strong> 
-          {{stats.synchronizationState}}
-          {{#if stats.packagesToIndex}}
-            {{stats.completedPackages}} / {{stats.packagesToIndex}}
+<div class="flex flex-column" style="min-height: 100vh;">
+  <header class="white bg-blue" role="navigation">
+    <div class="container clearfix">
+      <div class="left">
+        {{#link-to 'index' classNames='btn py2 m0'}}Klondike{{/link-to}}
+      </div>
+      <div class="left">
+        {{#link-to 'packages.list' (query-params page=0) classNames='btn py2 m0'}}Packages{{/link-to}}
+        {{#link-to 'symbols' classNames='btn py2 m0'}}Symbols{{/link-to}}
+        {{#link-to 'admin' classNames='btn py2 m0' rel="nofollow"}}Admin{{/link-to}}
+        <a href={{apiURL}} class="btn py2 m0">Api</a>
+      </div>
+      <div class="right">
+        {{#if isSessionInitialized}}
+          {{#if isLoggedIn}}
+            {{#link-to 'profile' classNames='btn py2 m0'}}{{username}}{{/link-to}}
+            <a href="#" class="btn py2 m0" {{action 'logOut'}}>Sign Out</a>
+          {{else}}
+            <a href="#" class="btn py2 m0" {{action 'logIn'}}>Sign In</a>
           {{/if}}
+        {{/if}}
+      </div>
+      <div class="clearfix sm-hide"></div>
+      <div class="overflow-hidden px2 py1">
+        {{input type="text" value=searchBox enter="search" placeholder="Search..." class="field right fit"}}
+      </div>
+    </div>
+  </header>
+
+  <main class="container flex-auto p2">
+    {{outlet}}
+  </main>
+
+  <footer class="bg-silver py1" role="footer">
+    <div class="container">
+      <ul class="list-reset m0">
+        {{#with indexer.status as |stats|}}
+          <li class="inline-block mr1 h5">
+            <strong>Total Packages:</strong> {{stats.totalPackages}}
+          </li>
+          <li class="inline-block mr1 h5">
+            <strong>Synchronizer State:</strong> 
+            {{stats.synchronizationState}}
+            {{#if stats.packagesToIndex}}
+              {{stats.completedPackages}} / {{stats.packagesToIndex}}
+            {{/if}}
+          </li>
+        {{/with}}
+        <li class="inline-block h5">
+          <strong>Klondike:</strong> {{application.version}}
         </li>
-      {{/with}}
-      <li class="inline-block h5">
-        <strong>Klondike:</strong> {{application.version}}
-      </li>
-    </ul>
-  </div>
-</footer>
+      </ul>
+    </div>
+  </footer>
+
+</div>
