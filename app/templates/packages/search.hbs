@@ -16,14 +16,23 @@
 </h1>
 
 {{#if total}}
-    Showing {{first}} to {{last}} of {{total}}.
+  <div class="clearfix mb2">
+    <a href="#" {{action "previousPage"}} rel="nofollow" {{bind-attr class=":left :btn :button-narrow :kl-button :blue hasPrevious::is-disabled"}}>
+      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+        <use xlink:href="#chevronLeft"></use>
+      </svg>
+      
+      Previous Page
+    </a>
+    <a href="#" {{action "nextPage"}} {{bind-attr class=":right :btn :button-narrow :kl-button :blue hasNext::is-disabled"}}>
+      Next Page
 
-    {{#if hasPrevious}}
-        <a href="#" {{action "previousPage"}} rel="nofollow">Previous Page</a>
-    {{/if}}
-    {{#if hasNext}}
-        <a href="#" {{action "nextPage"}}>Next Page</a>
-    {{/if}}
+      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+        <use xlink:href="#chevronRight"></use>
+      </svg>
+    </a>
+    <span class="block center py1">Showing {{first}} to {{last}} of {{total}}</span>
+  </div>
 
     <ol start={{first}}>
         {{#each model.hits as |hit|}}
@@ -60,12 +69,22 @@
         {{/each}}
     </ol>
 
-    {{#if hasPrevious}}
-        <a href="#" {{action "previousPage"}} rel="nofollow">Previous Page</a>
-    {{/if}}
-    {{#if hasNext}}
-        <a href="#" {{action "nextPage"}} rel="nofollow">Next Page</a>
-    {{/if}}
+  <div class="clearfix mt2">
+    <a href="#" {{action "previousPage"}} rel="nofollow" {{bind-attr class=":left :btn :button-narrow :kl-button :blue hasPrevious::is-disabled"}}>
+      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+        <use xlink:href="#chevronLeft"></use>
+      </svg>
+      
+      Previous Page
+    </a>
+    <a href="#" {{action "nextPage"}} {{bind-attr class=":right :btn :button-narrow :kl-button :blue hasNext::is-disabled"}}>
+      Next Page
+
+      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+        <use xlink:href="#chevronRight"></use>
+      </svg>
+    </a>
+  </div>
 {{else}}
     No results :'(
 {{/if}}
