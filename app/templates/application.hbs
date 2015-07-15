@@ -1,3 +1,5 @@
+{{partial "svg-defs"}}
+
 <div class="flex flex-column" style="min-height: 100vh;">
   <header class="white bg-blue" role="navigation">
     <div class="container clearfix">
@@ -27,8 +29,10 @@
     </div>
   </header>
 
-  <main class="container flex-auto p2">
+  <main class="flex-auto">
+    <div class="container p2">
     {{outlet}}
+    </div>
   </main>
 
   <footer class="bg-silver py1" role="footer">

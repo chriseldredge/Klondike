@@ -1,7 +1,12 @@
+// Dependencies
 @import 'variables';
 
+// Vendor
 @import 'bower_components/font-awesome/scss/font-awesome';
 @import 'bower_components/basscss-sass/basscss';
+
+// Modules
+@import 'icon';
 
 #index-template {
   display: none;
