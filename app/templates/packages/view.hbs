@@ -96,15 +96,22 @@
     {{/if}}
 
     <div class="border-bottom mb2">
-      <span id="debug-icon" class="{{if model.symbolsAvailable 'symbols-available'}} fa-stack fa-2x">
-        <i class="fa fa-bug fa-stack-1x"></i>
-        {{#unless model.symbolsAvailable}}
-          <i class="fa fa-ban fa-stack-2x"></i>
-        {{/unless}}
-      </span>
-      Symbols and source code are
-      {{#unless model.symbolsAvailable}}<strong>not</strong>{{/unless}}
-      available for this package.
+      <div class="flex">
+        {{#if model.symbolsAvailable}}
+          <svg class="kl-icon kl-icon--20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <use xlink:href="#check"></use>
+          </svg>
+        {{else}}
+          <svg class="kl-icon kl-icon--20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <use xlink:href="#no"></use>
+          </svg>
+        {{/if}}
+        <div class="flex-auto pl1">
+          Symbols and source code are
+          {{#unless model.symbolsAvailable}}<strong>not</strong>{{/unless}}
+          available for this package.
+        </div>
+      </div>
     </div>
 
     {{search-link-list header='Tags' items=model.tags}}
