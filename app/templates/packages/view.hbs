@@ -1,4 +1,4 @@
-<header class="flex flex-baseline p1 border-bottom">
+<header class="flex flex-baseline p1 mb2 border-bottom">
   {{package-icon url=model.iconUrl}}
   <h1 class="inline-block m0">{{model.displayTitle}}</h1>
   <span class="inline-block gray h3 ml2">{{model.version}}</span>
@@ -38,8 +38,8 @@
     {{/if}}
 
     {{#if model.dependencySets}}
-      <table class="package-dependencies">
-        <caption>Dependencies</caption>
+      <h2>Dependencies</h2>
+      <table class="package-dependencies table-light">
         <tbody>
           {{#each model.dependencySets as |set|}}
             <tr>
@@ -88,14 +88,14 @@
 
   <div class="col col-4">
     {{#if model.copyright}}
-      <div class="border-bottom mb2">{{model.copyright}}</div>
+      <div class="border-bottom mb2 pb2">{{model.copyright}}</div>
     {{/if}}
   
     {{#if model.isMirrored}}
-      <div class="border-bottom mb2">Mirrored from <a href={{origin}}>{{origin}}</a></div>
+      <div class="border-bottom mb2 pb2">Mirrored from <a href={{origin}}>{{origin}}</a></div>
     {{/if}}
 
-    <div class="border-bottom mb2">
+    <div class="border-bottom mb2 pb2">
       <div class="flex">
         {{#if model.symbolsAvailable}}
           <svg class="kl-icon kl-icon--20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
