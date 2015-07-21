@@ -13,7 +13,7 @@
 </ul>
 
 {{#if canEdit}}
-    {{#link-to 'users.add'}}Add Account{{/link-to}}
+    {{#link-to 'users.add' class="btn button-blue"}}Add Account{{/link-to}}
 {{else}}
-    <p class="not-authorized">You are not allowed to modify accounts.</p>
+    <div class="bg-silver red p2">You are not allowed to modify accounts.</div>
 {{/if}}
