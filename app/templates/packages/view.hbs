@@ -1,119 +1,121 @@
-<header class="flex flex-baseline p1 mb2 border-bottom">
-  {{package-icon url=model.iconUrl}}
-  <h1 class="inline-block m0">{{model.displayTitle}}</h1>
-  <span class="inline-block gray h3 ml2">{{model.version}}</span>
-</header>
+<div class="container p2">
+  <header class="flex flex-baseline p1 mb2 border-bottom">
+    {{package-icon url=model.iconUrl}}
+    <h1 class="inline-block m0">{{model.displayTitle}}</h1>
+    <span class="inline-block gray h3 ml2">{{model.version}}</span>
+  </header>
 
-<div class="clearfix">
-  <div class="col col-8 pr2">
-    <p>{{summary}}</p>
+  <div class="clearfix">
+    <div class="col col-8 pr2">
+      <p>{{summary}}</p>
 
-    {{#if hasAdditionalDescription}}
-      <p>{{model.description}}</p>
-    {{/if}}
-
-    <p>To install {{id}} run this command in the Package Manager Console</p>
-    {{code-snippet content=installCommandWithPrompt data=installCommand}}
-
-    {{search-link-list header='Authors' items=model.authors}}
-    {{search-link-list header='Owners' items=model.owners}}
-
-    <h2>Links</h2>
-    <ul>
-      {{#if model.projectUrl}}
-        <li><a href={{model.projectUrl}}>Project Site</a></li>
+      {{#if hasAdditionalDescription}}
+        <p>{{model.description}}</p>
       {{/if}}
-      {{#if model.licenseUrl}}
-        <li><a href={{model.licenseUrl}}>License</a></li>
-      {{/if}}
-    </ul>
 
-    {{#if model.supportedFrameworks}}
-      <h2>Supported Frameworks</h2>
+      <p>To install {{id}} run this command in the Package Manager Console</p>
+      {{code-snippet content=installCommandWithPrompt data=installCommand}}
+
+      {{search-link-list header='Authors' items=model.authors}}
+      {{search-link-list header='Owners' items=model.owners}}
+
+      <h2>Links</h2>
       <ul>
-        {{#each model.supportedFrameworks as |framework|}}
-          <li>{{framework}}</li>
-        {{/each}}
+        {{#if model.projectUrl}}
+          <li><a href={{model.projectUrl}}>Project Site</a></li>
+        {{/if}}
+        {{#if model.licenseUrl}}
+          <li><a href={{model.licenseUrl}}>License</a></li>
+        {{/if}}
       </ul>
-    {{/if}}
 
-    {{#if model.dependencySets}}
-      <h2>Dependencies</h2>
-      <table class="package-dependencies table-light">
-        <tbody>
-          {{#each model.dependencySets as |set|}}
-            <tr>
-              <th colspan="2">{{set.targetFramework.fullName}}</th>
-            </tr>
-            {{#each set.dependencies as |dep|}}
+      {{#if model.supportedFrameworks}}
+        <h2>Supported Frameworks</h2>
+        <ul>
+          {{#each model.supportedFrameworks as |framework|}}
+            <li>{{framework}}</li>
+          {{/each}}
+        </ul>
+      {{/if}}
+
+      {{#if model.dependencySets}}
+        <h2>Dependencies</h2>
+        <table class="package-dependencies table-light">
+          <tbody>
+            {{#each model.dependencySets as |set|}}
               <tr>
-                <td>
-                  <a href="#" {{action 'goToDependency' dep}} rel="nofollow">{{dep.id}}</a>
-                </td>
-                <td>{{dep.versionSpec.minVersion}}</td>
+                <th colspan="2">{{set.targetFramework.fullName}}</th>
               </tr>
+              {{#each set.dependencies as |dep|}}
+                <tr>
+                  <td>
+                    <a href="#" {{action 'goToDependency' dep}} rel="nofollow">{{dep.id}}</a>
+                  </td>
+                  <td>{{dep.versionSpec.minVersion}}</td>
+                </tr>
+              {{/each}}
             {{/each}}
+          </tbody>
+        </table>
+      {{/if}}
+
+      {{#if model.files}}
+        <h2>Package Contents</h2>
+        <ul>
+          {{#each model.files as |file|}}
+            <li>{{file}}</li>
+          {{/each}}
+        </ul>
+      {{/if}}
+
+      <h2>Version History</h2>
+      <table class="table-light sortable">
+        <thead>
+          <th {{action 'sortVersions' 'semanticVersion'}}>Version</th>
+          <th {{action 'sortVersions' 'versionDownloadCount'}}>Downloads</th>
+          <th {{action 'sortVersions' 'lastUpdated'}}>Last Update</th>
+        </thead>
+        <tbody>
+          {{#each model.versionHistory as |item|}}
+            <tr class="{{if item.active 'active' 'inactive'}}">
+              <td>{{#link-to 'packages.view' item}}{{item.version}}{{/link-to}}</td>
+              <td>{{item.versionDownloadCount}}</td>
+              <td>{{format-date item.lastUpdated}}</td>
+            </tr>
           {{/each}}
         </tbody>
       </table>
-    {{/if}}
-
-    {{#if model.files}}
-      <h2>Package Contents</h2>
-      <ul>
-        {{#each model.files as |file|}}
-          <li>{{file}}</li>
-        {{/each}}
-      </ul>
-    {{/if}}
-
-    <h2>Version History</h2>
-    <table class="table-light sortable">
-      <thead>
-        <th {{action 'sortVersions' 'semanticVersion'}}>Version</th>
-        <th {{action 'sortVersions' 'versionDownloadCount'}}>Downloads</th>
-        <th {{action 'sortVersions' 'lastUpdated'}}>Last Update</th>
-      </thead>
-      <tbody>
-        {{#each model.versionHistory as |item|}}
-          <tr class="{{if item.active 'active' 'inactive'}}">
-            <td>{{#link-to 'packages.view' item}}{{item.version}}{{/link-to}}</td>
-            <td>{{item.versionDownloadCount}}</td>
-            <td>{{format-date item.lastUpdated}}</td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
-
-  <div class="col col-4">
-    {{#if model.copyright}}
-      <div class="border-bottom mb2 pb2">{{model.copyright}}</div>
-    {{/if}}
-  
-    {{#if model.isMirrored}}
-      <div class="border-bottom mb2 pb2">Mirrored from <a href={{origin}}>{{origin}}</a></div>
-    {{/if}}
-
-    <div class="border-bottom mb2 pb2">
-      <div class="flex">
-        {{#if model.symbolsAvailable}}
-          <svg class="kl-icon kl-icon--20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-            <use xlink:href="#check"></use>
-          </svg>
-        {{else}}
-          <svg class="kl-icon kl-icon--20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-            <use xlink:href="#no"></use>
-          </svg>
-        {{/if}}
-        <div class="flex-auto pl1">
-          Symbols and source code are
-          {{#unless model.symbolsAvailable}}<strong>not</strong>{{/unless}}
-          available for this package.
-        </div>
-      </div>
     </div>
 
-    {{search-link-list header='Tags' items=model.tags}}
+    <div class="col col-4">
+      {{#if model.copyright}}
+        <div class="border-bottom mb2 pb2">{{model.copyright}}</div>
+      {{/if}}
+    
+      {{#if model.isMirrored}}
+        <div class="border-bottom mb2 pb2">Mirrored from <a href={{origin}}>{{origin}}</a></div>
+      {{/if}}
+
+      <div class="border-bottom mb2 pb2">
+        <div class="flex">
+          {{#if model.symbolsAvailable}}
+            <svg class="kl-icon kl-icon--20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+              <use xlink:href="#check"></use>
+            </svg>
+          {{else}}
+            <svg class="kl-icon kl-icon--20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+              <use xlink:href="#no"></use>
+            </svg>
+          {{/if}}
+          <div class="flex-auto pl1">
+            Symbols and source code are
+            {{#unless model.symbolsAvailable}}<strong>not</strong>{{/unless}}
+            available for this package.
+          </div>
+        </div>
+      </div>
+
+      {{search-link-list header='Tags' items=model.tags}}
+    </div>
   </div>
 </div>

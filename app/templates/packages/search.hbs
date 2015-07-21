@@ -1,4 +1,5 @@
-<div>
+
+<div class="container p2">
   {{drop-down selectedValue=originFilter content=originFilters classNames='field'}}
   {{drop-down selectedValue=sortBy content=sortByColumns classNames='field'}}
   {{drop-down selectedValue=includePrerelease content=versionFilters classNames='field'}}
@@ -7,88 +8,90 @@
   {{#link-to 'packages.advanced-search'}}advanced search{{/link-to}}
 </div>
 
-<h1>
-  {{#if query}}
-      Search results for "{{query}}"
-  {{else}}
-      List of All Packages
-  {{/if}}
-</h1>
+<div class="container p2">
+  <h1>
+    {{#if query}}
+        Search results for "{{query}}"
+    {{else}}
+        List of All Packages
+    {{/if}}
+  </h1>
 
-{{#if total}}
-  <div class="clearfix mb1 pb2 border-bottom">
-    <a href="#" {{action "previousPage"}} rel="nofollow" class="left btn button-narrow kl-button blue {{if hasPrevious '' 'is-disabled'}}">
-      <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-        <use xlink:href="#chevronLeft"></use>
-      </svg>
-      
-      Previous Page
-    </a>
-    <a href="#" {{action "nextPage"}} class="right btn button-narrow kl-button blue {{if hasNext '' 'is-disabled'}}">
-      Next Page
+  {{#if total}}
+    <div class="clearfix mb1 pb2 border-bottom">
+      <a href="#" {{action "previousPage"}} rel="nofollow" class="left btn button-narrow kl-button blue {{if hasPrevious '' 'is-disabled'}}">
+        <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+          <use xlink:href="#chevronLeft"></use>
+        </svg>
+        
+        Previous Page
+      </a>
+      <a href="#" {{action "nextPage"}} class="right btn button-narrow kl-button blue {{if hasNext '' 'is-disabled'}}">
+        Next Page
 
-      <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-        <use xlink:href="#chevronRight"></use>
-      </svg>
-    </a>
-    <span class="block center py1">Showing {{first}} to {{last}} of {{total}}</span>
-  </div>
+        <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+          <use xlink:href="#chevronRight"></use>
+        </svg>
+      </a>
+      <span class="block center py1">Showing {{first}} to {{last}} of {{total}}</span>
+    </div>
 
-    <ol start={{first}} class="list-reset">
-      {{#each model.hits as |hit|}}
-        <li class="border-bottom py2">
-          <div class="flex">
-            <div class="flex-auto">
-              {{#link-to 'packages.view' hit classNames="inline-block bold h3"}}
-                {{#if hit.title}}
-                  {{hit.title}}
-                {{else}}
-                  {{hit.id}}
-                {{/if}}
-              {{/link-to}}
-              <span class="inline-block h3 gray">{{hit.version}}</span>
+      <ol start={{first}} class="list-reset">
+        {{#each model.hits as |hit|}}
+          <li class="border-bottom py2">
+            <div class="flex">
+              <div class="flex-auto">
+                {{#link-to 'packages.view' hit classNames="inline-block bold h3"}}
+                  {{#if hit.title}}
+                    {{hit.title}}
+                  {{else}}
+                    {{hit.id}}
+                  {{/if}}
+                {{/link-to}}
+                <span class="inline-block h3 gray">{{hit.version}}</span>
 
-              <div>
-                {{hit.description}}
+                <div>
+                  {{hit.description}}
+                </div>
+                {{search-link-list header='Authors' items=hit.authors}}
+                {{search-link-list header='Tags' items=hit.tags}}
               </div>
-              {{search-link-list header='Authors' items=hit.authors}}
-              {{search-link-list header='Tags' items=hit.tags}}
+              <div class="flex-none ml4">
+                <strong class="block">Downloads:</strong>
+                <span class="block right-align h3">
+                  {{#if hit.downloadCount}}
+                    {{hit.downloadCount}}
+                    {{#unless latestOnly}}
+                      total,
+                      <span class="block h5">{{hit.versionDownloadCount}} of this version</span>
+                    {{/unless}}
+                  {{else}}
+                    0
+                  {{/if}}
+                </span>
+              </div>
             </div>
-            <div class="flex-none ml4">
-              <strong class="block">Downloads:</strong>
-              <span class="block right-align h3">
-                {{#if hit.downloadCount}}
-                  {{hit.downloadCount}}
-                  {{#unless latestOnly}}
-                    total,
-                    <span class="block h5">{{hit.versionDownloadCount}} of this version</span>
-                  {{/unless}}
-                {{else}}
-                  0
-                {{/if}}
-              </span>
-            </div>
-          </div>
-        </li>
-      {{/each}}
-    </ol>
+          </li>
+        {{/each}}
+      </ol>
 
-  <div class="clearfix mt2">
-    <a href="#" {{action "previousPage"}} rel="nofollow" class="left btn button-narrow kl-button blue {{if hasPrevious '' 'is-disabled'}}">
-      <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-        <use xlink:href="#chevronLeft"></use>
-      </svg>
-      
-      Previous Page
-    </a>
-    <a href="#" {{action "nextPage"}} class="right btn button-narrow kl-button blue {{if hasNext '' 'is-disabled'}}">
-      Next Page
+    <div class="clearfix mt2">
+      <a href="#" {{action "previousPage"}} rel="nofollow" class="left btn button-narrow kl-button blue {{if hasPrevious '' 'is-disabled'}}">
+        <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+          <use xlink:href="#chevronLeft"></use>
+        </svg>
+        
+        Previous Page
+      </a>
+      <a href="#" {{action "nextPage"}} class="right btn button-narrow kl-button blue {{if hasNext '' 'is-disabled'}}">
+        Next Page
 
-      <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-        <use xlink:href="#chevronRight"></use>
-      </svg>
-    </a>
-  </div>
-{{else}}
-    No results :'(
-{{/if}}
+        <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+          <use xlink:href="#chevronRight"></use>
+        </svg>
+      </a>
+    </div>
+  {{else}}
+      No results :'(
+  {{/if}}
+</div>
