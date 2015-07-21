@@ -5,3 +5,12 @@
     pointer-events: none;
   }
 }
+
+.kl-button--link {
+  color: $link-color;
+
+  &:hover {
+    background-image: none;
+    text-decoration: underline;
+  }
+}
