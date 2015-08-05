@@ -11,11 +11,11 @@ export default Ember.Controller.extend(BaseControllerMixin, UserPermissionObserv
     isSaving: false,
     isSaveCompleted: false,
 
-    modelDidChange: function() {
+    modelDidChange: Ember.observer('model',function() {
         this.set('originalUsername', this.get('model.username'));
         this.set('isSaving', false);
         this.set('isSaveCompleted', false);
-    }.observes('model'),
+    }),
 
     init: function() {
         this._super();

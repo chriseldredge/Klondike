@@ -24,12 +24,12 @@ export default Ember.Controller.extend(BaseControllerMixin, {
         this.sessionUserDidChange();
     },
 
-    sessionUserDidChange: function() {
+    sessionUserDidChange: Ember.observer('session.user', function() {
         var self = this;
         this.get('session').isAllowed(this.get('pushApiName')).then(function(result) {
             self.set('canPushPackages', result);
         });
-    }.observes('session.user'),
+    }),
 
     actions: {
         changeKey: function() {

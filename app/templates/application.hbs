@@ -29,7 +29,7 @@
     </div>
   </header>
 
-  <main class="flex-auto">    
+  <main class="flex-auto">
     {{outlet}}
   </main>
 
@@ -41,7 +41,7 @@
             <strong>Total Packages:</strong> {{stats.totalPackages}}
           </li>
           <li class="inline-block mr1 h5">
-            <strong>Synchronizer State:</strong> 
+            <strong>Synchronizer State:</strong>
             {{stats.synchronizationState}}
             {{#if stats.packagesToIndex}}
               {{stats.completedPackages}} / {{stats.packagesToIndex}}

@@ -36,7 +36,7 @@ export default Ember.Controller.extend(BaseControllerMixin, PaginationSupportMix
     originFilter: 'any',
     latestOnly: true,
 
-    totalBinding: Ember.Binding.oneWay('model.totalHits'),
+    total: Ember.computed.oneWay('model.totalHits'),
 
     actions: {
         'nextPage': function() {

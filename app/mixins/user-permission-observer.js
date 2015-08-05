@@ -28,7 +28,7 @@ export default Ember.Mixin.create({
         }, null, describePromise(this, '_updateUserPermission'));
     },
 
-    _sessionUserDidChange: function() {
+    _sessionUserDidChange: Ember.observer('session.user', function() {
         this.get('_permissionObservers').forEach(this._updateUserPermission, this);
-    }.observes('session.user')
+    })
 });

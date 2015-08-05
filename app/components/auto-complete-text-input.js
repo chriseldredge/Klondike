@@ -78,7 +78,7 @@ export default Ember.Component.extend({
     return c !== ' ' && c !== '+' && c !== '-' && c !== '(';
   },
 
-  _findSuggestions: function() {
+  _findSuggestions: Ember.observer('currentTerm', function() {
     var term = this.get('currentTerm').toLowerCase();
 
     var matches = term === '' ? [] : this.get('terms').filter(function(i) {
@@ -96,9 +96,9 @@ export default Ember.Component.extend({
     });
 
     this.set('suggestions', matches);
-  }.observes('currentTerm'),
+  }),
 
-  _showAutocompleteSuggestions: function() {
+  _showAutocompleteSuggestions: Ember.observer('suggestions', function() {
     var self = this;
 
     var list = this.$("ol");
@@ -115,7 +115,7 @@ export default Ember.Component.extend({
       var value = Ember.$(this).text();
       self.send('selectTerm', value);
     });
-  }.observes('suggestions'),
+  }),
 
   _attachEvents: function() {
     var self = this;
@@ -195,7 +195,7 @@ export default Ember.Component.extend({
     this.set('_selectedSuggestionIndex', next);
   },
 
-  _scrollToSelectedIndex: function() {
+  _scrollToSelectedIndex: Ember.observer('_selectedSuggestionIndex', function() {
     var list = this.$('ol.auto-complete');
     var selected = this.$('li.is-selected');
     if (selected.length !== 1) {
@@ -211,7 +211,7 @@ export default Ember.Component.extend({
       var pos = offset + selected.outerHeight() - list.height();
       list.scrollTop(list.scrollTop() + pos);
     }
-  }.observes('_selectedSuggestionIndex'),
+  }),
 
   actions: {
     selectTerm: function(term) {

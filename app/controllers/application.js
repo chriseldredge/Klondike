@@ -2,14 +2,14 @@ import Ember from 'ember';
 import BaseControllerMixin from 'klondike/mixins/base-controller';
 
 export default Ember.Controller.extend(BaseControllerMixin, {
-    needs: 'packages/search',
-    searchBoxBinding: Ember.Binding.oneWay('controllers.packages/search.query'),
+    'packages/search': Ember.inject.controller(),
+    searchBox: Ember.computed.oneWay('packages/search.query'),
 
-    isLoggedInBinding: Ember.Binding.oneWay('session.isLoggedIn'),
-    usernameBinding: Ember.Binding.oneWay('session.username'),
-    isSessionInitializedBinding: Ember.Binding.oneWay('session.isInitialized'),
+    isLoggedIn: Ember.computed.oneWay('session.isLoggedIn'),
+    username: Ember.computed.oneWay('session.username'),
+    isSessionInitialized: Ember.computed.oneWay('session.isInitialized'),
 
-    apiURLBinding: Ember.Binding.oneWay('restClient.apiURL'),
+    apiURL: Ember.computed.oneWay('restClient.apiURL'),
 
     actions: {
         search: function () {

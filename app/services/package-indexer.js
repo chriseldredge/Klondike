@@ -22,7 +22,7 @@ export default Ember.Service.extend(UserPermissionObserver, {
         this.observeUserPermission('canSynchronize', 'indexing.synchronize');
     },
 
-    statusHubDidChange: function() {
+    statusHubDidChange: Ember.observer('statusHub', function() {
         var self = this;
         var setStatusCallback = function (status) {
             self.set('status', status);
@@ -44,7 +44,7 @@ export default Ember.Service.extend(UserPermissionObserver, {
         });
 
         signalR.hub.start({ waitForPageLoad: false });
-    }.observes('statusHub'),
+    }),
 
     rebuild: function () {
         this.get('restClient').ajax('indexing.synchronize', { data: { mode: 'complete' } });
