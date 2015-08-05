@@ -76,9 +76,9 @@
     <Reference Include="Lucene.Net">
       <HintPath>..\..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net.Linq, Version=3.5.2.91, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Lucene.Net.Linq.3.5.2\lib\net40\Lucene.Net.Linq.dll</HintPath>
+    <Reference Include="Lucene.Net.Linq, Version=3.5.3.98, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Lucene.Net.Linq.3.5.3\lib\net40\Lucene.Net.Linq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -128,25 +128,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Nowin, Version=0.16.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Nowin.0.16.0.0\lib\net45\Nowin.dll</HintPath>
+    <Reference Include="Nowin, Version=0.17.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nowin.0.17.1.0\lib\net45\Nowin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="NuGet.Core, Version=2.8.50926.602, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NuGet.Core.2.8.3\lib\net40-Client\NuGet.Core.dll</HintPath>
+    <Reference Include="NuGet.Core, Version=2.8.60717.93, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NuGet.Core.2.8.6\lib\net40-Client\NuGet.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="NuGet.Lucene, Version=3.0.0.110, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NuGet.Lucene.3.0.0-beta-build112\lib\net45\NuGet.Lucene.dll</HintPath>
+    <Reference Include="NuGet.Lucene, Version=3.0.0.113, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NuGet.Lucene.3.0.0-beta-build113\lib\net45\NuGet.Lucene.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="NuGet.Lucene.Web, Version=3.0.0.110, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NuGet.Lucene.Web.3.0.0-beta-build112\lib\net45\NuGet.Lucene.Web.dll</HintPath>
+    <Reference Include="NuGet.Lucene.Web, Version=3.0.0.113, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NuGet.Lucene.Web.3.0.0-beta-build113\lib\net45\NuGet.Lucene.Web.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
