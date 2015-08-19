@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     DefaultIconUrl: 'assets/package-default-icon-50x50.png',
     tagName: 'img',
-    classNames: ['package-icon'],
+    classNames: ['package-icon kl-icon--50 mr2'],
     attributeBindings: ['src', 'alt'],
     alt: 'package icon',
 
