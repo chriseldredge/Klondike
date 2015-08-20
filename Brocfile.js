@@ -19,16 +19,10 @@ app.import({
     production: 'bower_components/jquery-signalr/jquery.signalR.min.js'
 });
 
-app.import({
-    development: 'bower_components/zeroclipboard/ZeroClipboard.js',
-    production: 'bower_components/zeroclipboard/ZeroClipboard.min.js'
-});
-
 function assetTree() {
   return select('bower_components', {
     acceptFiles: [
-    	'font-awesome/fonts/*',
-    	'zeroclipboard/ZeroClipboard.swf'
+    	'font-awesome/fonts/*'
     ],
     outputDir: '/assets'
   });
