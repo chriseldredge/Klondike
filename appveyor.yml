@@ -33,3 +33,7 @@ artifacts:
   - path: .\dist
     name: Klondike
     type: zip
+  - path: LICENSE.txt
+    name: License
+  - path: COPYRIGHT.txt
+    name: Copyright
