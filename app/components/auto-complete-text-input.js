@@ -26,7 +26,7 @@ export default Ember.Component.extend({
 
   _selectedSuggestionIndex: -1,
 
-  dropdownVisible: Ember.computed('suggestions', function(key) {
+  dropdownVisible: Ember.computed('suggestions', function() {
     return !Ember.isEmpty(this.get('suggestions'));
   }),
 
