@@ -1,19 +1,21 @@
-<h1>Accounts</h1>
+<div class="container p2">
+  <h1>Accounts</h1>
 
-<ul>
-{{#each model as |user|}}
-    <li>
-        {{#if canEdit}}
-            {{#link-to 'users.edit' user}}{{user.username}}{{/link-to}}
-        {{else}}
-            {{user.username}}
-        {{/if}}
-    </li>
-{{/each}}
-</ul>
+  <ul>
+  {{#each model as |user|}}
+      <li>
+          {{#if canEdit}}
+              {{#link-to 'users.edit' user}}{{user.username}}{{/link-to}}
+          {{else}}
+              {{user.username}}
+          {{/if}}
+      </li>
+  {{/each}}
+  </ul>
 
-{{#if canEdit}}
-    {{#link-to 'users.add'}}Add Account{{/link-to}}
-{{else}}
-    <p class="not-authorized">You are not allowed to modify accounts.</p>
-{{/if}}
+  {{#if canEdit}}
+      {{#link-to 'users.add' class="btn button-blue"}}Add Account{{/link-to}}
+  {{else}}
+      <div class="bg-silver red p2">You are not allowed to modify accounts.</div>
+  {{/if}}
+</div>

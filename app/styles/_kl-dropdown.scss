@@ -1,0 +1,35 @@
+.kl-dropdown {
+  background: white;
+  box-shadow: 0 1px 2px 1px $darken-3;
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  max-height: 20em;
+  overflow-y: scroll;
+
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+    height: auto;
+  }
+
+  & > li {
+    padding: $space-1 $space-2;
+  }
+
+  &:hover > li.is-selected {
+    background-color: inherit;
+    color: inherit;
+  }
+
+  & > li.is-selected,
+  & > li:hover,
+  & > li.is-selected:hover {
+    background: $blue;
+    color: white;
+  }
+
+  & > li:hover {
+    cursor: pointer;
+  }
+}

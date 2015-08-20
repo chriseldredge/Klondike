@@ -1,25 +1,27 @@
-<section class="package-admin">
-    <h2>Package Index</h2>
-    <p>
-        If the package directory has been modified outside of Klondike,
-        it can be synchronized with the Lucene index manually here.
-    </p>
-    <p>
-        Use <tt>Rebuild Index</tt> to re-index all packages even if they
-        appear to be unchanged. This process is useful when upgrading Klondike.
-        All metadata will be recomputed except package download counters, which
-        will be preserved.
-    </p>
-    {{#if canSynchronize}}
-        <button {{action "synchronize"}} disabled={{model.isRunning}}>Synchronize Packages</button>
-        <button {{action "rebuild"}} disabled={{model.isRunning}}>Rebuild Index</button>
-        <button {{action "cancel"}}>Cancel</button>
-    {{else}}
-        <p class="not-authorized">You are not allowed to synchronize packages.</p>
-    {{/if}}
-</section>
+<div class="container p2">
+    <section class="package-admin">
+        <h2>Package Index</h2>
+        <p>
+            If the package directory has been modified outside of Klondike,
+            it can be synchronized with the Lucene index manually here.
+        </p>
+        <p>
+            Use <tt>Rebuild Index</tt> to re-index all packages even if they
+            appear to be unchanged. This process is useful when upgrading Klondike.
+            All metadata will be recomputed except package download counters, which
+            will be preserved.
+        </p>
+        {{#if canSynchronize}}
+          <button {{action "synchronize"}} disabled={{model.isRunning}} class="button-blue mr2">Synchronize Packages</button>
+          <button {{action "rebuild"}} disabled={{model.isRunning}} class="button-blue mr2">Rebuild Index</button>
+          <button {{action "cancel"}} class="button-link kl-button--link">Cancel</button>
+        {{else}}
+          <div class="bg-silver red p2">You are not allowed to synchronize packages.</div>
+        {{/if}}
+    </section>
 
-<section class="user-admin">
-    <h2>Accounts</h2>
-    {{#link-to 'users.list'}}Manage Accounts{{/link-to}}
-</section>
+    <section class="user-admin">
+        <h2>Accounts</h2>
+        {{#link-to 'users.list'}}Manage Accounts{{/link-to}}
+    </section>
+</div>

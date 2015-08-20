@@ -1,7 +1,6 @@
 {
   "name": "klondike",
   "dependencies": {
-    "bootstrap-sass-official": "~3.2.0",
     "ember": "1.13.2",
     "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.3",
     "ember-cli-test-loader": "ember-cli-test-loader#0.1.3",
@@ -17,6 +16,8 @@
     "momentjs": "~2.9.0",
     "nprogress": "~0.1.2",
     "qunit": "~1.17.1",
-    "zeroclipboard": "~1.3.5"
+    "zeroclipboard": "~1.3.5",
+    "basscss-sass": "~2.0.0",
+    "geomicons-open": "~2.0.0"
   }
 }
