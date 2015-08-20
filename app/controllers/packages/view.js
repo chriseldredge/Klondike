@@ -18,10 +18,6 @@ export default Ember.Controller.extend(BaseControllerMixin, {
       ' -Source ' + this.get('packageSourceUri');
   }.property('model.id', 'model.version', 'packageSourceUri'),
 
-  installCommandWithPrompt: function() {
-    return 'PM> ' + this.get('installCommand');
-  }.property('installCommand'),
-
   sortColumn: 'semanticVersion',
 
   actions: {

@@ -14,7 +14,7 @@
       {{/if}}
 
       <p>To install {{id}} run this command in the Package Manager Console</p>
-      {{code-snippet content=installCommandWithPrompt data=installCommand}}
+      {{code-snippet content=installCommand prompt='PM> '}}
 
       {{search-link-list header='Authors' items=model.authors}}
       {{search-link-list header='Owners' items=model.owners}}
@@ -91,7 +91,7 @@
       {{#if model.copyright}}
         <div class="border-bottom mb2 pb2">{{model.copyright}}</div>
       {{/if}}
-    
+
       {{#if model.isMirrored}}
         <div class="border-bottom mb2 pb2">Mirrored from <a href={{origin}}>{{origin}}</a></div>
       {{/if}}
