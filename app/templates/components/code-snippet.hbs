@@ -1,5 +1,1 @@
-<div class="code-snippet">
-    <button class="copy-to-clipboard"><i class="fa fa-copy"></i></button>
-    <div class="message"></div>
-    <input type="text" class="code-snippet" readonly="readonly" {{bind-attr value=view.content}}/>
-</div>
+<pre class="code-snippet">{{#if prompt}}<code>{{prompt}}</code>{{/if}}<code>{{content}}</code></pre>

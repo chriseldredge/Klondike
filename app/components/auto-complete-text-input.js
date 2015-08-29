@@ -26,6 +26,10 @@ export default Ember.Component.extend({
 
   _selectedSuggestionIndex: -1,
 
+  dropdownVisible: Ember.computed('suggestions', function() {
+    return !Ember.isEmpty(this.get('suggestions'));
+  }),
+
   init: function() {
     this._super();
 
@@ -74,7 +78,7 @@ export default Ember.Component.extend({
     return c !== ' ' && c !== '+' && c !== '-' && c !== '(';
   },
 
-  _findSuggestions: function() {
+  _findSuggestions: Ember.observer('currentTerm', function() {
     var term = this.get('currentTerm').toLowerCase();
 
     var matches = term === '' ? [] : this.get('terms').filter(function(i) {
@@ -92,9 +96,9 @@ export default Ember.Component.extend({
     });
 
     this.set('suggestions', matches);
-  }.observes('currentTerm'),
+  }),
 
-  _showAutocompleteSuggestions: function() {
+  _showAutocompleteSuggestions: Ember.observer('suggestions', function() {
     var self = this;
 
     var list = this.$("ol");
@@ -111,7 +115,7 @@ export default Ember.Component.extend({
       var value = Ember.$(this).text();
       self.send('selectTerm', value);
     });
-  }.observes('suggestions'),
+  }),
 
   _attachEvents: function() {
     var self = this;
@@ -124,7 +128,7 @@ export default Ember.Component.extend({
       } else if (e.which === KEYS.UP) {
         self.send('previousSuggestion');
       } else if (e.which === KEYS.ENTER || e.which === KEYS.TAB) {
-        var selection = self.$('li.selected').first().text();
+        var selection = self.$('li.is-selected').first().text();
         if (selection !== '') {
           self.send('selectTerm', selection);
         } else if (e.which === KEYS.ENTER) {
@@ -184,16 +188,16 @@ export default Ember.Component.extend({
     }
 
     if (i >= 0 && i < opts.length) {
-      Ember.$(opts[i]).removeClass('selected');
+      Ember.$(opts[i]).removeClass('is-selected');
     }
-    Ember.$(opts[next]).addClass('selected');
+    Ember.$(opts[next]).addClass('is-selected');
 
     this.set('_selectedSuggestionIndex', next);
   },
 
-  _scrollToSelectedIndex: function() {
+  _scrollToSelectedIndex: Ember.observer('_selectedSuggestionIndex', function() {
     var list = this.$('ol.auto-complete');
-    var selected = this.$('li.selected');
+    var selected = this.$('li.is-selected');
     if (selected.length !== 1) {
       list.scrollTop(0);
       return;
@@ -203,11 +207,11 @@ export default Ember.Component.extend({
 
     if (offset < 0) {
       list.scrollTop(list.scrollTop() + offset);
-    } else if (offset + selected.height() > list.height()) {
-      var pos = offset + selected.height() - list.height();
+    } else if (offset + selected.outerHeight() > list.height()) {
+      var pos = offset + selected.outerHeight() - list.height();
       list.scrollTop(list.scrollTop() + pos);
     }
-  }.observes('_selectedSuggestionIndex'),
+  }),
 
   actions: {
     selectTerm: function(term) {
@@ -227,8 +231,7 @@ export default Ember.Component.extend({
 
       this.set('value', up);
 
-      var list = this.$("ol");
-      list.empty();
+      this.set('suggestions', []);
 
       var text = this.get('_text');
 

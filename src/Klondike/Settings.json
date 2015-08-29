@@ -85,13 +85,6 @@
     "debuggingToolsPath": "",
 
     /*
-      When true, store symbol packages in their original zipped form and serve source files
-      by unzipping them on demand. When false, the symbol package is unzipped onto the file system
-      for faster retrieval. Trade off is faster push vs faster retrieval.
-    */
-    "keepSourcesCompressed": true,
-
-    /*
       When true, enables a FileSystemWatcher that monitors the packagesPath
       and automatically updates the Lucene index when packages are created,
       modified, renamed or deleted.

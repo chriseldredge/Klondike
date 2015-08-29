@@ -39,7 +39,7 @@ export default Ember.Mixin.create({
         return Math.ceil(this.get('total') / this.get('pageSize'));
     }.property('total', 'pageSize'),
 
-    pageDidChange: function () {
+    pageDidChange: Ember.observer('page', function () {
         this.didRequestPage(this.get('page'));
-    }.observes('page')
+    })
 });

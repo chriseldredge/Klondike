@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export default Ember.View.extend({
+export default Ember.Component.extend({
     tagName: 'ul',
     classNames: ['ember-checkbox-group'],
     name: null,

@@ -1,31 +1,38 @@
-<h1>{{username}}</h1>
+<div class="container p2">
+  <h1>{{model.username}}</h1>
 
-{{#if keyHidden}}
-  <p>Your API Key is hidden for security.</p>
-  <button {{action "revealKey"}}>Reveal</button>
-{{else}}
-  {{#if canPushPackages}}
-    <p>Your API Key is:</p>
-    {{code-snippet content=key}}
-    <p>To push packages, first set your API Key:</p>
+  <div class="pb2 mb2 border-bottom">
+    {{#if keyHidden}}
+      <p>Your API Key is hidden for security.</p>
+      <button {{action "revealKey"}} class="button-blue">Reveal</button>
+    {{else}}
+      {{#if canPushPackages}}
+        <p>Your API Key is:</p>
+        {{code-snippet content=key}}
+        <p>To push packages, first set your API Key:</p>
 
-    {{code-snippet content=setApiKeyCommandWithPrompt data=setApiKeyCommand}}
+        {{code-snippet content=setApiKeyCommand prompt='PM> '}}
 
-    <p>To push packages, run:</p>
+        <p>To push packages, run:</p>
 
-    {{code-snippet content=pushPackageCommandWithPrompt data=pushPackageCommand}}
-  {{else}}
-    <p>Your NuGet API Key is {{key}}, but you are not allowed to push packages.</p>
-  {{/if}}
+        {{code-snippet content=pushPackageCommand prompt='PM> '}}
+      {{else}}
+        <p>Your NuGet API Key is {{key}}, but you are not allowed to push packages.</p>
+      {{/if}}
 
-  <button {{action "changeKey"}}>Change API Key</button>
-{{/if}}
+      <button {{action "changeKey"}} class="button-blue">Change API Key</button>
+    {{/if}}
+  </div>
 
-<p>
-  You have the following permissions:
-  {{#each role in roles}}
-    {{role}}
-  {{else}}
-    (none)
-  {{/each}}
-</p>
+  <p>
+    You have the following permissions:
+
+    <ul>
+    {{#each model.roles as |role|}}
+      <li>{{role}}</li>
+    {{else}}
+      <li>(none)</li>
+    {{/each}}
+    </ul>
+  </p>
+</div>

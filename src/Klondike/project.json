@@ -15,7 +15,7 @@
     "Microsoft.Owin": "3.0.0",
     "Kestrel": "1.0.0-beta5-*",
     "NuGet.Core": "2.8.3",
-    "NuGet.Lucene.Web": "3.0.0-beta-build107",
+    "NuGet.Lucene.Web": "3.0.1",
     "Owin": "1.0",
     "Remotion.Linq": "1.15.9.0",
     "Rx-PlatformServices": "2.2.5"
