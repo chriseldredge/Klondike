@@ -251,7 +251,6 @@
     </Compile>
     <Compile Include="AppBuilderExtensions.cs" />
     <Compile Include="KlondikeHtmlMicrodataFormatter.cs" />
-    <Compile Include="MonoHardCodedODataWorkspaceHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MetaController.cs" />
     <Compile Include="Startup.cs" />

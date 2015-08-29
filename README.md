@@ -93,6 +93,8 @@ Or
 
     mono ./Klondike.SelfHost.exe --interactive --port=8080
 
+Klondike requires Mono 4.2.0 or later.
+
 If no port is specified, 8080 is used as a default. See the [Klondike.SelfHost README](src/Klondike.SelfHost/README.md)
 for more information.
 

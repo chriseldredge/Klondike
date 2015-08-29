@@ -1,3 +1,4 @@
+using Common.Logging;
 using System;
 using System.Web.Http;
 using Autofac;
@@ -15,33 +16,6 @@ namespace Klondike
         protected override INuGetWebApiSettings CreateSettings()
         {
             return new NuGetWebApiWebHostSettings(prefix: "");
-        }
-
-        protected virtual bool IsRunningOnMono
-        {
-            get
-            {
-                return Type.GetType("Mono.Runtime") != null;
-            }
-        }
-
-        /// <summary>
-        /// See https://bugzilla.xamarin.com/show_bug.cgi?id=21571
-        /// </summary>
-        protected virtual bool MonoCantEven
-        {
-            get
-            {
-                try
-                {
-                    new Uri("/example", UriKind.Relative).GetComponents(UriComponents.SerializationInfoString, UriFormat.UriEscaped);
-                    return false;
-                }
-                catch (InvalidOperationException)
-                {
-                    return true;
-                }
-            }
         }
 
         protected override void Start(IAppBuilder app, IContainer container)
@@ -70,16 +44,6 @@ namespace Klondike
         protected override void RegisterServices(IContainer container, IAppBuilder app, HttpConfiguration config)
         {
             var apiMapper = container.Resolve<NuGetWebApiRouteMapper>();
-
-            if (IsRunningOnMono && MonoCantEven)
-            {
-                config.Routes.MapHttpRoute("Mono Hard-Coded OData Workspace Handler",
-                    apiMapper.ODataRoutePath,
-                    new object(),
-                    new object(),
-                    new MonoHardCodedODataWorkspaceHandler());
-            }
-
             base.RegisterServices(container, app, config);
             config.Routes.MapHttpRoute("Version", apiMapper.PathPrefix + "version", new { controller = "Meta" });
         }
