@@ -38,7 +38,7 @@ namespace Klondike
 
             if (CreateSettings().ShowExceptionDetails)
             {
-                app.UseErrorPage(ErrorPageOptions.ShowAll);
+                app.UseErrorPage(new ErrorPageOptions { SourceCodeLineCount = 20 });
             }
 
             var requestLog = LogManager.GetLogger("RequestLog");
