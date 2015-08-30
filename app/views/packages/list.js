@@ -1,4 +1,4 @@
 import Ember from 'ember';
-export default Ember.View.extend({
-    templateName: 'packages/search'
+export default Ember.Component.extend({
+    layoutName: 'packages/search'
 });

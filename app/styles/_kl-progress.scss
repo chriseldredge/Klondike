@@ -1,0 +1,17 @@
+// Custom overrides for NProgress indidcators
+
+#nprogress {
+
+  .bar {
+    background: white;
+  }
+
+  .peg {
+    box-shadow: 0 0 10px white, 0 0 5px white;
+  }
+
+  .spinner-icon {
+    border-top-color: white;
+    border-left-color: white;
+  }
+}

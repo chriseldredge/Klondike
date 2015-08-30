@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import BaseControllerMixin from 'klondike/mixins/base-controller';
 
-export default Ember.ObjectController.extend(BaseControllerMixin, {
+export default Ember.Controller.extend(BaseControllerMixin, {
     pushApiName: 'packages.putPackage',
     pushUriBinding: 'restClient.packageSourceUri',
     canPushPackages: false,
@@ -15,29 +15,21 @@ export default Ember.ObjectController.extend(BaseControllerMixin, {
         return 'nuget setApiKey ' + this.get('key') + ' -Source ' + this.get('pushUri');
     }.property('pushUri', 'key'),
 
-    setApiKeyCommandWithPrompt: function() {
-        return 'C:\\> ' + this.get('setApiKeyCommand');
-    }.property('setApiKeyCommand'),
-
     pushPackageCommand: function() {
         return 'nuget push [package.nupkg] -Source ' + this.get('pushUri');
     }.property('pushUri'),
-
-    pushPackageCommandWithPrompt: function() {
-        return 'C:\\> ' + this.get('pushPackageCommand');
-    }.property('pushPackageCommand'),
 
     init: function() {
         this._super();
         this.sessionUserDidChange();
     },
 
-    sessionUserDidChange: function() {
+    sessionUserDidChange: Ember.observer('session.user', function() {
         var self = this;
         this.get('session').isAllowed(this.get('pushApiName')).then(function(result) {
             self.set('canPushPackages', result);
         });
-    }.observes('session.user'),
+    }),
 
     actions: {
         changeKey: function() {

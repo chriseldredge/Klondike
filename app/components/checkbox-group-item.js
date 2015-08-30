@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export default Ember.View.extend({
+export default Ember.Component.extend({
     tagName: 'li',
     selectionBinding: 'parentView.selection',
 
@@ -16,7 +16,7 @@ export default Ember.View.extend({
         return this._super();
     },
 
-    labelPathDidChange: function () {
+    labelPathDidChange: Ember.observer('parentView.checkboxLabelPath', function () {
         var labelPath = this.get('parentView.checkboxLabelPath');
 
         if (!labelPath) { return; }
@@ -24,9 +24,9 @@ export default Ember.View.extend({
         Ember.defineProperty(this, 'label', function () {
             return this.get(labelPath);
         }.property(labelPath));
-    }.observes('parentView.checkboxLabelPath'),
+    }),
 
-    valuePathDidChange: function () {
+    valuePathDidChange: Ember.observer('parentView.checkboxValuePath', function () {
         var labelPath = this.get('parentView.checkboxValuePath');
 
         if (!labelPath) { return; }
@@ -34,7 +34,7 @@ export default Ember.View.extend({
         Ember.defineProperty(this, 'value', function () {
             return this.get(labelPath);
         }.property(labelPath));
-    }.observes('parentView.checkboxValuePath'),
+    }),
 
     _updateSelection: function (e) {
         var val = this.get('value');

@@ -1,32 +1,38 @@
-{{#if error}}
-  <div class="error">
-    An error occurred processing the query: {{errorMessage}}
+<div class="container p2">
+  {{#if error}}
+    <div class="error">
+      An error occurred processing the query: {{errorMessage}}
+    </div>
+  {{/if}}
+
+  <div class="mb2 pb2 border-bottom">
+    <p>
+    Tip: hit <code>ctrl+space</code> to see all search fields.
+    </p>
+
+    <div class="flex col-6">
+    {{auto-complete-text-input value=query terms=model action="search" class="flex-auto relative"}}
+
+    <button {{action "search"}} class="btn rounded-right border white bg-blue">Search</button>
+    </div>
   </div>
-{{/if}}
 
-<div>
-Tip: hit <code>ctrl+space</code> to see all search fields.
+  <h2>Sample Queries</h2>
+
+  <table>
+    <thead>
+      <th>Query</th>
+      <th>Description</th>
+      <th/>
+    </thead>
+    <tbody>
+      {{#each examples as |example|}}
+      <tr>
+        <td><code>{{example.query}}</code></td>
+        <td>{{example.description}}</td>
+        <td><a href="#" {{action "selectExample" example.query}}>Try it</a></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
 </div>
-
-{{auto-complete-text-input value=query terms=model action="search"}}
-
-<button {{action "search"}}>Search</button>
-
-<h2>Sample Queries</h2>
-
-<table>
-  <thead>
-    <th>Query</th>
-    <th>Description</th>
-    <th/>
-  </thead>
-  <tbody>
-    {{#each example in examples}}
-    <tr>
-      <td><code>{{example.query}}</code></td>
-      <td>{{example.description}}</td>
-      <td><a href="#" {{action "selectExample" example.query}}>Try it</a></td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>

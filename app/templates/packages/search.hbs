@@ -1,90 +1,100 @@
-<div>
-  {{view "select"
-    value=originFilter
-    content=originFilters
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
+<div class="bg-silver p2">
+  <div class="container clearfix">
+    {{drop-down selectedValue=originFilter content=originFilters classNames='field'}}
+    {{drop-down selectedValue=sortBy content=sortByColumns classNames='field'}}
+    {{drop-down selectedValue=includePrerelease content=versionFilters classNames='field'}}
+    {{drop-down selectedValue=latestOnly content=latestOnlyFilters classNames='field'}}
 
-  {{view "select"
-    value=sortBy
-    content=sortByColumns
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
-
-  {{view "select"
-    value=includePrerelease
-    content=versionFilters
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
-
-  {{view "select"
-    value=latestOnly
-    content=latestOnlyFilters
-    optionValuePath="content.value"
-    optionLabelPath="content.label"}}
-
-  {{#link-to 'packages.advanced-search'}}advanced search{{/link-to}}
+    <div class="col-right">
+      {{#link-to 'packages.advanced-search' class="btn button-link kl-button--link"}}Advanced search{{/link-to}}
+    </div>
+  </div>
 </div>
 
-<h1>
-    {{#if isEmptyQuery}}
-        List of All Packages
-    {{else}}
+<div class="container p2">
+  <h1>
+    {{#if query}}
         Search results for "{{query}}"
+    {{else}}
+        List of All Packages
     {{/if}}
-</h1>
+  </h1>
 
-{{#if total}}
-    Showing {{first}} to {{last}} of {{total}}.
+  {{#if total}}
+    <div class="clearfix mb1 pb2 border-bottom">
+      <a href="#" {{action "previousPage"}} rel="nofollow" class="left btn button-narrow kl-button blue {{if hasPrevious '' 'is-disabled'}}">
+        <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+          <use xlink:href="#chevronLeft"></use>
+        </svg>
+        
+        Previous Page
+      </a>
+      <a href="#" {{action "nextPage"}} class="right btn button-narrow kl-button blue {{if hasNext '' 'is-disabled'}}">
+        Next Page
 
-    {{#if hasPrevious}}
-        <a href="#" {{action "previousPage"}} rel="nofollow">Previous Page</a>
-    {{/if}}
-    {{#if hasNext}}
-        <a href="#" {{action "nextPage"}}>Next Page</a>
-    {{/if}}
+        <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+          <use xlink:href="#chevronRight"></use>
+        </svg>
+      </a>
+      <span class="block center py1">Showing {{first}} to {{last}} of {{total}}</span>
+    </div>
 
-    <ol {{bind-attr start=first}}>
-        {{#each hit in hits}}
-        <li>
-            <div>
-                {{package-icon url=hit.iconUrl}}
-                {{#link-to 'packages.view' hit}}
+      <ol start={{first}} class="list-reset">
+        {{#each model.hits as |hit|}}
+          <li class="border-bottom py2">
+            <div class="flex">
+              <div class="flex-auto">
+                {{#link-to 'packages.view' hit classNames="inline-block bold h3"}}
                   {{#if hit.title}}
-                      {{hit.title}}
+                    {{hit.title}}
                   {{else}}
-                      {{hit.id}}
+                    {{hit.id}}
                   {{/if}}
-                  {{hit.version}}
                 {{/link-to}}
-            </div>
-            {{search-link-list header='Authors' items=hit.authors}}
-            <div>
-                {{hit.description}}
-            </div>
-            {{search-link-list header='Tags' items=hit.tags}}
-            <div>
-              Downloads:
-              {{#if hit.downloadCount}}
-                {{hit.downloadCount}}
-                {{#unless controller.latestOnly}}
-                  total,
-                  {{hit.versionDownloadCount}} of this version
-                {{/unless}}
-              {{else}}
-                0
-              {{/if}}
-            </div>
-        </li>
-        {{/each}}
-    </ol>
+                <span class="inline-block h3 gray">{{hit.version}}</span>
 
-    {{#if hasPrevious}}
-        <a href="#" {{action "previousPage"}} rel="nofollow">Previous Page</a>
-    {{/if}}
-    {{#if hasNext}}
-        <a href="#" {{action "nextPage"}} rel="nofollow">Next Page</a>
-    {{/if}}
-{{else}}
-    No results :'(
-{{/if}}
+                <div>
+                  {{hit.description}}
+                </div>
+                {{search-link-list header='Authors' items=hit.authors}}
+                {{search-link-list header='Tags' items=hit.tags}}
+              </div>
+              <div class="flex-none ml4">
+                <strong class="block">Downloads:</strong>
+                <span class="block right-align h3">
+                  {{#if hit.downloadCount}}
+                    {{hit.downloadCount}}
+                    {{#unless latestOnly}}
+                      total,
+                      <span class="block h5">{{hit.versionDownloadCount}} of this version</span>
+                    {{/unless}}
+                  {{else}}
+                    0
+                  {{/if}}
+                </span>
+              </div>
+            </div>
+          </li>
+        {{/each}}
+      </ol>
+
+    <div class="clearfix mt2">
+      <a href="#" {{action "previousPage"}} rel="nofollow" class="left btn button-narrow kl-button blue {{if hasPrevious '' 'is-disabled'}}">
+        <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+          <use xlink:href="#chevronLeft"></use>
+        </svg>
+        
+        Previous Page
+      </a>
+      <a href="#" {{action "nextPage"}} class="right btn button-narrow kl-button blue {{if hasNext '' 'is-disabled'}}">
+        Next Page
+
+        <svg class="kl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+          <use xlink:href="#chevronRight"></use>
+        </svg>
+      </a>
+    </div>
+  {{else}}
+      No results :'(
+  {{/if}}
+</div>

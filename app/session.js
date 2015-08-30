@@ -20,9 +20,9 @@ export default Ember.Object.extend({
 
     _promise: null,
 
-    isLoggedIn: function () {
+    isLoggedIn: Ember.computed('username', function () {
         return !Ember.isEmpty(this.get('username'));
-    }.property('username'),
+    }),
 
     init: function () {
         this._super();
@@ -132,7 +132,7 @@ export default Ember.Object.extend({
         }, describePromise(this, '_invokeLogin'));
     },
 
-    _keyDidChange: function() {
+    _keyDidChange: Ember.observer('key', function() {
         var key = this.get('key');
         if (key) {
             window.sessionStorage.setItem('key', key);
@@ -140,5 +140,5 @@ export default Ember.Object.extend({
             window.sessionStorage.removeItem('key');
         }
         this.get('restClient').set('apiKey', key);
-    }.observes('key'),
+    }),
 });

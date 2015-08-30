@@ -2,7 +2,7 @@ import Ember from 'ember';
 import ApplicationException from 'klondike/application-exception';
 import describePromise from 'klondike/util/describe-promise';
 
-var RestApi = Ember.Object.extend({
+var RestApi = Ember.Service.extend({
     apiKeyRequestHeaderName: 'X-NuGet-ApiKey',
 
     apiURLBinding: 'application.apiURL',
@@ -163,15 +163,7 @@ var RestApi = Ember.Object.extend({
     },
 
     _setPackageSource: function () {
-        var href = this.get('apiURL');
-
-        if (href[href.length - 1] !== '/') {
-            href += '/';
-        }
-
-        if (href.indexOf('//') === -1) {
-            href = window.location.protocol + '//' + window.location.host + href;
-        }
+        var href = this._lookupApi('packages.odata', 'GET').href;
 
         this.set('packageSourceUri', href);
     },
