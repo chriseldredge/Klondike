@@ -19,6 +19,7 @@ Thumbs.db
 .ember-cli
 
 # .net
+src/Klondike/wwwroot/
 App_Data/
 bin/
 obj/
