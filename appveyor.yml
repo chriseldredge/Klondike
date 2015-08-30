@@ -21,6 +21,7 @@ install:
   - cmd: dnvm upgrade
   - cmd: dnu restore
   - cmd: npm run-script release
+  - cmd: dnu publish src/Klondike --out dist
 
 # Don't actually build.
 build: off

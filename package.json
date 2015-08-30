@@ -9,7 +9,7 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
-    "release": "ember build --environment=production",
+    "release": "ember build --environment=production --output-path=src/Klondike/wwwroot",
     "test": "ember test"
   },
   "repository": "https://github.com/themotleyfool/Klondike",
