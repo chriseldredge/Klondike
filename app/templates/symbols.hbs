@@ -1,42 +1,44 @@
-<h1>Symbol Server</h1>
+<div class="container p2">
+    <h1>Symbol Server</h1>
 
-{{#if enabled}}
-    <p>
-        Klondike is configured to process NuGet symbol packages
-        and serve symbols and source code to your debugger.
-    </p>
+    {{#if model.enabled}}
+        <p>
+            Klondike is configured to process NuGet symbol packages
+            and serve symbols and source code to your debugger.
+        </p>
 
-    <p>
-        Point Visual Studio to this symbol server:
-    </p>
+        <p>
+            Point Visual Studio to this symbol server:
+        </p>
 
-    {{code-snippet content=symbolServer}}
+        {{code-snippet content=model.symbolServer}}
 
-    <p>
-        See <a href="http://www.symbolsource.org/Public/Wiki/Using">this guide</a> from
-        <a href="http://www.symbolsource.org/">SymbolSource</a> for more details on how
-        to configure Visual Studio.
-    </p>
+        <p>
+            See <a href="http://www.symbolsource.org/Public/Wiki/Using">this guide</a> from
+            <a href="http://www.symbolsource.org/">SymbolSource</a> for more details on how
+            to configure Visual Studio.
+        </p>
 
-    <p>
-        {{#if symbolsAvailable}}
-            Some packages already have symbols. Debug away!
-        {{else}}
-            No symbol packages have been pushed to Klondike.
-            You'll need to do this before attempting to use Klondike
-            as a symbol server.
-        {{/if}}
-    </p>
-{{else}}
-    <p>
-        Klondike can be configured to process NuGet symbol packages,
-        but you need to install Debugging Tools for Windows and tell
-        Klondike where to find them by editing NuGet.Lucene.Web:DebuggingToolsPath
-        in Web.config.
-    </p>
+        <p>
+            {{#if model.symbolsAvailable}}
+                Some packages already have symbols. Debug away!
+            {{else}}
+                No symbol packages have been pushed to Klondike.
+                You'll need to do this before attempting to use Klondike
+                as a symbol server.
+            {{/if}}
+        </p>
+    {{else}}
+        <p>
+            Klondike can be configured to process NuGet symbol packages,
+            but you need to install Debugging Tools for Windows and tell
+            Klondike where to find them by editing <code>debuggingToolsPath</code>
+            in <code>Settings.config</code>.
+        </p>
 
-    <p>
-        The path should contain the symstore.exe utility.
-    </p>
-{{/if}}
+        <p>
+            The path should contain the <code>symstore.exe</code> utility.
+        </p>
+    {{/if}}
 
+</div>

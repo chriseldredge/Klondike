@@ -1,23 +1,24 @@
-{{#if isRedirected}}
-    <p class="login-required-message">
-        Please log in to continue.
-    </p>
-{{/if}}
+<div class="container p2">
+    {{#if isRedirected}}
+        <p class="login-required-message">
+            Please log in to continue.
+        </p>
+    {{/if}}
 
-{{#if errorMessage}}
-    <div class="error">
-        {{errorMessage}}
-    </div>
-{{/if}}
-<label>
-    Username
-    {{focus-input type="text" value=username action="logIn"}}
-</label>
-<label>
-    Password
-    {{input type="password" value=password action="logIn"}}
-</label>
+    {{#if errorMessage}}
+        <div class="error">
+            {{errorMessage}}
+        </div>
+    {{/if}}
+    <label>
+        Username
+        {{focus-input type="text" value=username enter="logIn"}}
+    </label>
+    <label>
+        Password
+        {{input type="password" value=password enter="logIn"}}
+    </label>
 
-<button {{action "logIn"}}>Log in</button>
-
+    <button {{action "logIn"}}>Log in</button>
+</div>
 

@@ -2,9 +2,15 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup Label="Settings">
         <SolutionFile>Klondike.sln</SolutionFile>
+        <VersionPrefix>0.0.1</VersionPrefix>
     </PropertyGroup>
-    
+
     <PropertyGroup Label="FeatureFlags">
         <GenerateVersionInfoEnabled>true</GenerateVersionInfoEnabled>
+        <NUnitEnabled>true</NUnitEnabled>
     </PropertyGroup>
+
+    <ItemGroup>
+        <NUnitTestAssembly Include="build\Klondike.SelfHost.Tests\bin\$(Configuration)\Klondike.SelfHost.Tests.dll"/>
+    </ItemGroup>
 </Project>

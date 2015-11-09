@@ -1,0 +1,12 @@
+{{#if attrs.items}}
+  {{#if attrs.header}}
+    <h3 class="search-link-list inline-block mt1 h4">{{attrs.header}}:</h3>
+  {{/if}}
+  <ul class="search-link-list list-reset inline-block m0">
+    {{#each attrs.items as |item|}}
+      <li class="inline-block mr1">
+        {{#link-to 'packages.search' (query-params query=item page=0) rel="nofollow"}}{{item}}{{/link-to}}
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}

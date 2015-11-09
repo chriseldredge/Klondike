@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <AppDir>$([System.IO.Path]::Combine('$(ProjectDirectory)', 'app'))$([System.IO.Path]::DirectorySeparatorChar)</AppDir>
+    <KlondikeWebHostDir>$([System.IO.Path]::Combine('$(ProjectDirectory)', 'src', 'Klondike.WebHost'))$([System.IO.Path]::DirectorySeparatorChar)</KlondikeWebHostDir>
+    <KlondikeWebHostOutputDir>$([System.IO.Path]::Combine('$(ProjectDirectory)', 'build', 'Klondike.WebHost'))$([System.IO.Path]::DirectorySeparatorChar)</KlondikeWebHostOutputDir>
+
+    <KlondikeSelfHostDir>$([System.IO.Path]::Combine('$(ProjectDirectory)', 'src', 'Klondike.SelfHost'))$([System.IO.Path]::DirectorySeparatorChar)</KlondikeSelfHostDir>
+    <KlondikeSelfHostOutputDir>$([System.IO.Path]::Combine('$(ProjectDirectory)', 'build', 'Klondike.SelfHost'))$([System.IO.Path]::DirectorySeparatorChar)</KlondikeSelfHostOutputDir>
     <StagingDir Condition=" '$(DistDir)' != '' ">$([System.IO.Path]::Combine('$(ProjectDirectory)', '$(DistDir)'))$([System.IO.Path]::DirectorySeparatorChar)</StagingDir>
+    <Configuration>Debug</Configuration>
   </PropertyGroup>
-  
+
+  <PropertyGroup>
+        <TransformExe>$(SolutionDirectory)packages\WebConfigTransformRunner.1.1.16\Tools\WebConfigTransformRunner.exe</TransformExe>
+        <TransformCommand Condition=" '$(OS)' == 'Windows_NT' ">"$(TransformExe)"</TransformCommand>
+        <TransformCommand Condition=" '$(OS)' != 'Windows_NT' ">mono --runtime=v4.0.30319 $(TransformExe)</TransformCommand>
+    </PropertyGroup>
+
   <PropertyGroup>
     <BuildDependsOn>
       $(BuildDependsOn);
       CopyOutputsToDistDir;
       TransformWebConfig;
+      TransformSelfHostConfig
     </BuildDependsOn>
     <TestDependsOn>
       $(TestDependsOn);
@@ -19,32 +31,46 @@
 
   <Target Name="CopyOutputsToDistDir"
           Condition=" '$(StagingDir)' != '' ">
-    
+
     <ItemGroup>
-      <Content Include="$(AppDir)**\*.dll"/>
-      <Content Include="$(AppDir)**\*.pdb"/>
-      <Content Include="$(AppDir)**\*.xml"/>
-      <Content Include="$(AppDir)Global.asax"/>
-      <Content Remove="$(AppDir)obj\**\*;$(AppDir)bin\Debug\**\*;$(AppDir)bin\Release\**\*"/>
+      <WebHostBinContent Include="$(KlondikeWebHostOutputDir)bin\$(Configuration)\**\*"/>
+      <WebHostContent Include="$(KlondikeWebHostDir)**\Settings.config"/>
+
+      <SelfHostContent Include="$(KlondikeSelfHostOutputDir)bin\$(Configuration)\**\*"/>
+      <SelfHostContent Remove="$(KlondikeSelfHostOutputDir)bin\$(Configuration)\**\*.config"/>
     </ItemGroup>
-    
-    <Copy SourceFiles="@(Content)" DestinationFolder="$(StagingDir)%(RecursiveDir)"
+
+    <Copy SourceFiles="@(WebHostBinContent)" DestinationFolder="$(StagingDir)bin\%(RecursiveDir)"
+          SkipUnchangedFiles="true"/>
+
+    <Copy SourceFiles="@(WebHostContent)" DestinationFolder="$(StagingDir)%(RecursiveDir)"
+          SkipUnchangedFiles="true"/>
+
+    <Copy SourceFiles="@(SelfHostContent)" DestinationFolder="$(StagingDir)bin\%(RecursiveDir)"
           SkipUnchangedFiles="true"/>
   </Target>
-  
+
   <Target Name="TransformWebConfig"
           Condition=" '$(StagingDir)' != '' "
-          Inputs="$(AppDir)Web.config;$(AppDir)Web.$(Configuration).config"
+          Inputs="$(KlondikeWebHostDir)Web.config;$(KlondikeWebHostDir)Web.$(Configuration).config"
           Outputs="$(StagingDir)Web.config">
 
-    <MakeDir Directories="$(StagingDir)"/>
+    <Exec
+        Command="$(TransformCommand) &quot;$(KlondikeWebHostDir)Web.config&quot; &quot;$(KlondikeWebHostDir)Web.$(Configuration).config&quot; &quot;$(StagingDir)Web.config&quot;"
+        Condition="Exists('$(KlondikeWebHostDir)Web.$(Configuration).config')"/>
+
+    <Copy SourceFiles="$(KlondikeWebHostDir)Web.config" DestinationFolder="$(StagingDir)"
+        Condition="!Exists('$(KlondikeWebHostDir)Web.$(Configuration).config')"
+        SkipUnchangedFiles="true"/>
+  </Target>
+
+  <Target Name="TransformSelfHostConfig"
+          Condition=" '$(StagingDir)' != '' "
+          Inputs="$(KlondikeSelfHostDir)App.config;$(KlondikeSelfHostDir)App.Dist.config"
+          Outputs="$(StagingDir)bin\Klondike.SelfHost.exe.config">
 
     <Exec
-        Command="&quot;$(SolutionDirectory)packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe&quot; &quot;$(AppDir)Web.config&quot; &quot;$(AppDir)Web.$(Configuration).config&quot; &quot;$(StagingDir)Web.config&quot;"
-        Condition="Exists('$(AppDir)Web.$(Configuration).config')"/>
-
-    <Copy SourceFiles="$(AppDir)Web.config" DestinationFolder="$(StagingDir)"
-        Condition="!Exists('$(AppDir)Web.$(Configuration).config')"/>
+        Command="$(TransformCommand) &quot;$(KlondikeSelfHostDir)App.config&quot; &quot;$(KlondikeSelfHostDir)App.Dist.config&quot; &quot;$(StagingDir)bin\Klondike.SelfHost.exe.config&quot;"/>
   </Target>
 
   <Target Name="IntegrationTest" Condition=" '$(TestsEnabled)' == 'true' ">

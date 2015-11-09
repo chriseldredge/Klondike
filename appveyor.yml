@@ -10,21 +10,18 @@ init:
 # Test against these versions of Node.js.
 environment:
   matrix:
-    - nodejs_version: "0.10"
+    - nodejs_version: "0.12"
 
-# Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node 0.STABLE.latest
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
-  - cmd: gem install compass
-  - cmd: node --version
-  - cmd: npm --version
-  - cmd: npm install -g grunt-cli bower
-  - cmd: bower --version
-  - cmd: grunt --version
+  - cmd: npm config set spin false
+  - cmd: npm install -g npm@^2
+  - cmd: npm install -g ember-cli bower
   - cmd: npm install
   - cmd: bower install
-  - cmd: grunt build
+  - cmd: nuget restore Klondike.sln -NonInteractive
+  - cmd: npm run-script release
 
 build_script:
   - cmd: nuget pack Mvno.Klondike.Nuget.Server.nuspec -Version %APPVEYOR_BUILD_VERSION% -NoPackageAnalysis -NoDefaultExcludes

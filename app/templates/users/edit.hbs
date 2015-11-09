@@ -1,48 +1,49 @@
-<h1>{{actionLabel}} Account</h1>
+<div class="container p2">
+    <h1>{{actionLabel}} Account</h1>
 
-<label>
-    Username
-    {{focus-input type="text" value=username}}
-</label>
+    <div class="sm-col-6">
+        <div class="mb2 clearfix">
+            <div class="col col-6 pr2">
+            <label>Username</label>
+            {{focus-input type="text" value=model.username class="field col-12 block"}}
+            </div>
+            <div class="col col-6">
+            <label>Api Key</label>
+            {{input type="text" value=model.key placeholder="(Leave blank to generate)" class="field col-12 block"}}
+            </div>
+        </div>
 
-<label>
-    Api Key
-    {{input type="text" value=key placeholder="(Leave blank to generate)"}}
-</label>
+        <div class="mb2">
+            <h2 class="h3">Permissions</h2>
+            {{checkbox-group
+                name="roles"
+                selection=model.roles
+                content=model.allRoles
+                checkboxLabelPath="content.label"
+                checkboxValuePath="content.name"
+                classNames="list-reset"}}
+        </div>
 
-<fieldset>
-    <legend>Permissions</legend>
+        <div class="mb2">
+            <button {{action "save"}} class="btn button-blue">Save</button>
 
-    {{view App.CheckboxGroup
-        name="roles"
-        selection=roles
-        content=App.roles
-        checkboxLabelPath="content.label"
-        checkboxValuePath="content.name"}}
-</fieldset>
+            {{#if canDelete}}
+                <button {{action "delete"}} class="btn button-red">Delete</button>
+            {{/if}}
 
-<button {{action "save"}}>Save</button>
+            <button {{action "cancel"}} class="btn button-link kl-button--link">Cancel</button>
+        </div>
 
-{{#if canDelete}}
-<button {{action "delete"}}>Delete</button>
-{{/if}}
+        {{#if errorMessage}}
+            <div class="error red">{{errorMessage}}</div>
+        {{/if}}
 
-<button {{action "cancel"}}>Cancel</button>
-
-{{#if errorMessage}}
-<div class="error">
-    {{errorMessage}}
+        {{#if isSaving}}
+            <div class="save-in-progress">Saving...</div>
+        {{else}}
+            {{#if isSaveCompleted}}
+                <div class="save-completed green">Saved.</div>
+            {{/if}}
+        {{/if}}
+    </div>
 </div>
-{{/if}}
-
-{{#if isSaving}}
-<p class="save-in-progress">
-    Saving...
-</p>
-{{else}}
-    {{#if isSaveCompleted}}
-        <p class="save-completed">
-            Saved.
-        </p>
-    {{/if}}
-{{/if}}
