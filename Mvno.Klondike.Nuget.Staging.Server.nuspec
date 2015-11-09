@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Mvno.Klondike.Nuget.Server</id>
+    <version>$version$</version>
+    <title>Mvno.Klondike.Nuget.Server</title>
+    <authors>chriseldredge</authors>
+    <owners>chriseldredge</owners>
+    <description>Package contains a full blown Klondike nuget server in Asp. Net Mvc ready for deployment</description>
+    <language>en-US</language>
+    <projectUrl>http://www.mvno.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="dist\**\*.*" target="" />
+    <file src="PreDeploy.ps1" target="" />
+    <file src="Staging - Deploy.ps1" target="Deploy.ps1" />
+  </files>
+</package>
