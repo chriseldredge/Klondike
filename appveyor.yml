@@ -24,7 +24,8 @@ install:
   - cmd: npm run-script release
 
 build_script:
-  - cmd: nuget pack Mvno.Klondike.Nuget.Server.nuspec -Version %APPVEYOR_BUILD_VERSION% -NoPackageAnalysis -NoDefaultExcludes
+  - cmd: nuget pack Mvno.Klondike.Nuget.Production.Server.nuspec -Version %APPVEYOR_BUILD_VERSION% -NoPackageAnalysis -NoDefaultExcludes
+  - cmd: nuget pack Mvno.Klondike.Nuget.Staging.Server.nuspec -Version %APPVEYOR_BUILD_VERSION% -NoPackageAnalysis -NoDefaultExcludes
 
 artifacts:
-  - path: Mvno.Klondike.Nuget.Server.*.nupkg
+  - path: Mvno.Klondike.Nuget.*.Server.*.nupkg
