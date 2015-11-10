@@ -19,6 +19,7 @@ install:
   - cmd: bower install
   - cmd: nuget restore Klondike.sln -NonInteractive
   - cmd: npm run-script release
+  - ps: Copy-Item .\*.txt .\dist
 
 # Don't actually build.
 build: off
