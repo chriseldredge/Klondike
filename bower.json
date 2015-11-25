@@ -2,21 +2,21 @@
   "name": "klondike",
   "dependencies": {
     "basscss-sass": "~2.0.0",
-    "ember": "1.13.8",
-    "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.3",
-    "ember-cli-test-loader": "ember-cli-test-loader#0.1.3",
-    "ember-load-initializers": "ember-cli/ember-load-initializers#0.1.5",
-    "ember-qunit": "0.4.9",
-    "ember-qunit-notifications": "0.0.7",
-    "ember-resolver": "~0.1.18",
+    "ember": "1.13.11",
+    "ember-cli-shims": "0.0.6",
+    "ember-cli-test-loader": "0.2.1",
+    "ember-load-initializers": "0.1.7",
+    "ember-qunit": "0.4.16",
+    "ember-qunit-notifications": "0.1.0",
+    "ember-resolver": "~0.1.20",
     "font-awesome": "~4.3.0",
     "geomicons-open": "~2.0.0",
     "jcaret": "#cada9e2c77",
     "jquery": "^2.1.3",
     "jquery-signalr": "https://github.com/chriseldredge/bower-jquery-signalr.git#2.1.1",
+    "loader.js": "ember-cli/loader.js#3.4.0",
     "momentjs": "~2.9.0",
     "nprogress": "~0.1.2",
-    "loader.js": "ember-cli/loader.js#3.2.1",
-    "qunit": "~1.18.0"
+    "qunit": "~1.20.0"
   }
 }
