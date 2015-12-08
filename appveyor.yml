@@ -17,7 +17,6 @@ install:
   - cmd: npm install -g ember-cli bower
   - cmd: npm install
   - cmd: bower install
-  - cmd: nuget restore Klondike.sln -NonInteractive
   - cmd: npm run-script release
   - ps: Copy-Item .\*.txt .\dist
 
