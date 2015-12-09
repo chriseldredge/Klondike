@@ -49,7 +49,11 @@
           </li>
         {{/with}}
         <li class="inline-block h5">
-          <strong>Klondike:</strong> {{application.version}}
+          <strong>Klondike:</strong>
+          {{productVersion}}
+          {{#if productRevisionHash}}
+            <span class="kl-span--low-importance">({{productRevisionHash}})</span>
+          {{/if}}
         </li>
       </ul>
     </div>

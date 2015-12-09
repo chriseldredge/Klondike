@@ -11,6 +11,18 @@ export default Ember.Controller.extend(BaseControllerMixin, {
 
     apiURL: Ember.computed.oneWay('restClient.apiURL'),
 
+    productVersion: Ember.computed('application.version', function() {
+      return this.get('application.version').split('+')[0];
+    }),
+
+    productRevisionHash: Ember.computed('application.version', function() {
+      var parts = this.get('application.version').split('+');
+      if (parts.length === 2) {
+        return parts[1];
+      }
+      return undefined;
+    }),
+
     actions: {
         search: function () {
             var query = this.get('searchBox');
