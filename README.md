@@ -9,7 +9,7 @@ Available from the Releases tab on github.
 Alternatively, you can clone the [Klondike-Release](https://github.com/themotleyfool/Klondike-Release)
 git repo to make upgrading easier.
 
-_N.B._ The self-host version of Klondike is currently in beta. Binaries can be obtained from the `Artifacts` tab of a successful [AppVeyor build](https://ci.appveyor.com/project/chriseldredge/klondike/).
+Preview binaries can be obtained from the `Artifacts` tab of a successful [AppVeyor build](https://ci.appveyor.com/project/chriseldredge/klondike/).
 
 ## What is Klondike
 
@@ -31,9 +31,10 @@ exe) and you're done. Much easier than deploying your own NuGet Gallery.
 1. Customize [Settings.config](src/Klondike.WebHost/Settings.config)
 1. Create a site in IIS using a .NET v4.0 Integrated Pipeline application pool
 
-_N.B._ Klondike works best deployed as a root application. There are known issues
-with NuGet clients when attempting to host Klondike as a child application on a
-virtual path.
+_N.B._ Klondike works best deployed as a root application and is only supported in this configuration.
+There are known issues with NuGet clients when attempting to host Klondike as a child application on a
+virtual path. In addition, the Ember web application will not work correctly unless it is rebuilt
+with a different virtual path.
 
 ## App Pool Advanced Configuration
 
