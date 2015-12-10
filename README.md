@@ -99,14 +99,6 @@ Klondike requires Mono 4.2.0 or later.
 If no port is specified, 8080 is used as a default. See the [Klondike.SelfHost README](src/Klondike.SelfHost/README.md)
 for more information.
 
-## Customizing the Home Page
-
-Open [index.html](app/index.html) in a text editor and replace the contents in
-the `<div id="index-content">` element.
-
-The suggested package feed name in the sample command for adding a package source
-can be changed by replacing the `data-package-source-name` attribute value.
-
 ## Building Locally
 
 This repository consists of two components:
