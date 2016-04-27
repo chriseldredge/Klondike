@@ -32,5 +32,7 @@ C:\Windows\system32\sc.exe create Klondike \
 You can also run the service using `mono-service` on Unix hosts:
 
 ```
-mono /Library/Frameworks/Mono.framework/Versions/3.8.0/lib/mono/4.5/mono-service.exe Klondike.SelfHost.exe
+mono /path/to/mono-service.exe Klondike.SelfHost.exe
 ```
+
+*N.B.*: Make sure to use the correct version of mono-service.exe. The one on your system path may be outdated.
