@@ -36,3 +36,6 @@ mono /path/to/mono-service.exe Klondike.SelfHost.exe
 ```
 
 *N.B.*: Make sure to use the correct version of mono-service.exe. The one on your system path may be outdated.
+
+*N.B.*: Also make sure that Klondike's `bin` directory is used as the working directory when using `mono-service`.
+
