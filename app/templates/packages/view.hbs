@@ -29,6 +29,15 @@
         {{/if}}
       </ul>
 
+      {{#if model.releaseNotes}}
+        <details>
+          <summary class="kl-summary--package-heading">Release Notes</summary>
+          <div>
+            {{model.releaseNotes}}
+          </div>
+        </details>
+      {{/if}}
+
       {{#if model.supportedFrameworks}}
         <details>
           <summary class="kl-summary--package-heading">Supported Frameworks</summary>
