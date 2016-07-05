@@ -35,3 +35,4 @@ NuGet.exe
 Klondike.sln.ide/
 npm-debug.log
 testem.log
+.vs/
