@@ -30,61 +30,70 @@
       </ul>
 
       {{#if model.supportedFrameworks}}
-        <h2>Supported Frameworks</h2>
-        <ul>
-          {{#each model.supportedFrameworks as |framework|}}
-            <li>{{framework}}</li>
-          {{/each}}
-        </ul>
+        <details>
+          <summary class="kl-summary--package-heading">Supported Frameworks</summary>
+          <ul>
+            {{#each model.supportedFrameworks as |framework|}}
+              <li>{{framework}}</li>
+            {{/each}}
+          </ul>
+        </details>
       {{/if}}
 
       {{#if model.dependencySets}}
-        <h2>Dependencies</h2>
-        <table class="package-dependencies table-light">
-          <tbody>
-            {{#each model.dependencySets as |set|}}
-              <tr>
-                <th colspan="2">{{set.targetFramework.fullName}}</th>
-              </tr>
-              {{#each set.dependencies as |dep|}}
+        <details>
+          <summary class="kl-summary--package-heading">Dependencies</summary>
+          <table class="package-dependencies table-light">
+            <tbody>
+              {{#each model.dependencySets as |set|}}
                 <tr>
-                  <td>
-                    <a href="#" {{action 'goToDependency' dep}} rel="nofollow">{{dep.id}}</a>
-                  </td>
-                  <td>{{dep.versionSpec.minVersion}}</td>
+                  <th colspan="2">{{set.targetFramework.fullName}}</th>
                 </tr>
+                {{#each set.dependencies as |dep|}}
+                  <tr>
+                    <td>
+                      <a href="#" {{action 'goToDependency' dep}} rel="nofollow">{{dep.id}}</a>
+                    </td>
+                    <td>{{dep.versionSpec.minVersion}}</td>
+                  </tr>
+                {{/each}}
               {{/each}}
-            {{/each}}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </details>
       {{/if}}
 
       {{#if model.files}}
-        <h2>Package Contents</h2>
-        <ul>
-          {{#each model.files as |file|}}
-            <li>{{file}}</li>
-          {{/each}}
-        </ul>
+        <details>
+          <summary class="kl-summary--package-heading">Package Contents</summary>
+          <ul>
+            {{#each model.files as |file|}}
+              <li>{{file}}</li>
+            {{/each}}
+          </ul>
+        </details>
       {{/if}}
 
-      <h2>Version History</h2>
-      <table class="table-light kl-table kl-table--sortable sortable">
-        <thead>
-          <th {{action 'sortVersions' 'semanticVersion'}}>Version</th>
-          <th {{action 'sortVersions' 'versionDownloadCount'}}>Downloads</th>
-          <th {{action 'sortVersions' 'lastUpdated'}}>Last Update</th>
-        </thead>
-        <tbody>
-          {{#each model.versionHistory as |item|}}
-            <tr class="{{if item.active 'active' 'inactive'}}">
-              <td>{{#link-to 'packages.view' item}}{{item.version}}{{/link-to}}</td>
-              <td>{{item.versionDownloadCount}}</td>
-              <td>{{format-date item.lastUpdated}}</td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
+      <details>
+        <summary class="kl-summary--package-heading">Version History</summary>
+        <table class="table-light kl-table kl-table--sortable sortable">
+          <thead>
+            <th {{action 'sortVersions' 'semanticVersion'}}>Version</th>
+            <th {{action 'sortVersions' 'versionDownloadCount'}}>Downloads</th>
+            <th {{action 'sortVersions' 'lastUpdated'}}>Last Update</th>
+          </thead>
+          <tbody>
+            {{#each model.versionHistory as |item|}}
+              <tr class="{{if item.active 'active' 'inactive'}}">
+                <td>{{#link-to 'packages.view' item}}{{item.version}}{{/link-to}}</td>
+                <td>{{item.versionDownloadCount}}</td>
+                <td>{{format-date item.lastUpdated}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </details>
+
     </div>
 
     <div class="col col-4">
