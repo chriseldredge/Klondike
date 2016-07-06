@@ -41,5 +41,6 @@ artifacts:
 
 cache:
   - packages -> **\packages.config
-  - node_modules
+  - node_modules -> package.json
+  - bower_components -> bower.json
   - '%LocalAppData%\NuGet\Cache'
