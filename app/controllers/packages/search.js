@@ -20,7 +20,7 @@ export default Ember.Controller.extend(BaseControllerMixin, PaginationSupportMix
       { value: 'score', label: 'Sort by relevance'},
       { value: 'title', label: 'Sort by title'},
       { value: 'id', label: 'Sort by package ID'},
-      { value: 'published', label: 'Sory by date published'}
+      { value: 'published', label: 'Sort by date published'}
     ],
 
     latestOnlyFilters: [
